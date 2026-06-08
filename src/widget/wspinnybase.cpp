@@ -11,12 +11,15 @@
 #include "mixer/playermanager.h"
 #include "moc_wspinnybase.cpp"
 #include "skin/legacy/skincontext.h"
+#include "track/cue.h"
 #include "track/track.h"
+#include "util/color/rgbcolor.h"
 #include "util/dnd.h"
 #include "util/fpclassify.h"
 #include "vinylcontrol/vinylcontrolmanager.h"
 #include "waveform/visualplayposition.h"
 #include "waveform/vsyncthread.h"
+#include "widget/cueglow.h"
 #include "wimagestore.h"
 
 // The SampleBuffers format enables antialiasing.
@@ -228,6 +231,73 @@ void WSpinnyBase::setLoadedCover(const QPixmap& pixmap) {
     m_loadedCoverScaled = scaleToSize(pixmap);
 }
 
+void WSpinnyBase::cacheCuePoints() {
+    m_cueGlowPoints.clear();
+    if (!m_pLoadedTrack) {
+        return;
+    }
+    const double trackSamples = m_pTrackSamples.get();
+    if (trackSamples <= 0.0) {
+        return;
+    }
+    const QList<CuePointer> cuePoints = m_pLoadedTrack->getCuePoints();
+    for (const auto& pCue : cuePoints) {
+        if (pCue->getType() != mixxx::CueType::HotCue) {
+            continue;
+        }
+        const auto position = pCue->getPosition();
+        if (!position.isValid()) {
+            continue;
+        }
+        const double normalizedPos = position.toEngineSamplePos() / trackSamples;
+        if (normalizedPos < 0.0 || normalizedPos > 1.0) {
+            continue;
+        }
+        CueGlowPoint point;
+        point.normalizedPosition = normalizedPos;
+        point.color = mixxx::RgbColor::toQColor(pCue->getColor());
+        m_cueGlowPoints.append(point);
+    }
+}
+
+void WSpinnyBase::updateCueGlow() {
+    if (m_cueGlowPoints.isEmpty()) {
+        m_cueGlowIntensity = 0.0f;
+        return;
+    }
+
+    const double playPos = m_pPlayPos.get();
+    if (util_isnan(playPos) || playPos < 0.0 || playPos > 1.0) {
+        m_cueGlowIntensity = 0.0f;
+        return;
+    }
+
+    const double trackSamples = m_pTrackSamples.get();
+    const double sampleRate = m_pTrackSampleRate.get();
+    if (trackSamples <= 0.0 || sampleRate <= 0.0) {
+        m_cueGlowIntensity = 0.0f;
+        return;
+    }
+    const double totalSeconds = (trackSamples / 2.0) / sampleRate;
+
+    float bestIntensity = 0.0f;
+    QColor bestColor;
+
+    for (const auto& cue : m_cueGlowPoints) {
+        const double distNorm = playPos - cue.normalizedPosition;
+        const double distSeconds = distNorm * totalSeconds;
+
+        const float intensity = mixxx::cueglow::calcIntensity(distSeconds);
+        if (intensity > bestIntensity) {
+            bestIntensity = intensity;
+            bestColor = cue.color;
+        }
+    }
+
+    m_cueGlowIntensity = bestIntensity * mixxx::cueglow::kMaxAlpha;
+    m_cueGlowColor = bestColor;
+}
+
 void WSpinnyBase::slotLoadTrack(TrackPointer pTrack) {
     if (m_pLoadedTrack) {
         disconnect(m_pLoadedTrack.get(),
@@ -247,6 +317,7 @@ void WSpinnyBase::slotLoadTrack(TrackPointer pTrack) {
                 &WSpinnyBase::slotTrackCoverArtUpdated);
     }
 
+    cacheCuePoints();
     slotTrackCoverArtUpdated();
 }
 
@@ -325,6 +396,7 @@ void WSpinnyBase::render(VSyncThread* vSyncThread) {
         m_dGhostAngleLastPlaypos = m_dGhostAngleCurrentPlaypos;
     }
 
+    updateCueGlow();
     draw();
 }
 

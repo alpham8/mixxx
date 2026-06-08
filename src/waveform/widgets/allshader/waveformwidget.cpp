@@ -9,6 +9,7 @@
 #include "waveform/renderers/allshader/waveformrenderbackground.h"
 #include "waveform/renderers/allshader/waveformrenderbarcounter.h"
 #include "waveform/renderers/allshader/waveformrenderbeat.h"
+#include "waveform/renderers/allshader/waveformrendercuetriangle.h"
 #include "waveform/renderers/allshader/waveformrendererendoftrack.h"
 #include "waveform/renderers/allshader/waveformrendererfiltered.h"
 #include "waveform/renderers/allshader/waveformrendererhsv.h"
@@ -62,6 +63,7 @@ WaveformWidget::WaveformWidget(QWidget* parent,
     }
     pOpacityNode->appendChildNode(addRendererNode<WaveformRenderBeat>());
     pOpacityNode->appendChildNode(addRendererNode<WaveformRenderBarCounter>());
+    pOpacityNode->appendChildNode(addRendererNode<WaveformRenderCueTriangle>());
     m_pWaveformRenderMark = pOpacityNode->appendChildNode(addRendererNode<WaveformRenderMark>());
 
     // if the added signal renderer supports slip, we add it again, now for
@@ -87,6 +89,9 @@ WaveformWidget::WaveformWidget(QWidget* parent,
                         ::WaveformRendererAbstract::Slip));
         pOpacityNode->appendChildNode(
                 addRendererNode<WaveformRenderBarCounter>(
+                        ::WaveformRendererAbstract::Slip));
+        pOpacityNode->appendChildNode(
+                addRendererNode<WaveformRenderCueTriangle>(
                         ::WaveformRendererAbstract::Slip));
         m_pWaveformRenderMarkSlip = pOpacityNode->appendChildNode(
                 addRendererNode<WaveformRenderMark>(

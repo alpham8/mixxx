@@ -24,8 +24,13 @@ void WSpinny::draw() {
         p.drawImage(rect(), *m_pBgImage, m_pBgImage->rect());
     }
 
+    if (m_cueGlowIntensity > 0.01f) {
+        QColor glowColor = m_cueGlowColor;
+        glowColor.setAlphaF(m_cueGlowIntensity);
+        p.fillRect(rect(), glowColor);
+    }
+
     if (m_bShowCover && !m_loadedCoverScaled.isNull()) {
-        // Some covers aren't square, so center them.
         double x = (width() - m_loadedCoverScaled.width() / scaleFactor) / 2;
         double y = (height() - m_loadedCoverScaled.height() / scaleFactor) / 2;
         p.drawPixmap(QPointF(x, y), m_loadedCoverScaled);

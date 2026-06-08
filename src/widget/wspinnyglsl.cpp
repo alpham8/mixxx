@@ -101,7 +101,15 @@ void WSpinnyGLSL::paintGL() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    glClearColor(0.f, 0.f, 0.f, 1.f);
+    if (m_cueGlowIntensity > 0.01f) {
+        glClearColor(
+                m_cueGlowColor.redF() * m_cueGlowIntensity,
+                m_cueGlowColor.greenF() * m_cueGlowIntensity,
+                m_cueGlowColor.blueF() * m_cueGlowIntensity,
+                1.f);
+    } else {
+        glClearColor(0.f, 0.f, 0.f, 1.f);
+    }
     glClear(GL_COLOR_BUFFER_BIT);
 
     m_textureShader.bind();
