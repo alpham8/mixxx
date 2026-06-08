@@ -37,6 +37,7 @@ WSpinnyBase::WSpinnyBase(
           m_pPlayPos(PollingControlProxy(m_group, QStringLiteral("playposition"))),
           m_pTrackSamples(PollingControlProxy(m_group, QStringLiteral("track_samples"))),
           m_pTrackSampleRate(PollingControlProxy(m_group, QStringLiteral("track_samplerate"))),
+          m_pBpm(PollingControlProxy(m_group, QStringLiteral("bpm"))),
           m_pScratchToggle(PollingControlProxy(m_group, QStringLiteral("scratch_position_enable"))),
           m_pScratchPos(PollingControlProxy(m_group, QStringLiteral("scratch_position"))),
           m_pVinylControlSpeedType(nullptr),
@@ -272,13 +273,15 @@ void WSpinnyBase::updateCueGlow() {
         return;
     }
 
+    const double bpm = m_pBpm.get();
     const double trackSamples = m_pTrackSamples.get();
     const double sampleRate = m_pTrackSampleRate.get();
-    if (trackSamples <= 0.0 || sampleRate <= 0.0) {
+    if (bpm <= 0.0 || trackSamples <= 0.0 || sampleRate <= 0.0) {
         m_cueGlowIntensity = 0.0f;
         return;
     }
     const double totalSeconds = (trackSamples / 2.0) / sampleRate;
+    const double beatsPerSecond = bpm / 60.0;
 
     float bestIntensity = 0.0f;
     QColor bestColor;
@@ -286,8 +289,9 @@ void WSpinnyBase::updateCueGlow() {
     for (const auto& cue : m_cueGlowPoints) {
         const double distNorm = playPos - cue.normalizedPosition;
         const double distSeconds = distNorm * totalSeconds;
+        const double distBeats = distSeconds * beatsPerSecond;
 
-        const float intensity = mixxx::cueglow::calcIntensity(distSeconds);
+        const float intensity = mixxx::cueglow::calcIntensity(distBeats);
         if (intensity > bestIntensity) {
             bestIntensity = intensity;
             bestColor = cue.color;
