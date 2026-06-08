@@ -3,28 +3,22 @@
 namespace mixxx {
 namespace cueglow {
 
-constexpr double kFadeInSeconds = 2.0;
-constexpr double kHoldSeconds = 1.0;
-constexpr double kFadeOutSeconds = 3.0;
+constexpr double kDrainBeats = 16.0;
 constexpr float kMaxAlpha = 0.75f;
 
-// Returns raw intensity [0.0, 1.0] based on temporal distance from a cue point.
-// Negative distSeconds means the playhead is approaching the cue (before it),
-// positive means the playhead has passed the cue.
+// Returns raw intensity [0.0, 1.0] based on beat distance past a cue point.
+// distBeats < 0 means the playhead has not yet reached the cue (no glow).
+// distBeats >= 0 means the playhead has passed the cue — intensity drains
+// linearly from 1.0 down to 0.0 over kDrainBeats beats.
 // Multiply the result by kMaxAlpha to get the final overlay alpha.
-inline float calcIntensity(double distSeconds) {
-    if (distSeconds < -kFadeInSeconds) {
+inline float calcIntensity(double distBeats) {
+    if (distBeats < 0.0) {
         return 0.0f;
-    } else if (distSeconds < 0.0) {
-        return static_cast<float>(
-                1.0 + distSeconds / kFadeInSeconds);
-    } else if (distSeconds < kHoldSeconds) {
-        return 1.0f;
-    } else if (distSeconds < kHoldSeconds + kFadeOutSeconds) {
-        return static_cast<float>(
-                1.0 - (distSeconds - kHoldSeconds) / kFadeOutSeconds);
     }
-    return 0.0f;
+    if (distBeats >= kDrainBeats) {
+        return 0.0f;
+    }
+    return static_cast<float>(1.0 - distBeats / kDrainBeats);
 }
 
 } // namespace cueglow
