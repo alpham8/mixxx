@@ -43,5 +43,7 @@ class WSpinnyGLSL : public WSpinnyBase, private QOpenGLFunctions {
     OpenGLTexture2D m_ghostTextureScaled;
     OpenGLTexture2D m_loadedCoverTextureScaled;
     OpenGLTexture2D m_qTexture;
+    OpenGLTexture2D m_cueGlowTexture;
+    OpenGLTexture2D m_cueGlowFgTexture;
     QColor m_vinylQualityColor;
 };
