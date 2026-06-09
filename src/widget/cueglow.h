@@ -4,7 +4,7 @@ namespace mixxx {
 namespace cueglow {
 
 constexpr double kDrainBeats = 16.0;
-constexpr float kMaxAlpha = 0.75f;
+constexpr float kMaxAlpha = 0.25f;
 
 // Returns raw intensity [0.0, 1.0] based on beat distance past a cue point.
 // distBeats < 0 means the playhead has not yet reached the cue (no glow).

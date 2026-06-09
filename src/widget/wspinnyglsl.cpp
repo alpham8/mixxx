@@ -1,7 +1,12 @@
 #include "widget/wspinnyglsl.h"
 
 #include <QOpenGLTexture>
+#include <QPainter>
+#include <QRadialGradient>
 #include <array>
+#include <cmath>
+
+#include "widget/cueglow.h"
 
 #include "moc_wspinnyglsl.cpp"
 
@@ -101,15 +106,7 @@ void WSpinnyGLSL::paintGL() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    if (m_cueGlowIntensity > 0.01f) {
-        glClearColor(
-                m_cueGlowColor.redF() * m_cueGlowIntensity,
-                m_cueGlowColor.greenF() * m_cueGlowIntensity,
-                m_cueGlowColor.blueF() * m_cueGlowIntensity,
-                1.f);
-    } else {
-        glClearColor(0.f, 0.f, 0.f, 1.f);
-    }
+    glClearColor(0.f, 0.f, 0.f, 1.f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     m_textureShader.bind();
@@ -168,6 +165,63 @@ void WSpinnyGLSL::paintGL() {
         m_textureShader.setUniformValue(matrixLocation, rotate);
 
         drawTexture(&m_fgTextureScaled);
+
+        if (m_cueGlowIntensity > 0.01f && !m_fgImageScaled.isNull()) {
+            const float rawIntensity = m_cueGlowIntensity /
+                    mixxx::cueglow::kMaxAlpha;
+
+            QImage tinted = m_fgImageScaled.copy();
+            QPainter tp(&tinted);
+            tp.setCompositionMode(QPainter::CompositionMode_SourceAtop);
+            tp.fillRect(tinted.rect(), m_cueGlowColor);
+
+            const double cx = tinted.width() / 2.0;
+            const double cy = tinted.height() / 2.0;
+            const double radius = std::sqrt(cx * cx + cy * cy);
+            QRadialGradient mask(cx, cy, radius);
+            const double outerStop = std::min(1.0, static_cast<double>(rawIntensity));
+            mask.setColorAt(0.0, Qt::white);
+            if (outerStop > 0.0) {
+                mask.setColorAt(std::max(0.0, outerStop - 0.001), Qt::white);
+            }
+            mask.setColorAt(outerStop, Qt::transparent);
+            mask.setColorAt(1.0, Qt::transparent);
+
+            tp.setCompositionMode(QPainter::CompositionMode_DestinationIn);
+            tp.fillRect(tinted.rect(), mask);
+            tp.end();
+
+            m_cueGlowFgTexture.setData(tinted);
+            drawTexture(&m_cueGlowFgTexture);
+        }
+    }
+
+    if (m_cueGlowIntensity > 0.01f) {
+        const int texSize = 64;
+        QImage glowImg(texSize, texSize, QImage::Format_ARGB32_Premultiplied);
+        glowImg.fill(Qt::transparent);
+        QColor glowColor = m_cueGlowColor;
+        glowColor.setAlphaF(m_cueGlowIntensity);
+        QPainter glowPainter(&glowImg);
+        glowPainter.setRenderHint(QPainter::Antialiasing);
+        glowPainter.setPen(Qt::NoPen);
+        glowPainter.setBrush(glowColor);
+        glowPainter.drawEllipse(glowImg.rect());
+        glowPainter.end();
+        m_cueGlowTexture.setData(glowImg);
+
+        QMatrix4x4 identity;
+        m_textureShader.setUniformValue(matrixLocation, identity);
+
+        const std::array<float, 8> posarray = {-1.f, -1.f, 1.f, -1.f, -1.f, 1.f, 1.f, 1.f};
+        const std::array<float, 8> texarray = {0.f, 1.f, 1.f, 1.f, 0.f, 0.f, 1.f, 0.f};
+        m_textureShader.setAttributeArray(
+                positionLocation, GL_FLOAT, posarray.data(), 2);
+        m_textureShader.setAttributeArray(
+                texcoordLocation, GL_FLOAT, texarray.data(), 2);
+        m_cueGlowTexture.bind();
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        m_cueGlowTexture.release();
     }
 
     m_textureShader.release();

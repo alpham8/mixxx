@@ -54,8 +54,8 @@ TEST(CueGlowTest, DrainIsMonotonicallyDecreasing) {
 }
 
 TEST(CueGlowTest, MaxAlphaScaling) {
-    EXPECT_FLOAT_EQ(calcIntensity(0.0) * kMaxAlpha, 0.75f);
-    EXPECT_FLOAT_EQ(calcIntensity(kDrainBeats / 2.0) * kMaxAlpha, 0.375f);
+    EXPECT_FLOAT_EQ(calcIntensity(0.0) * kMaxAlpha, 0.25f);
+    EXPECT_FLOAT_EQ(calcIntensity(kDrainBeats / 2.0) * kMaxAlpha, 0.125f);
 }
 
 TEST(CueGlowTest, SingleBeatSteps) {
