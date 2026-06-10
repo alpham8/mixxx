@@ -1,6 +1,7 @@
 #include "os2l/os2lmanager.h"
 
 #include <QHostAddress>
+#include <QTimer>
 
 #include "control/controlobject.h"
 #include "control/controlproxy.h"
@@ -31,12 +32,19 @@ Os2lManager::Os2lManager(UserSettingsPointer pConfig, QObject* pParent)
                 setEnabled(value > 0.0);
             });
 
-    m_pBeatActive = std::make_unique<ControlProxy>(
-            QStringLiteral("[Channel1]"), QStringLiteral("beat_active"), this);
-    m_pBeatActive->connectValueChanged(this, &Os2lManager::slotBeatActive);
-
     bool enabled = m_pConfig->getValue(kEnabledConfigKey, true);
     setEnabled(enabled);
+
+    // Defer ControlProxy creation — beat_active doesn't exist yet
+    // during CoreServices::initialize(). Decks are created later.
+    QTimer::singleShot(2000, this, [this]() {
+        m_pBeatActive = std::make_unique<ControlProxy>(
+                QStringLiteral("[Channel1]"),
+                QStringLiteral("beat_active"),
+                this);
+        m_pBeatActive->connectValueChanged(this, &Os2lManager::slotBeatActive);
+        qDebug() << "[OS2L] Beat tracking connected";
+    });
 }
 
 Os2lManager::~Os2lManager() {
