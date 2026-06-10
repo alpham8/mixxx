@@ -14,6 +14,7 @@ namespace mixxx {
 
 class Os2lConnection;
 class Os2lDiscovery;
+class SeratoEmulation;
 
 class Os2lManager : public QObject {
     Q_OBJECT
@@ -66,6 +67,8 @@ class Os2lManager : public QObject {
 
     int m_beatCounter;
     double m_lastBpm;
+
+    std::unique_ptr<SeratoEmulation> m_pSeratoEmulation;
 };
 
 } // namespace mixxx

@@ -7,6 +7,7 @@
 #include "control/controlproxy.h"
 #include "os2l/os2lconnection.h"
 #include "os2l/os2ldiscovery.h"
+#include "os2l/seratoemulation.h"
 
 #include "moc_os2lmanager.cpp"
 
@@ -104,9 +105,16 @@ void Os2lManager::startDiscovery() {
     connect(m_pDiscovery.get(), &Os2lDiscovery::serviceLost,
             this, &Os2lManager::slotServiceLost);
     m_pDiscovery->start();
+
+    m_pSeratoEmulation = std::make_unique<SeratoEmulation>(m_pConfig, this);
+    m_pSeratoEmulation->start();
 }
 
 void Os2lManager::stopDiscovery() {
+    if (m_pSeratoEmulation) {
+        m_pSeratoEmulation->stop();
+        m_pSeratoEmulation.reset();
+    }
     if (m_pDiscovery) {
         m_pDiscovery->stop();
         m_pDiscovery.reset();
