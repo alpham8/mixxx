@@ -38,16 +38,14 @@ Os2lManager::Os2lManager(UserSettingsPointer pConfig, QObject* pParent)
     // Defer ControlProxy creation — beat_active doesn't exist yet
     // during CoreServices::initialize(). Decks are created later.
     QTimer::singleShot(2000, this, [this]() {
-        m_pBeatActive = std::make_unique<ControlProxy>(
-                QStringLiteral("[Channel1]"),
-                QStringLiteral("beat_active"),
-                this);
-        m_pBeatActive->connectValueChanged(this, &Os2lManager::slotBeatActive);
-        qDebug() << "[OS2L] Beat tracking connected";
+        connectDeckControls();
     });
 }
 
 Os2lManager::~Os2lManager() {
+    m_hotcueProxies.clear();
+    m_pCueGotoAndPlay.reset();
+    m_pPlay.reset();
     m_pBeatActive.reset();
     stopDiscovery();
     disconnectAll();
@@ -172,6 +170,69 @@ void Os2lManager::broadcastBeat() {
         pConn->sendBeat(m_beatCounter, bpm, change, strength);
     }
     m_beatCounter++;
+}
+
+void Os2lManager::broadcastButton(const QString& name, const QString& state) {
+    for (const auto& [key, pConn] : m_connections) {
+        pConn->sendButton(name, state);
+    }
+}
+
+void Os2lManager::connectDeckControls() {
+    const QString group = QStringLiteral("[Channel1]");
+
+    m_pBeatActive = std::make_unique<ControlProxy>(
+            group, QStringLiteral("beat_active"), this);
+    m_pBeatActive->connectValueChanged(this, &Os2lManager::slotBeatActive);
+
+    m_pPlay = std::make_unique<ControlProxy>(
+            group, QStringLiteral("play"), this);
+    m_pPlay->connectValueChanged(this, &Os2lManager::slotPlayChanged);
+
+    m_pCueGotoAndPlay = std::make_unique<ControlProxy>(
+            group, QStringLiteral("cue_gotoandplay"), this);
+    m_pCueGotoAndPlay->connectValueChanged(this, &Os2lManager::slotCueGotoAndPlay);
+
+    constexpr int kNumHotcues = 8;
+    for (int i = 1; i <= kNumHotcues; ++i) {
+        auto pProxy = std::make_unique<ControlProxy>(
+                group,
+                QStringLiteral("hotcue_%1_activate").arg(i),
+                this);
+        pProxy->connectValueChanged(this, &Os2lManager::slotHotcueActivated);
+        m_hotcueProxies.push_back(std::move(pProxy));
+    }
+
+    qDebug() << "[OS2L] Deck controls connected (beat, play, cue, 8 hotcues)";
+}
+
+void Os2lManager::slotHotcueActivated(double value) {
+    if (value <= 0.0 || !m_enabled) {
+        return;
+    }
+    auto* pProxy = qobject_cast<ControlProxy*>(sender());
+    if (!pProxy) {
+        return;
+    }
+    QString coName = pProxy->getKey().item;
+    broadcastButton(coName, QStringLiteral("on"));
+    m_beatCounter = 0;
+}
+
+void Os2lManager::slotPlayChanged(double value) {
+    if (!m_enabled) {
+        return;
+    }
+    broadcastButton(QStringLiteral("play"),
+            value > 0.0 ? QStringLiteral("on") : QStringLiteral("off"));
+}
+
+void Os2lManager::slotCueGotoAndPlay(double value) {
+    if (value <= 0.0 || !m_enabled) {
+        return;
+    }
+    broadcastButton(QStringLiteral("cue_gotoandplay"), QStringLiteral("on"));
+    m_beatCounter = 0;
 }
 
 } // namespace mixxx
