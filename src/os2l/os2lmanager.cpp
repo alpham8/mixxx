@@ -195,28 +195,15 @@ void Os2lManager::connectDeckControls() {
 
     constexpr int kNumHotcues = 8;
     for (int i = 1; i <= kNumHotcues; ++i) {
+        m_hotcueNames.push_back(
+                QStringLiteral("hotcue_%1_activate").arg(i));
         auto pProxy = std::make_unique<ControlProxy>(
-                group,
-                QStringLiteral("hotcue_%1_activate").arg(i),
-                this);
+                group, m_hotcueNames.back(), this);
         pProxy->connectValueChanged(this, &Os2lManager::slotHotcueActivated);
         m_hotcueProxies.push_back(std::move(pProxy));
     }
 
     qDebug() << "[OS2L] Deck controls connected (beat, play, cue, 8 hotcues)";
-}
-
-void Os2lManager::slotHotcueActivated(double value) {
-    if (value <= 0.0 || !m_enabled) {
-        return;
-    }
-    auto* pProxy = qobject_cast<ControlProxy*>(sender());
-    if (!pProxy) {
-        return;
-    }
-    QString coName = pProxy->getKey().item;
-    broadcastButton(coName, QStringLiteral("on"));
-    m_beatCounter = 0;
 }
 
 void Os2lManager::slotPlayChanged(double value) {
@@ -233,6 +220,19 @@ void Os2lManager::slotCueGotoAndPlay(double value) {
     }
     broadcastButton(QStringLiteral("cue_gotoandplay"), QStringLiteral("on"));
     m_beatCounter = 0;
+}
+
+void Os2lManager::slotHotcueActivated(double value) {
+    if (value <= 0.0 || !m_enabled) {
+        return;
+    }
+    for (size_t i = 0; i < m_hotcueProxies.size(); ++i) {
+        if (m_hotcueProxies[i]->get() > 0.0) {
+            broadcastButton(m_hotcueNames[i], QStringLiteral("on"));
+            m_beatCounter = 0;
+            return;
+        }
+    }
 }
 
 } // namespace mixxx

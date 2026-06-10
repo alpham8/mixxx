@@ -61,6 +61,7 @@ class Os2lManager : public QObject {
     std::unique_ptr<ControlProxy> m_pPlay;
     std::unique_ptr<ControlProxy> m_pCueGotoAndPlay;
     std::vector<std::unique_ptr<ControlProxy>> m_hotcueProxies;
+    std::vector<QString> m_hotcueNames;
     ControlObject* m_pOs2lEnabled;
 
     int m_beatCounter;
