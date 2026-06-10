@@ -98,6 +98,17 @@ QAbstractScrollArea::corner {
     background-color: #0a0a0a;
     border-image: url(skins:Serato/misc_res/beat_ticks.svg) 0 0 0 0 repeat repeat;
   }
+  /* Hide overview waveform from decks — in Serato style the overview
+     sits below the main waveform, not inside the deck panel.
+     This frees up significant horizontal space for the decks. */
+  #OverviewBox {
+    max-width: 0px;
+    max-height: 0px;
+  }
+  #DeckSettingsContainerCompact {
+    max-width: 0px;
+    max-height: 0px;
+  }
 
   #LibSidebarContainer {
     margin-top: 1px;
