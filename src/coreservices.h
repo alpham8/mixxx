@@ -16,6 +16,11 @@ class RecordingManager;
 #ifdef __BROADCAST__
 class BroadcastManager;
 #endif
+#ifdef __OS2L__
+namespace mixxx {
+class Os2lManager;
+}
+#endif
 class ControllerManager;
 class VinylControlManager;
 class TrackCollectionManager;
@@ -65,6 +70,12 @@ class CoreServices : public QObject {
 #ifdef __BROADCAST__
     std::shared_ptr<BroadcastManager> getBroadcastManager() const {
         return m_pBroadcastManager;
+    }
+#endif
+
+#ifdef __OS2L__
+    std::shared_ptr<mixxx::Os2lManager> getOs2lManager() const {
+        return m_pOs2lManager;
     }
 #endif
 
@@ -128,6 +139,9 @@ class CoreServices : public QObject {
     std::shared_ptr<RecordingManager> m_pRecordingManager;
 #ifdef __BROADCAST__
     std::shared_ptr<BroadcastManager> m_pBroadcastManager;
+#endif
+#ifdef __OS2L__
+    std::shared_ptr<mixxx::Os2lManager> m_pOs2lManager;
 #endif
     std::shared_ptr<ControllerManager> m_pControllerManager;
 
