@@ -136,20 +136,18 @@ QAbstractScrollArea::corner {
   #SeratoLeftControls {
     padding-right: 4px;
   }
+  #SeratoHotcueGrid {
+    padding: 3px;
+    spacing: 3px;
+  }
   #SeratoHotcueGrid WPushButton#HotcueButton {
     font-size: 11px;
     font-weight: bold;
     margin: 2px;
-    border: 1px solid #444;
-    border-image: none;
-    border-radius: 3px;
-    background-color: #252525;
-    color: #888;
+    color: #aaa;
   }
   #SeratoHotcueGrid WPushButton#HotcueButton[displayValue="1"],
   #SeratoHotcueGrid WPushButton#HotcueButton[displayValue="2"] {
-    border: 1px solid #777;
-    border-image: none;
     color: #fff;
   }
   #SeratoHotcueGrid {
