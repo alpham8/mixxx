@@ -99,50 +99,60 @@ QAbstractScrollArea::corner {
     border-image: url(skins:Serato/misc_res/beat_ticks.svg) 0 0 0 0 repeat repeat;
   }
   /* ===== Serato Deck Styles ===== */
+  #DeckSerato1, #DeckSerato2, #DeckSerato3, #DeckSerato4 {
+    background-color: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 2px;
+  }
   #SeratoTrackInfo {
     padding: 4px 6px 2px 6px;
   }
   #SeratoTitle {
     color: #ffffff;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: bold;
   }
   #SeratoArtist {
     color: #999;
-    font-size: 11px;
+    font-size: 12px;
   }
   #SeratoKey {
     color: #00ccff;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: bold;
   }
   #SeratoBpm {
     color: #ffffff;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: bold;
   }
   #SeratoPosition, #SeratoRemaining {
     color: #aaa;
-    font-size: 11px;
+    font-size: 12px;
   }
-  #SeratoHotcuePads {
+  #SeratoMainRow {
     padding: 2px 4px;
   }
+  #SeratoLeftControls {
+    padding-right: 4px;
+  }
   #SeratoHotcue {
-    font-size: 10px;
+    font-size: 11px;
+    font-weight: bold;
     margin: 1px;
   }
-  #SeratoSpinnyRow {
-    padding: 4px;
+  #SeratoSpinnyContainer {
+    padding: 2px;
   }
   #SeratoTransport {
-    padding: 2px;
+    padding: 2px 0px;
   }
   #SeratoBeatLoops {
     padding: 2px 4px 4px 4px;
   }
   #BeatLoopBtn {
-    font-size: 10px;
+    font-size: 11px;
+    font-weight: bold;
     margin: 1px;
   }
   /* Serato-style overview strip below main waveforms */

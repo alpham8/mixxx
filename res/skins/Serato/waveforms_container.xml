@@ -99,13 +99,14 @@
               <WidgetGroup>
                 <ObjectName>SeratoOverviewStrip</ObjectName>
                 <Layout>horizontal</Layout>
-                <Size>0me,28f</Size>
+                <SizePolicy>me,f</SizePolicy>
+                <Size>0me,32f</Size>
                 <Children>
                   <!-- Overview Deck 1 (left half) -->
                   <WidgetGroup>
                     <ObjectName>SeratoOverview1</ObjectName>
                     <Layout>horizontal</Layout>
-                    <Size>0me,28f</Size>
+                    <SizePolicy>me,me</SizePolicy>
                     <Children>
                       <SingletonContainer>
                         <ObjectName>DeckOverview1</ObjectName>
@@ -115,13 +116,13 @@
                   <!-- Thin separator -->
                   <WidgetGroup>
                     <ObjectName>OverviewSeparator</ObjectName>
-                    <Size>2f,28f</Size>
+                    <Size>2f,32f</Size>
                   </WidgetGroup>
                   <!-- Overview Deck 2 (right half) -->
                   <WidgetGroup>
                     <ObjectName>SeratoOverview2</ObjectName>
                     <Layout>horizontal</Layout>
-                    <Size>0me,28f</Size>
+                    <SizePolicy>me,me</SizePolicy>
                     <Children>
                       <SingletonContainer>
                         <ObjectName>DeckOverview2</ObjectName>
