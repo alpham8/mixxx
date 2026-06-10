@@ -313,11 +313,11 @@
             </Children>
           </WidgetGroup><!-- SeratoLeftControls -->
 
-          <!-- Right: Spinny (square, fills available height) -->
+          <!-- Right: Spinny (fixed square size) -->
           <WidgetGroup>
             <ObjectName>SeratoSpinnyContainer</ObjectName>
             <Layout>horizontal</Layout>
-            <SizePolicy>min,me</SizePolicy>
+            <Size>120f,120f</Size>
             <Children>
               <SingletonContainer>
                 <ObjectName>SpinnyCoverart<Variable name="ChanNum"/></ObjectName>

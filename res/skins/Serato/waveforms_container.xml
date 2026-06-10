@@ -47,38 +47,75 @@
                 </Connection>
               </WidgetGroup>
 
+              <!-- Waveform 1 + its overview below -->
               <WidgetGroup>
-                <Layout>horizontal</Layout>
+                <Layout>vertical</Layout>
                 <SizePolicy>me,me</SizePolicy>
                 <Children>
-                  <Template src="skins:LateNight/waveform.xml">
-                    <SetVariable name="ChanNum">1</SetVariable>
-                    <SetVariable name="SignalColor"><Variable name="SignalColor_12"/></SetVariable>
-                    <SetVariable name="BgColorWaveform"><Variable name="BgColorWaveform_12"/></SetVariable>
-                    <SetVariable name="Highlight">[Skin],show_4decks</SetVariable>
-                  </Template>
+                  <WidgetGroup>
+                    <Layout>horizontal</Layout>
+                    <SizePolicy>me,me</SizePolicy>
+                    <Children>
+                      <Template src="skins:LateNight/waveform.xml">
+                        <SetVariable name="ChanNum">1</SetVariable>
+                        <SetVariable name="SignalColor"><Variable name="SignalColor_12"/></SetVariable>
+                        <SetVariable name="BgColorWaveform"><Variable name="BgColorWaveform_12"/></SetVariable>
+                        <SetVariable name="Highlight">[Skin],show_4decks</SetVariable>
+                      </Template>
+                    </Children>
+                  </WidgetGroup>
+                  <WidgetGroup>
+                    <ObjectName>SeratoOverview1</ObjectName>
+                    <Layout>horizontal</Layout>
+                    <SizePolicy>me,f</SizePolicy>
+                    <Size>0me,24f</Size>
+                    <Children>
+                      <SingletonContainer>
+                        <ObjectName>DeckOverview1</ObjectName>
+                      </SingletonContainer>
+                    </Children>
+                  </WidgetGroup>
                 </Children>
               </WidgetGroup>
 
-              <!-- Serato-style beat alignment ticks between waveforms -->
+              <!-- Beat alignment ticks between deck 1 and deck 2 -->
               <WidgetGroup>
                 <ObjectName>BeatTicks</ObjectName>
                 <Size>0me,6f</Size>
               </WidgetGroup>
 
+              <!-- Waveform 2 + its overview below -->
               <WidgetGroup>
-                <Layout>horizontal</Layout>
+                <Layout>vertical</Layout>
                 <SizePolicy>me,me</SizePolicy>
                 <Children>
-                  <Template src="skins:LateNight/waveform.xml">
-                    <SetVariable name="ChanNum">2</SetVariable>
-                    <SetVariable name="SignalColor"><Variable name="SignalColor_12"/></SetVariable>
-                    <SetVariable name="BgColorWaveform"><Variable name="BgColorWaveform_12"/></SetVariable>
-                    <SetVariable name="Highlight">[Skin],show_4decks</SetVariable>
-                  </Template>
+                  <WidgetGroup>
+                    <Layout>horizontal</Layout>
+                    <SizePolicy>me,me</SizePolicy>
+                    <Children>
+                      <Template src="skins:LateNight/waveform.xml">
+                        <SetVariable name="ChanNum">2</SetVariable>
+                        <SetVariable name="SignalColor"><Variable name="SignalColor_12"/></SetVariable>
+                        <SetVariable name="BgColorWaveform"><Variable name="BgColorWaveform_12"/></SetVariable>
+                        <SetVariable name="Highlight">[Skin],show_4decks</SetVariable>
+                      </Template>
+                    </Children>
+                  </WidgetGroup>
+                  <WidgetGroup>
+                    <ObjectName>SeratoOverview2</ObjectName>
+                    <Layout>horizontal</Layout>
+                    <SizePolicy>me,f</SizePolicy>
+                    <Size>0me,24f</Size>
+                    <Children>
+                      <SingletonContainer>
+                        <ObjectName>DeckOverview2</ObjectName>
+                      </SingletonContainer>
+                    </Children>
+                  </WidgetGroup>
                 </Children>
               </WidgetGroup>
 
+              <!-- Deck 4 waveform (4-deck mode) -->
               <WidgetGroup>
                 <Layout>horizontal</Layout>
                 <SizePolicy>me,me</SizePolicy>
@@ -93,43 +130,6 @@
                   <ConfigKey persist="true">[Skin],show_4decks</ConfigKey>
                   <BindProperty>visible</BindProperty>
                 </Connection>
-              </WidgetGroup>
-
-              <!-- Serato-style: Overview waveforms below main waveforms -->
-              <WidgetGroup>
-                <ObjectName>SeratoOverviewStrip</ObjectName>
-                <Layout>horizontal</Layout>
-                <SizePolicy>me,f</SizePolicy>
-                <Size>0me,32f</Size>
-                <Children>
-                  <!-- Overview Deck 1 (left half) -->
-                  <WidgetGroup>
-                    <ObjectName>SeratoOverview1</ObjectName>
-                    <Layout>horizontal</Layout>
-                    <SizePolicy>me,me</SizePolicy>
-                    <Children>
-                      <SingletonContainer>
-                        <ObjectName>DeckOverview1</ObjectName>
-                      </SingletonContainer>
-                    </Children>
-                  </WidgetGroup>
-                  <!-- Thin separator -->
-                  <WidgetGroup>
-                    <ObjectName>OverviewSeparator</ObjectName>
-                    <Size>2f,32f</Size>
-                  </WidgetGroup>
-                  <!-- Overview Deck 2 (right half) -->
-                  <WidgetGroup>
-                    <ObjectName>SeratoOverview2</ObjectName>
-                    <Layout>horizontal</Layout>
-                    <SizePolicy>me,me</SizePolicy>
-                    <Children>
-                      <SingletonContainer>
-                        <ObjectName>DeckOverview2</ObjectName>
-                      </SingletonContainer>
-                    </Children>
-                  </WidgetGroup>
-                </Children>
               </WidgetGroup>
 
             </Children>
