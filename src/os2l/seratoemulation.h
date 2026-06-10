@@ -9,6 +9,7 @@
 
 #include "preferences/usersettings.h"
 
+class QProcess;
 class QTcpServer;
 class QTcpSocket;
 class QTimer;
@@ -73,7 +74,7 @@ class SeratoEmulation : public QObject {
     QString m_clientName;
 
     // mDNS registration
-    pid_t m_avahiPid;
+    QProcess* m_pAvahiProcess;
 
     // Deck control proxies (deferred creation)
     std::unique_ptr<ControlProxy> m_pBeatActive;

@@ -1,14 +1,13 @@
 #include "os2l/seratoemulation.h"
 
 #include <QHostInfo>
+#include <QProcess>
 #include <QRandomGenerator>
 #include <QTcpServer>
 #include <QTcpSocket>
 #include <QTimer>
 #include <QUuid>
 #include <QtEndian>
-
-#include <csignal>
 
 #include "control/controlobject.h"
 #include "control/controlproxy.h"
@@ -31,7 +30,7 @@ SeratoEmulation::SeratoEmulation(UserSettingsPointer pConfig, QObject* pParent)
           m_pClient(nullptr),
           m_pPlayheadTimer(new QTimer(this)),
           m_paired(false),
-          m_avahiPid(0) {
+          m_pAvahiProcess(nullptr) {
     connect(m_pServer, &QTcpServer::newConnection,
             this, &SeratoEmulation::slotNewConnection);
 
@@ -63,29 +62,18 @@ void SeratoEmulation::start() {
     QString hostname = QHostInfo::localHostName();
     QString serviceName = QStringLiteral("SDJ @ %1").arg(hostname.toUpper());
 
-    QStringList args;
-    args << QStringLiteral("avahi-publish-service")
-         << serviceName
-         << QString::fromLatin1(kServiceType)
-         << QString::number(port);
-
-    m_avahiPid = fork();
-    if (m_avahiPid == 0) {
-        QByteArray name = serviceName.toUtf8();
-        QByteArray type = QByteArray(kServiceType);
-        QByteArray portStr = QString::number(port).toUtf8();
-        execlp("avahi-publish-service",
-                "avahi-publish-service",
-                name.constData(),
-                type.constData(),
-                portStr.constData(),
-                nullptr);
-        _exit(1);
-    } else if (m_avahiPid > 0) {
+    m_pAvahiProcess = new QProcess(this);
+    m_pAvahiProcess->start(QStringLiteral("avahi-publish-service"),
+            {serviceName,
+                    QString::fromLatin1(kServiceType),
+                    QString::number(port)});
+    if (m_pAvahiProcess->waitForStarted(3000)) {
         qDebug() << "[SeratoEmu] mDNS service registered:"
                  << serviceName << kServiceType << port;
     } else {
-        qWarning() << "[SeratoEmu] Failed to fork avahi-publish-service";
+        qWarning() << "[SeratoEmu] Failed to start avahi-publish-service";
+        delete m_pAvahiProcess;
+        m_pAvahiProcess = nullptr;
     }
 
     QTimer::singleShot(2000, this, [this]() {
@@ -104,9 +92,11 @@ void SeratoEmulation::stop() {
     m_pServer->close();
     m_paired = false;
 
-    if (m_avahiPid > 0) {
-        kill(m_avahiPid, SIGTERM);
-        m_avahiPid = 0;
+    if (m_pAvahiProcess) {
+        m_pAvahiProcess->terminate();
+        m_pAvahiProcess->waitForFinished(2000);
+        delete m_pAvahiProcess;
+        m_pAvahiProcess = nullptr;
     }
 
     m_pBeatActive.reset();
