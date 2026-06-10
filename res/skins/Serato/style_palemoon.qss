@@ -109,26 +109,26 @@ QAbstractScrollArea::corner {
   }
   #SeratoTitle {
     color: #ffffff;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: bold;
   }
   #SeratoArtist {
-    color: #999;
-    font-size: 12px;
+    color: #bbbbbb;
+    font-size: 13px;
   }
   #SeratoKey {
     color: #00ccff;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: bold;
   }
   #SeratoBpm {
     color: #ffffff;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: bold;
   }
   #SeratoPosition, #SeratoRemaining {
-    color: #aaa;
-    font-size: 12px;
+    color: #cccccc;
+    font-size: 13px;
   }
   #SeratoMainRow {
     padding: 2px 4px;
