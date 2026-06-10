@@ -123,7 +123,7 @@
 
   <Schemes>
     <Scheme>
-      <Name>PaleMoon</Name>
+      <Name>Serato Dark</Name>
       <!-- Mix any of the existing button, knob, slider or style theme subsets.
         The button templates for example link to skins:LateNight/BtnTheme/buttons/btn_...
 
@@ -258,89 +258,7 @@
       <SetVariable name="BarMarginPitch">7,8</SetVariable>
       <SetVariable name="BarMarginPitchSampler">5,5</SetVariable>
       <SetVariable name="BarMarginCrossfader">7,7</SetVariable>
-    </Scheme><!-- PaleMoon -->
-
-    <Scheme>
-      <Name>Classic</Name>
-      <!-- Classic theme. Bulky containers, hatched backgrounds, no knob arcs -->
-      <LaunchImageStyle>
-        LaunchImage {
-          background-color: #1e1e1e;
-        }
-        QLabel {
-          image: url(skins:LateNight/classic/style/mixxx_logo.svg);
-          padding: 0;
-          margin: 0px 2px 0px 2px;
-          border: none;
-          min-width: 162px;
-          max-width: 162px;
-          min-height: 42px;
-          max-height: 42px;
-        }
-        QProgressBar {
-          background: url(skins:LateNight/classic/style/progressbar_bg.svg);
-          border: none;
-          min-width: 160px;
-          max-width: 160px;
-          min-height: 5px;
-          max-height: 5px;
-        }
-        QProgressBar::chunk {
-          background: url(skins:LateNight/classic/style/progressbar.svg);
-        }
-      </LaunchImageStyle>
-
-      <Style src="skins:LateNight/style_classic.qss"/>
-
-      <SetVariable name="BtnScheme">classic</SetVariable>
-      <SetVariable name="KnobScheme">classic</SetVariable>
-      <SetVariable name="SliderScheme">classic</SetVariable>
-      <SetVariable name="StyleScheme">classic</SetVariable>
-
-      <SetVariable name="TopRegion_BtnType">embedded</SetVariable>
-      <SetVariable name="SubRegion_BtnType">elevated</SetVariable>
-
-      <!-- Knob settings -->
-      <SetVariable name="PotiMinAngle">-135</SetVariable>
-      <SetVariable name="PotiMaxAngle">135</SetVariable>
-      <SetVariable name="KnobColorEq">red</SetVariable>
-      <SetVariable name="KnobColorQuickEffect">green</SetVariable>
-      <SetVariable name="KnobColorFx12">green</SetVariable>
-      <SetVariable name="KnobColorFx34">blue</SetVariable>
-      <SetVariable name="KnobColorFxParameter">white</SetVariable>
-      <!-- EQ kill dots conflict with arcs in Classic knob backgrounds.
-        Leaving it blank could cause users to accidentally click it
-        without having a 'kill' indicator, so we 'remove' it. -->
-      <SetVariable name="EqKillDotSize">0f,0f</SetVariable>
-
-      <!-- Waveform & Overview colors -->
-      <SetVariable name="BgColorOverview_12">rgba(15, 15, 15, 20)</SetVariable>
-      <SetVariable name="BgColorOverview_34">rgba(0, 27, 35, 120)</SetVariable>
-      <SetVariable name="BgColorOverview_SamPre">#0f0f0f</SetVariable>
-      <SetVariable name="BgColorWaveform_12">#0f0f0e</SetVariable>
-      <SetVariable name="BgColorWaveform_34">#001b23</SetVariable>
-      <SetVariable name="SignalColor_12">#e7c413</SetVariable>
-      <SetVariable name="SignalColor_34">#09b2ae</SetVariable>
-      <!-- default colors -->
-      <SetVariable name="SignalHighColor">blue</SetVariable>
-      <SetVariable name="SignalMidColor">green</SetVariable>
-      <SetVariable name="SignalLowColor">red</SetVariable>
-      <SetVariable name="AxesColor">#ffffff</SetVariable>
-      <SetVariable name="BeatColor">#ffffff</SetVariable>
-      <SetVariable name="DownbeatColor">#cc8844</SetVariable>
-      <SetVariable name="PlayPosColor">#00c8ff</SetVariable>
-      <SetVariable name="CueColor">#ff001c</SetVariable>
-      <SetVariable name="LoopColor">#00ff00</SetVariable>
-      <SetVariable name="IntroOutroColor">#0000ff</SetVariable>
-      <SetVariable name="PlayedOverlayColor">#bb000000</SetVariable>
-      <SetVariable name="EndOfTrackColor">#f856e7</SetVariable>
-      <SetVariable name="SlipBorderOutlineColor">#1af000</SetVariable>
-      <SetVariable name="PassthroughLabelColor">#d09300</SetVariable>
-      <SetVariable name="OverviewFontSizeDeck">13</SetVariable>
-      <SetVariable name="OverviewFontSizeDeckMini">11</SetVariable>
-      <SetVariable name="OverviewFontSizeSampler">10</SetVariable>
-      <SetVariable name="OverviewFontSizePreview">9</SetVariable>
-    </Scheme><!-- Classic -->
+    </Scheme><!-- Serato Dark -->
   </Schemes>
 
   <ObjectName>Mixxx</ObjectName>
