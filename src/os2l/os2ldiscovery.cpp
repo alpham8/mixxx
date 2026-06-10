@@ -72,7 +72,7 @@ void browseCallback(
                 name,
                 type,
                 domain,
-                AVAHI_PROTO_UNSPEC,
+                AVAHI_PROTO_INET,
                 static_cast<AvahiLookupFlags>(0),
                 &resolveCallback,
                 pUserdata);
@@ -169,7 +169,7 @@ void Os2lDiscovery::start() {
     m_pBrowser = avahi_service_browser_new(
             m_pClient,
             AVAHI_IF_UNSPEC,
-            AVAHI_PROTO_UNSPEC,
+            AVAHI_PROTO_INET,
             kOs2lServiceType,
             nullptr,
             static_cast<AvahiLookupFlags>(0),
