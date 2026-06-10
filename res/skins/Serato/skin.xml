@@ -377,10 +377,17 @@
                       <Layout>horizontal</Layout>
                       <SizePolicy>me,me</SizePolicy>
                       <Children>
-                        <!-- Deck 1 (left) -->
-                        <Template src="skins:LateNight/decks/decks_left.xml"/>
+                        <!-- Deck 1 (left, fixed width) -->
+                        <WidgetGroup>
+                          <SizePolicy>f,me</SizePolicy>
+                          <Size>320f,0me</Size>
+                          <Layout>vertical</Layout>
+                          <Children>
+                            <Template src="skins:LateNight/decks/decks_left.xml"/>
+                          </Children>
+                        </WidgetGroup>
 
-                        <!-- Waveforms (center) -->
+                        <!-- Waveforms (center, takes all remaining space) -->
                         <WidgetGroup>
                           <Layout>vertical</Layout>
                           <SizePolicy>me,me</SizePolicy>
@@ -393,12 +400,19 @@
                           </Connection>
                         </WidgetGroup>
 
-                        <!-- Deck 2 (right) -->
-                        <Template src="skins:LateNight/decks/decks_right.xml"/>
+                        <!-- Deck 2 (right, fixed width) -->
+                        <WidgetGroup>
+                          <SizePolicy>f,me</SizePolicy>
+                          <Size>320f,0me</Size>
+                          <Layout>vertical</Layout>
+                          <Children>
+                            <Template src="skins:LateNight/decks/decks_right.xml"/>
+                          </Children>
+                        </WidgetGroup>
                       </Children>
                     </WidgetGroup>
 
-                    <!-- Compact mixer + Library below -->
+                    <!-- Below: centered mixer + library -->
                     <WidgetGroup>
                       <ObjectName>DecksMixerContainer</ObjectName>
                       <Layout>vertical</Layout>
@@ -409,7 +423,9 @@
                           <Layout>horizontal</Layout>
                           <SizePolicy>me,max</SizePolicy>
                           <Children>
+                            <WidgetGroup><SizePolicy>me,min</SizePolicy></WidgetGroup>
                             <Template src="skins:LateNight/mixer.xml"/>
+                            <WidgetGroup><SizePolicy>me,min</SizePolicy></WidgetGroup>
                           </Children>
                           <Connection>
                             <ConfigKey persist="true">[Skin],show_mixer</ConfigKey>
