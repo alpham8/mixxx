@@ -58,15 +58,15 @@
       <!-- Deck variant that is shown as soon as the mixer is hidden.
           See deck.xml and /helpers/skin_helper_deck_size.xml for documentation.
           0=mini 1=compact(default) 2=full deck -->
-      <attribute persist="true" config_key="[LateNight],deck_size_without_mixer">1</attribute>
+      <attribute persist="true" config_key="[LateNight],deck_size_without_mixer">2</attribute>
       <!-- Full deck -->
       <attribute persist="true" config_key="[Skin],show_rate_controls">1</attribute>
       <attribute persist="true" config_key="[Skin],show_rate_control_buttons">1</attribute>
       <attribute persist="true" config_key="[Skin],show_beatgrid_controls">1</attribute>
       <!-- Compact deck -->
-      <attribute persist="true" config_key="[Skin],show_rate_controls_compact">0</attribute>
-      <attribute persist="true" config_key="[Skin],show_loop_controls_compact">0</attribute>
-      <attribute persist="true" config_key="[Skin],show_beatjump_controls_compact">0</attribute>
+      <attribute persist="true" config_key="[Skin],show_rate_controls_compact">1</attribute>
+      <attribute persist="true" config_key="[Skin],show_loop_controls_compact">1</attribute>
+      <attribute persist="true" config_key="[Skin],show_beatjump_controls_compact">1</attribute>
       <attribute persist="true" config_key="[Skin],show_sync_button_compact">1</attribute>
       <attribute persist="true" config_key="[Skin],show_key_controls">1</attribute>
       <attribute persist="true" config_key="[Skin],show_key_controls_compact">1</attribute>
@@ -377,10 +377,9 @@
                       <Layout>horizontal</Layout>
                       <SizePolicy>me,me</SizePolicy>
                       <Children>
-                        <!-- Deck 1 (left, fixed width) -->
+                        <!-- Deck 1 (left) -->
                         <WidgetGroup>
-                          <SizePolicy>f,me</SizePolicy>
-                          <Size>400f,0me</Size>
+                          <SizePolicy>max,me</SizePolicy>
                           <Layout>vertical</Layout>
                           <Children>
                             <Template src="skins:LateNight/decks/decks_left.xml"/>
@@ -400,10 +399,9 @@
                           </Connection>
                         </WidgetGroup>
 
-                        <!-- Deck 2 (right, fixed width) -->
+                        <!-- Deck 2 (right) -->
                         <WidgetGroup>
-                          <SizePolicy>f,me</SizePolicy>
-                          <Size>400f,0me</Size>
+                          <SizePolicy>max,me</SizePolicy>
                           <Layout>vertical</Layout>
                           <Children>
                             <Template src="skins:LateNight/decks/decks_right.xml"/>
