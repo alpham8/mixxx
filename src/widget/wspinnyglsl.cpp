@@ -1,10 +1,7 @@
 #include "widget/wspinnyglsl.h"
 
 #include <QOpenGLTexture>
-#include <QPainter>
-#include <QRadialGradient>
 #include <array>
-#include <cmath>
 
 #include "widget/cueglow.h"
 
@@ -169,45 +166,16 @@ void WSpinnyGLSL::paintGL() {
         if (m_cueGlowIntensity > 0.01f && !m_fgImageScaled.isNull()) {
             const float rawIntensity = m_cueGlowIntensity /
                     mixxx::cueglow::kMaxAlpha;
-
-            QImage tinted = m_fgImageScaled.copy();
-            QPainter tp(&tinted);
-            tp.setCompositionMode(QPainter::CompositionMode_SourceAtop);
-            tp.fillRect(tinted.rect(), m_cueGlowColor);
-
-            const double cx = tinted.width() / 2.0;
-            const double cy = tinted.height() / 2.0;
-            const double radius = std::sqrt(cx * cx + cy * cy);
-            QRadialGradient mask(cx, cy, radius);
-            const double outerStop = std::min(1.0, static_cast<double>(rawIntensity));
-            mask.setColorAt(0.0, Qt::white);
-            if (outerStop > 0.0) {
-                mask.setColorAt(std::max(0.0, outerStop - 0.001), Qt::white);
-            }
-            mask.setColorAt(outerStop, Qt::transparent);
-            mask.setColorAt(1.0, Qt::transparent);
-
-            tp.setCompositionMode(QPainter::CompositionMode_DestinationIn);
-            tp.fillRect(tinted.rect(), mask);
-            tp.end();
-
+            QImage tinted = mixxx::cueglow::createTintedForeground(
+                    m_fgImageScaled, m_cueGlowColor, rawIntensity);
             m_cueGlowFgTexture.setData(tinted);
             drawTexture(&m_cueGlowFgTexture);
         }
     }
 
     if (m_cueGlowIntensity > 0.01f) {
-        const int texSize = 64;
-        QImage glowImg(texSize, texSize, QImage::Format_ARGB32_Premultiplied);
-        glowImg.fill(Qt::transparent);
-        QColor glowColor = m_cueGlowColor;
-        glowColor.setAlphaF(m_cueGlowIntensity);
-        QPainter glowPainter(&glowImg);
-        glowPainter.setRenderHint(QPainter::Antialiasing);
-        glowPainter.setPen(Qt::NoPen);
-        glowPainter.setBrush(glowColor);
-        glowPainter.drawEllipse(glowImg.rect());
-        glowPainter.end();
+        QImage glowImg = mixxx::cueglow::createGlowCircle(
+                m_cueGlowColor, m_cueGlowIntensity);
         m_cueGlowTexture.setData(glowImg);
 
         QMatrix4x4 identity;
