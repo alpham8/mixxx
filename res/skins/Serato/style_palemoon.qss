@@ -137,16 +137,20 @@ QAbstractScrollArea::corner {
     padding-right: 4px;
   }
   WPushButton#HotcueButton,
-  #SeratoHotcueGrid WPushButton#HotcueButton {
+  #SeratoHotcueGrid WPushButton#HotcueButton,
+  #SeratoHotcueGrid HotcueButton {
     font-size: 11px;
     font-weight: bold;
-    margin: 2px !important;
-    border: 1px solid #555 !important;
-    border-radius: 3px !important;
+    margin: 2px;
+    border: 1px solid #555;
+    border-image: none;
+    border-radius: 3px;
+    background-color: #222;
   }
   #SeratoHotcueGrid WPushButton#HotcueButton[displayValue="1"],
   #SeratoHotcueGrid WPushButton#HotcueButton[displayValue="2"] {
-    border: 1px solid #888 !important;
+    border: 1px solid #888;
+    border-image: none;
   }
   #SeratoHotcueGrid {
     padding: 2px;
@@ -165,6 +169,10 @@ QAbstractScrollArea::corner {
     margin: 1px;
     border: 1px solid #555;
     border-radius: 2px;
+  }
+  #SeratoVuMeter {
+    background-color: #0a0a0a;
+    padding: 1px 4px;
   }
   #SeratoTransport {
     padding: 2px 0px;

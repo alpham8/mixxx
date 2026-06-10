@@ -59,7 +59,7 @@
           </TrackProperty>
           <NumberPos>
             <ObjectName>SeratoPosition</ObjectName>
-            <Size>72f,20f</Size>
+            <Size>56f,20f</Size>
             <TooltipId>track_time</TooltipId>
             <Alignment>right</Alignment>
             <Channel><Variable name="ChanNum"/></Channel>
@@ -69,7 +69,7 @@
           </NumberPos>
           <NumberPos>
             <ObjectName>SeratoRemaining</ObjectName>
-            <Size>72f,20f</Size>
+            <Size>56f,20f</Size>
             <TooltipId>track_time</TooltipId>
             <Alignment>right</Alignment>
             <Channel><Variable name="ChanNum"/></Channel>
@@ -108,7 +108,7 @@
                 <Children>
                   <HotcueButton>
                     <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>30,36</MinimumSize>
+                    <SizePolicy>me,f</SizePolicy><MinimumSize>20,36</MinimumSize>
                     <Group><Variable name="Group"/></Group><Hotcue>1</Hotcue><NumberStates>3</NumberStates>
                     <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
                     <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed></State>
@@ -117,7 +117,7 @@
                   </HotcueButton>
                   <HotcueButton>
                     <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>30,36</MinimumSize>
+                    <SizePolicy>me,f</SizePolicy><MinimumSize>20,36</MinimumSize>
                     <Group><Variable name="Group"/></Group><Hotcue>2</Hotcue><NumberStates>3</NumberStates>
                     <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
                     <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed></State>
@@ -126,7 +126,7 @@
                   </HotcueButton>
                   <HotcueButton>
                     <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>30,36</MinimumSize>
+                    <SizePolicy>me,f</SizePolicy><MinimumSize>20,36</MinimumSize>
                     <Group><Variable name="Group"/></Group><Hotcue>3</Hotcue><NumberStates>3</NumberStates>
                     <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
                     <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed></State>
@@ -135,7 +135,7 @@
                   </HotcueButton>
                   <HotcueButton>
                     <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>30,36</MinimumSize>
+                    <SizePolicy>me,f</SizePolicy><MinimumSize>20,36</MinimumSize>
                     <Group><Variable name="Group"/></Group><Hotcue>4</Hotcue><NumberStates>3</NumberStates>
                     <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
                     <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed></State>
@@ -151,7 +151,7 @@
                 <Children>
                   <HotcueButton>
                     <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>30,36</MinimumSize>
+                    <SizePolicy>me,f</SizePolicy><MinimumSize>20,36</MinimumSize>
                     <Group><Variable name="Group"/></Group><Hotcue>5</Hotcue><NumberStates>3</NumberStates>
                     <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
                     <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed></State>
@@ -160,7 +160,7 @@
                   </HotcueButton>
                   <HotcueButton>
                     <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>30,36</MinimumSize>
+                    <SizePolicy>me,f</SizePolicy><MinimumSize>20,36</MinimumSize>
                     <Group><Variable name="Group"/></Group><Hotcue>6</Hotcue><NumberStates>3</NumberStates>
                     <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
                     <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed></State>
@@ -169,7 +169,7 @@
                   </HotcueButton>
                   <HotcueButton>
                     <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>30,36</MinimumSize>
+                    <SizePolicy>me,f</SizePolicy><MinimumSize>20,36</MinimumSize>
                     <Group><Variable name="Group"/></Group><Hotcue>7</Hotcue><NumberStates>3</NumberStates>
                     <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
                     <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed></State>
@@ -178,7 +178,7 @@
                   </HotcueButton>
                   <HotcueButton>
                     <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>30,36</MinimumSize>
+                    <SizePolicy>me,f</SizePolicy><MinimumSize>20,36</MinimumSize>
                     <Group><Variable name="Group"/></Group><Hotcue>8</Hotcue><NumberStates>3</NumberStates>
                     <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
                     <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed></State>
@@ -194,7 +194,7 @@
           <WidgetGroup>
             <ObjectName>SeratoSpinnyColumn</ObjectName>
             <Layout>vertical</Layout>
-            <Size>140f,0min</Size>
+            <Size>160f,0min</Size>
             <Children>
               <!-- All transport buttons in ONE horizontal row -->
               <WidgetGroup>
@@ -296,7 +296,7 @@
         <ObjectName>SeratoVuMeter</ObjectName>
         <Layout>horizontal</Layout>
         <SizePolicy>me,f</SizePolicy>
-        <Size>0me,4f</Size>
+        <Size>0me,8f</Size>
         <Children>
           <VuMeter>
             <TooltipId>channel_VuMeter</TooltipId>
