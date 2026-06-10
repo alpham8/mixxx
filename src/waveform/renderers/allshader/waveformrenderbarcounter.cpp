@@ -81,6 +81,10 @@ bool WaveformRenderBarCounter::preprocessInner() {
         return false;
     }
 
+    if (m_beatsPerBar <= 0) {
+        return false;
+    }
+
     if (!m_color.alpha()) {
         return true;
     }
