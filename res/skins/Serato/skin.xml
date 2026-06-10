@@ -60,9 +60,9 @@
           0=mini 1=compact(default) 2=full deck -->
       <attribute persist="true" config_key="[LateNight],deck_size_without_mixer">2</attribute>
       <!-- Full deck -->
-      <attribute persist="true" config_key="[Skin],show_rate_controls">1</attribute>
-      <attribute persist="true" config_key="[Skin],show_rate_control_buttons">1</attribute>
-      <attribute persist="true" config_key="[Skin],show_beatgrid_controls">1</attribute>
+      <attribute persist="true" config_key="[Skin],show_rate_controls">0</attribute>
+      <attribute persist="true" config_key="[Skin],show_rate_control_buttons">0</attribute>
+      <attribute persist="true" config_key="[Skin],show_beatgrid_controls">0</attribute>
       <!-- Compact deck -->
       <attribute persist="true" config_key="[Skin],show_rate_controls_compact">1</attribute>
       <attribute persist="true" config_key="[Skin],show_loop_controls_compact">1</attribute>
@@ -377,9 +377,9 @@
                       <Layout>horizontal</Layout>
                       <SizePolicy>me,me</SizePolicy>
                       <Children>
-                        <!-- Deck 1 (left) -->
+                        <!-- Deck 1 (left, minimum width) -->
                         <WidgetGroup>
-                          <SizePolicy>max,me</SizePolicy>
+                          <SizePolicy>min,me</SizePolicy>
                           <Layout>vertical</Layout>
                           <Children>
                             <Template src="skins:LateNight/decks/decks_left.xml"/>
@@ -399,9 +399,9 @@
                           </Connection>
                         </WidgetGroup>
 
-                        <!-- Deck 2 (right) -->
+                        <!-- Deck 2 (right, minimum width) -->
                         <WidgetGroup>
-                          <SizePolicy>max,me</SizePolicy>
+                          <SizePolicy>min,me</SizePolicy>
                           <Layout>vertical</Layout>
                           <Children>
                             <Template src="skins:LateNight/decks/decks_right.xml"/>
