@@ -299,7 +299,7 @@
           <WidgetGroup>
             <ObjectName>SeratoSpinnyColumn</ObjectName>
             <Layout>vertical</Layout>
-            <SizePolicy>min,min</SizePolicy>
+            <Size>110f,0min</Size>
             <Children>
               <!-- Transport row above spinny -->
               <WidgetGroup>

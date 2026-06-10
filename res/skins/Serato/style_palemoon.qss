@@ -136,13 +136,17 @@ QAbstractScrollArea::corner {
   #SeratoLeftControls {
     padding-right: 4px;
   }
-  #SeratoHotcue {
+  WPushButton#HotcueButton {
     font-size: 11px;
     font-weight: bold;
-    margin: 1px;
+    margin: 2px;
+    border-radius: 3px;
+  }
+  #SeratoSpinnyColumn {
+    padding: 2px;
   }
   #SeratoSpinnyContainer {
-    padding: 2px;
+    padding: 0px;
   }
   #SeratoTransport {
     padding: 2px 0px;
