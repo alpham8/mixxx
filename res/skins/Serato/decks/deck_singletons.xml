@@ -104,7 +104,7 @@
     <SingletonDefinition>
       <ObjectName>Deck<Variable name="ChanNum"/>_Compact</ObjectName>
       <Children>
-        <Template src="skins:LateNight/decks/deck_compact.xml"/>
+        <Template src="skins:Serato/decks/deck_compact.xml"/>
       </Children>
     </SingletonDefinition>
 

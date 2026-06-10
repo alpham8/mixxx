@@ -41,7 +41,7 @@
                     <Layout>vertical</Layout>
                     <Children>
                       <Template src="skins:LateNight/decks/row_2_3_TitleArtistTime_compact.xml" />
-                      <Template src="skins:LateNight/decks/row_4_overviewSpinny_compact.xml" />
+                      <!-- Overview removed — Serato shows it below waveforms -->
                     </Children>
                   </WidgetGroup>
 

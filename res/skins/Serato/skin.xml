@@ -281,7 +281,7 @@
     <SingletonDefinition>
       <ObjectName>Deck1_Src</ObjectName>
       <Children>
-      <Template src="skins:LateNight/decks/deck.xml">
+      <Template src="skins:Serato/decks/deck.xml">
         <SetVariable name="ChanNum">1</SetVariable>
         <SetVariable name="DeckGroup">12</SetVariable>
         <SetVariable name="SignalColor"><Variable name="SignalColor_12"/></SetVariable>
@@ -293,7 +293,7 @@
     <SingletonDefinition>
       <ObjectName>Deck2_Src</ObjectName>
       <Children>
-        <Template src="skins:LateNight/decks/deck.xml">
+        <Template src="skins:Serato/decks/deck.xml">
           <SetVariable name="ChanNum">2</SetVariable>
           <SetVariable name="DeckGroup">12</SetVariable>
           <SetVariable name="SignalColor"><Variable name="SignalColor_12"/></SetVariable>
@@ -305,7 +305,7 @@
     <SingletonDefinition>
       <ObjectName>Deck3_Src</ObjectName>
       <Children>
-      <Template src="skins:LateNight/decks/deck.xml">
+      <Template src="skins:Serato/decks/deck.xml">
         <SetVariable name="ChanNum">3</SetVariable>
         <SetVariable name="DeckGroup">34</SetVariable>
         <SetVariable name="SignalColor"><Variable name="SignalColor_34"/></SetVariable>
@@ -317,7 +317,7 @@
     <SingletonDefinition>
       <ObjectName>Deck4_Src</ObjectName>
       <Children>
-      <Template src="skins:LateNight/decks/deck.xml">
+      <Template src="skins:Serato/decks/deck.xml">
         <SetVariable name="ChanNum">4</SetVariable>
         <SetVariable name="DeckGroup">34</SetVariable>
         <SetVariable name="SignalColor"><Variable name="SignalColor_34"/></SetVariable>
