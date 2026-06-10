@@ -1,8 +1,9 @@
 #pragma once
 
-#include <QHash>
+#include <QHostAddress>
 #include <QObject>
 #include <memory>
+#include <unordered_map>
 
 #include "preferences/usersettings.h"
 
@@ -49,7 +50,7 @@ class Os2lManager : public QObject {
     bool m_enabled;
 
     std::unique_ptr<Os2lDiscovery> m_pDiscovery;
-    QHash<QString, std::unique_ptr<Os2lConnection>> m_connections;
+    std::unordered_map<std::string, std::unique_ptr<Os2lConnection>> m_connections;
 
     std::unique_ptr<ControlProxy> m_pBeatActive;
     ControlObject* m_pOs2lEnabled;
