@@ -98,8 +98,53 @@ QAbstractScrollArea::corner {
     background-color: #0a0a0a;
     border-image: url(skins:Serato/misc_res/beat_ticks.svg) 0 0 0 0 repeat repeat;
   }
-  /* Overview waveform removed from deck template (Serato/decks/deck_compact.xml)
-     so no QSS hide hack needed — the space is truly freed. */
+  /* ===== Serato Deck Styles ===== */
+  #SeratoTrackInfo {
+    padding: 4px 6px 2px 6px;
+  }
+  #SeratoTitle {
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: bold;
+  }
+  #SeratoArtist {
+    color: #999;
+    font-size: 11px;
+  }
+  #SeratoKey {
+    color: #00ccff;
+    font-size: 12px;
+    font-weight: bold;
+  }
+  #SeratoBpm {
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: bold;
+  }
+  #SeratoPosition, #SeratoRemaining {
+    color: #aaa;
+    font-size: 11px;
+  }
+  #SeratoHotcuePads {
+    padding: 2px 4px;
+  }
+  #SeratoHotcue {
+    font-size: 10px;
+    margin: 1px;
+  }
+  #SeratoSpinnyRow {
+    padding: 4px;
+  }
+  #SeratoTransport {
+    padding: 2px;
+  }
+  #SeratoBeatLoops {
+    padding: 2px 4px 4px 4px;
+  }
+  #BeatLoopBtn {
+    font-size: 10px;
+    margin: 1px;
+  }
   /* Serato-style overview strip below main waveforms */
   #SeratoOverviewStrip {
     background-color: #0a0a0a;

@@ -1,0 +1,419 @@
+<Template>
+  <SetVariable name="Group">[Channel<Variable name="ChanNum"/>]</SetVariable>
+  <SetVariable name="BtnType"><Variable name="SubRegion_BtnType"/></SetVariable>
+
+  <!-- Serato DJ Pro style deck layout:
+       Row 1: Track title + Artist + Key + BPM + Time
+       Row 2: 8 Hotcue pads (2 rows x 4)
+       Row 3: Spinny + SYNC/Play/Cue buttons
+       Row 4: Beat loop buttons
+       Entire panel is a drop target for loading tracks -->
+
+  <WidgetGroup>
+    <ObjectName>DeckSerato<Variable name="ChanNum"/></ObjectName>
+    <Layout>vertical</Layout>
+    <SizePolicy>me,min</SizePolicy>
+    <Children>
+
+      <!-- ============================================ -->
+      <!-- Row 1: Track Info (Title, Artist, Key, BPM, Time) -->
+      <!-- ============================================ -->
+      <WidgetGroup>
+        <ObjectName>SeratoTrackInfo</ObjectName>
+        <Layout>vertical</Layout>
+        <SizePolicy>me,min</SizePolicy>
+        <Children>
+
+          <!-- Title + BPM + Time -->
+          <WidgetGroup>
+            <Layout>horizontal</Layout>
+            <SizePolicy>me,min</SizePolicy>
+            <Children>
+              <TrackProperty>
+                <ObjectName>SeratoTitle</ObjectName>
+                <Size>0me,22f</Size>
+                <TooltipId>track_title</TooltipId>
+                <Property>title</Property>
+                <Alignment>left</Alignment>
+                <Elide>right</Elide>
+                <Channel><Variable name="ChanNum"/></Channel>
+              </TrackProperty>
+              <WKey>
+                <ObjectName>SeratoKey</ObjectName>
+                <Size>40f,22f</Size>
+                <TooltipId>visual_key</TooltipId>
+                <Channel><Variable name="ChanNum"/></Channel>
+                <DisplayCents>false</DisplayCents>
+              </WKey>
+              <NumberBpm>
+                <ObjectName>SeratoBpm</ObjectName>
+                <Size>60f,22f</Size>
+                <TooltipId>visual_bpm</TooltipId>
+                <Alignment>right</Alignment>
+                <Channel><Variable name="ChanNum"/></Channel>
+              </NumberBpm>
+            </Children>
+          </WidgetGroup>
+
+          <!-- Track color stripe -->
+          <TrackWidgetGroup>
+            <Size>0me,2f</Size>
+            <Group><Variable name="Group"/></Group>
+            <TrackColorAlpha>255</TrackColorAlpha>
+          </TrackWidgetGroup>
+
+          <!-- Artist + Position + Duration -->
+          <WidgetGroup>
+            <Layout>horizontal</Layout>
+            <SizePolicy>me,min</SizePolicy>
+            <Children>
+              <TrackProperty>
+                <ObjectName>SeratoArtist</ObjectName>
+                <Size>0me,20f</Size>
+                <TooltipId>track_artist</TooltipId>
+                <Property>artist</Property>
+                <Alignment>left</Alignment>
+                <Elide>right</Elide>
+                <Channel><Variable name="ChanNum"/></Channel>
+              </TrackProperty>
+              <NumberPos>
+                <ObjectName>SeratoPosition</ObjectName>
+                <Size>80f,20f</Size>
+                <TooltipId>track_time</TooltipId>
+                <Alignment>right</Alignment>
+                <Channel><Variable name="ChanNum"/></Channel>
+                <Connection>
+                  <ConfigKey><Variable name="Group"/>,playposition</ConfigKey>
+                </Connection>
+              </NumberPos>
+              <NumberPos>
+                <ObjectName>SeratoRemaining</ObjectName>
+                <Size>80f,20f</Size>
+                <TooltipId>track_time</TooltipId>
+                <Alignment>right</Alignment>
+                <Channel><Variable name="ChanNum"/></Channel>
+                <DisplayMode>REMAINING</DisplayMode>
+                <Connection>
+                  <ConfigKey><Variable name="Group"/>,playposition</ConfigKey>
+                </Connection>
+              </NumberPos>
+            </Children>
+          </WidgetGroup>
+
+        </Children>
+      </WidgetGroup><!-- SeratoTrackInfo -->
+
+      <!-- ============================================ -->
+      <!-- Row 2: 8 Hotcue Pads (2 rows x 4) -->
+      <!-- ============================================ -->
+      <WidgetGroup>
+        <ObjectName>SeratoHotcuePads</ObjectName>
+        <Layout>vertical</Layout>
+        <SizePolicy>me,min</SizePolicy>
+        <Children>
+
+          <!-- Row 1: Hotcues 1-4 -->
+          <WidgetGroup>
+            <Layout>horizontal</Layout>
+            <SizePolicy>me,min</SizePolicy>
+            <Children>
+              <HotcueButton>
+                <ObjectName>SeratoHotcue</ObjectName>
+                <TooltipId>hotcue</TooltipId>
+                <Size>0me,30f</Size>
+                <Group><Variable name="Group"/></Group>
+                <Hotcue>1</Hotcue>
+                <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
+                <DndRectMargin><Variable name="DndRectMarginHotcueBtn"/></DndRectMargin>
+                <State>
+                  <Number>0</Number>
+                  <Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium.svg</Unpressed>
+                  <Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed>
+                </State>
+                <State>
+                  <Number>1</Number>
+                  <Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_set.svg</Unpressed>
+                  <Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed>
+                </State>
+              </HotcueButton>
+              <HotcueButton>
+                <ObjectName>SeratoHotcue</ObjectName>
+                <TooltipId>hotcue</TooltipId>
+                <Size>0me,30f</Size>
+                <Group><Variable name="Group"/></Group>
+                <Hotcue>2</Hotcue>
+                <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
+                <DndRectMargin><Variable name="DndRectMarginHotcueBtn"/></DndRectMargin>
+                <State>
+                  <Number>0</Number>
+                  <Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium.svg</Unpressed>
+                  <Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed>
+                </State>
+                <State>
+                  <Number>1</Number>
+                  <Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_set.svg</Unpressed>
+                  <Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed>
+                </State>
+              </HotcueButton>
+              <HotcueButton>
+                <ObjectName>SeratoHotcue</ObjectName>
+                <TooltipId>hotcue</TooltipId>
+                <Size>0me,30f</Size>
+                <Group><Variable name="Group"/></Group>
+                <Hotcue>3</Hotcue>
+                <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
+                <DndRectMargin><Variable name="DndRectMarginHotcueBtn"/></DndRectMargin>
+                <State>
+                  <Number>0</Number>
+                  <Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium.svg</Unpressed>
+                  <Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed>
+                </State>
+                <State>
+                  <Number>1</Number>
+                  <Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_set.svg</Unpressed>
+                  <Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed>
+                </State>
+              </HotcueButton>
+              <HotcueButton>
+                <ObjectName>SeratoHotcue</ObjectName>
+                <TooltipId>hotcue</TooltipId>
+                <Size>0me,30f</Size>
+                <Group><Variable name="Group"/></Group>
+                <Hotcue>4</Hotcue>
+                <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
+                <DndRectMargin><Variable name="DndRectMarginHotcueBtn"/></DndRectMargin>
+                <State>
+                  <Number>0</Number>
+                  <Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium.svg</Unpressed>
+                  <Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed>
+                </State>
+                <State>
+                  <Number>1</Number>
+                  <Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_set.svg</Unpressed>
+                  <Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed>
+                </State>
+              </HotcueButton>
+            </Children>
+          </WidgetGroup>
+
+          <!-- Row 2: Hotcues 5-8 -->
+          <WidgetGroup>
+            <Layout>horizontal</Layout>
+            <SizePolicy>me,min</SizePolicy>
+            <Children>
+              <HotcueButton>
+                <ObjectName>SeratoHotcue</ObjectName>
+                <TooltipId>hotcue</TooltipId>
+                <Size>0me,30f</Size>
+                <Group><Variable name="Group"/></Group>
+                <Hotcue>5</Hotcue>
+                <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
+                <DndRectMargin><Variable name="DndRectMarginHotcueBtn"/></DndRectMargin>
+                <State>
+                  <Number>0</Number>
+                  <Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium.svg</Unpressed>
+                  <Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed>
+                </State>
+                <State>
+                  <Number>1</Number>
+                  <Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_set.svg</Unpressed>
+                  <Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed>
+                </State>
+              </HotcueButton>
+              <HotcueButton>
+                <ObjectName>SeratoHotcue</ObjectName>
+                <TooltipId>hotcue</TooltipId>
+                <Size>0me,30f</Size>
+                <Group><Variable name="Group"/></Group>
+                <Hotcue>6</Hotcue>
+                <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
+                <DndRectMargin><Variable name="DndRectMarginHotcueBtn"/></DndRectMargin>
+                <State>
+                  <Number>0</Number>
+                  <Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium.svg</Unpressed>
+                  <Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed>
+                </State>
+                <State>
+                  <Number>1</Number>
+                  <Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_set.svg</Unpressed>
+                  <Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed>
+                </State>
+              </HotcueButton>
+              <HotcueButton>
+                <ObjectName>SeratoHotcue</ObjectName>
+                <TooltipId>hotcue</TooltipId>
+                <Size>0me,30f</Size>
+                <Group><Variable name="Group"/></Group>
+                <Hotcue>7</Hotcue>
+                <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
+                <DndRectMargin><Variable name="DndRectMarginHotcueBtn"/></DndRectMargin>
+                <State>
+                  <Number>0</Number>
+                  <Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium.svg</Unpressed>
+                  <Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed>
+                </State>
+                <State>
+                  <Number>1</Number>
+                  <Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_set.svg</Unpressed>
+                  <Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed>
+                </State>
+              </HotcueButton>
+              <HotcueButton>
+                <ObjectName>SeratoHotcue</ObjectName>
+                <TooltipId>hotcue</TooltipId>
+                <Size>0me,30f</Size>
+                <Group><Variable name="Group"/></Group>
+                <Hotcue>8</Hotcue>
+                <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
+                <DndRectMargin><Variable name="DndRectMarginHotcueBtn"/></DndRectMargin>
+                <State>
+                  <Number>0</Number>
+                  <Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium.svg</Unpressed>
+                  <Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed>
+                </State>
+                <State>
+                  <Number>1</Number>
+                  <Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_set.svg</Unpressed>
+                  <Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed>
+                </State>
+              </HotcueButton>
+            </Children>
+          </WidgetGroup>
+
+        </Children>
+        <Connection>
+          <ConfigKey persist="true">[Skin],show_hotcues</ConfigKey>
+          <BindProperty>visible</BindProperty>
+        </Connection>
+      </WidgetGroup><!-- SeratoHotcuePads -->
+
+      <!-- ============================================ -->
+      <!-- Row 3: Spinny + Transport (SYNC, Play, Cue) -->
+      <!-- ============================================ -->
+      <WidgetGroup>
+        <ObjectName>SeratoSpinnyRow</ObjectName>
+        <Layout>horizontal</Layout>
+        <SizePolicy>me,me</SizePolicy>
+        <Children>
+
+          <!-- Transport buttons (vertical: SYNC, Play, Cue) -->
+          <WidgetGroup>
+            <ObjectName>SeratoTransport</ObjectName>
+            <Layout>vertical</Layout>
+            <SizePolicy>min,me</SizePolicy>
+            <Children>
+              <Template src="skins:LateNight/controls/button_2state.xml">
+                <SetVariable name="TooltipId">sync_enabled</SetVariable>
+                <SetVariable name="ObjectName">SyncButton</SetVariable>
+                <SetVariable name="Size">50f,26f</SetVariable>
+                <SetVariable name="state_0_text">SYNC</SetVariable>
+                <SetVariable name="state_1_text">SYNC</SetVariable>
+                <SetVariable name="ConfigKey"><Variable name="Group"/>,sync_enabled</SetVariable>
+              </Template>
+              <Template src="skins:LateNight/controls/button_2state.xml">
+                <SetVariable name="TooltipId">play_cue_set</SetVariable>
+                <SetVariable name="ObjectName">PlayDeck</SetVariable>
+                <SetVariable name="Size">50f,26f</SetVariable>
+                <SetVariable name="ConfigKey"><Variable name="Group"/>,play</SetVariable>
+              </Template>
+              <Template src="skins:LateNight/controls/button_2state.xml">
+                <SetVariable name="TooltipId">cue_default_cue_gotoandstop</SetVariable>
+                <SetVariable name="ObjectName">CueDeck</SetVariable>
+                <SetVariable name="Size">50f,26f</SetVariable>
+                <SetVariable name="ConfigKey"><Variable name="Group"/>,cue_default</SetVariable>
+              </Template>
+            </Children>
+          </WidgetGroup>
+
+          <!-- Spinny (big, takes remaining space) -->
+          <WidgetGroup>
+            <Layout>horizontal</Layout>
+            <SizePolicy>me,me</SizePolicy>
+            <Children>
+              <SingletonContainer>
+                <ObjectName>SpinnyCoverart<Variable name="ChanNum"/></ObjectName>
+              </SingletonContainer>
+            </Children>
+          </WidgetGroup>
+
+        </Children>
+      </WidgetGroup><!-- SeratoSpinnyRow -->
+
+      <!-- ============================================ -->
+      <!-- Row 4: Beat Loop Buttons (1/8 .. 16) -->
+      <!-- ============================================ -->
+      <WidgetGroup>
+        <ObjectName>SeratoBeatLoops</ObjectName>
+        <Layout>horizontal</Layout>
+        <SizePolicy>me,min</SizePolicy>
+        <Children>
+          <Template src="skins:LateNight/controls/button_2state.xml">
+            <SetVariable name="TooltipId">beatloop_size</SetVariable>
+            <SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
+            <SetVariable name="Size">0me,24f</SetVariable>
+            <SetVariable name="state_0_text">1/8</SetVariable>
+            <SetVariable name="state_1_text">1/8</SetVariable>
+            <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_0.125_toggle</SetVariable>
+          </Template>
+          <Template src="skins:LateNight/controls/button_2state.xml">
+            <SetVariable name="TooltipId">beatloop_size</SetVariable>
+            <SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
+            <SetVariable name="Size">0me,24f</SetVariable>
+            <SetVariable name="state_0_text">1/4</SetVariable>
+            <SetVariable name="state_1_text">1/4</SetVariable>
+            <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_0.25_toggle</SetVariable>
+          </Template>
+          <Template src="skins:LateNight/controls/button_2state.xml">
+            <SetVariable name="TooltipId">beatloop_size</SetVariable>
+            <SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
+            <SetVariable name="Size">0me,24f</SetVariable>
+            <SetVariable name="state_0_text">1/2</SetVariable>
+            <SetVariable name="state_1_text">1/2</SetVariable>
+            <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_0.5_toggle</SetVariable>
+          </Template>
+          <Template src="skins:LateNight/controls/button_2state.xml">
+            <SetVariable name="TooltipId">beatloop_size</SetVariable>
+            <SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
+            <SetVariable name="Size">0me,24f</SetVariable>
+            <SetVariable name="state_0_text">1</SetVariable>
+            <SetVariable name="state_1_text">1</SetVariable>
+            <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_1_toggle</SetVariable>
+          </Template>
+          <Template src="skins:LateNight/controls/button_2state.xml">
+            <SetVariable name="TooltipId">beatloop_size</SetVariable>
+            <SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
+            <SetVariable name="Size">0me,24f</SetVariable>
+            <SetVariable name="state_0_text">2</SetVariable>
+            <SetVariable name="state_1_text">2</SetVariable>
+            <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_2_toggle</SetVariable>
+          </Template>
+          <Template src="skins:LateNight/controls/button_2state.xml">
+            <SetVariable name="TooltipId">beatloop_size</SetVariable>
+            <SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
+            <SetVariable name="Size">0me,24f</SetVariable>
+            <SetVariable name="state_0_text">4</SetVariable>
+            <SetVariable name="state_1_text">4</SetVariable>
+            <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_4_toggle</SetVariable>
+          </Template>
+          <Template src="skins:LateNight/controls/button_2state.xml">
+            <SetVariable name="TooltipId">beatloop_size</SetVariable>
+            <SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
+            <SetVariable name="Size">0me,24f</SetVariable>
+            <SetVariable name="state_0_text">8</SetVariable>
+            <SetVariable name="state_1_text">8</SetVariable>
+            <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_8_toggle</SetVariable>
+          </Template>
+          <Template src="skins:LateNight/controls/button_2state.xml">
+            <SetVariable name="TooltipId">beatloop_size</SetVariable>
+            <SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
+            <SetVariable name="Size">0me,24f</SetVariable>
+            <SetVariable name="state_0_text">16</SetVariable>
+            <SetVariable name="state_1_text">16</SetVariable>
+            <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_16_toggle</SetVariable>
+          </Template>
+        </Children>
+      </WidgetGroup><!-- SeratoBeatLoops -->
+
+    </Children>
+  </WidgetGroup><!-- DeckSeratoN -->
+</Template>

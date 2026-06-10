@@ -100,11 +100,11 @@
       </Children>
     </SingletonDefinition>
 
-    <!-- Compact deck. used once in deck stack -->
+    <!-- Serato-style deck -->
     <SingletonDefinition>
       <ObjectName>Deck<Variable name="ChanNum"/>_Compact</ObjectName>
       <Children>
-        <Template src="skins:Serato/decks/deck_compact.xml"/>
+        <Template src="skins:Serato/decks/deck_serato.xml"/>
       </Children>
     </SingletonDefinition>
 
