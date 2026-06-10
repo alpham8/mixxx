@@ -60,6 +60,12 @@
                 </Children>
               </WidgetGroup>
 
+              <!-- Serato-style beat alignment ticks between waveforms -->
+              <WidgetGroup>
+                <ObjectName>BeatTicks</ObjectName>
+                <Size>0me,6f</Size>
+              </WidgetGroup>
+
               <WidgetGroup>
                 <Layout>horizontal</Layout>
                 <SizePolicy>me,me</SizePolicy>
