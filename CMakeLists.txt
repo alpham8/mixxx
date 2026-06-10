@@ -5036,6 +5036,7 @@ if(UNIX AND NOT APPLE)
       src/os2l/os2lconnection.cpp
       src/os2l/os2ldiscovery.cpp
       src/os2l/os2lmanager.cpp
+      src/os2l/seratoemulation.cpp
     )
   else()
     message(STATUS "avahi-client not found, OS2L lighting support disabled")
