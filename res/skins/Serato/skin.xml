@@ -372,42 +372,39 @@
                   <Collapsible>0,0</Collapsible>
                   <Children>
 
+                    <!-- Serato layout: Deck1 | Waveforms | Deck2 in one row -->
                     <WidgetGroup>
-                      <Layout>vertical</Layout>
+                      <Layout>horizontal</Layout>
                       <SizePolicy>me,me</SizePolicy>
                       <Children>
-                        <Template src="skins:LateNight/waveforms_container.xml"/>
+                        <!-- Deck 1 (left) -->
+                        <Template src="skins:LateNight/decks/decks_left.xml"/>
+
+                        <!-- Waveforms (center) -->
+                        <WidgetGroup>
+                          <Layout>vertical</Layout>
+                          <SizePolicy>me,me</SizePolicy>
+                          <Children>
+                            <Template src="skins:Serato/waveforms_container.xml"/>
+                          </Children>
+                          <Connection>
+                            <ConfigKey persist="true">[Skin],show_waveforms</ConfigKey>
+                            <BindProperty>visible</BindProperty>
+                          </Connection>
+                        </WidgetGroup>
+
+                        <!-- Deck 2 (right) -->
+                        <Template src="skins:LateNight/decks/decks_right.xml"/>
                       </Children>
-                      <Connection>
-                        <ConfigKey persist="true">[Skin],show_waveforms</ConfigKey>
-                        <BindProperty>visible</BindProperty>
-                      </Connection>
                     </WidgetGroup>
 
+                    <!-- Mixer, Effects, Samplers, Library below -->
                     <WidgetGroup>
                       <ObjectName>DecksMixerContainer</ObjectName>
                       <Layout>vertical</Layout>
                       <SizePolicy>me,me</SizePolicy>
                       <Children>
-                        <WidgetGroup><!-- Top spacer when waveforms are hidden -->
-                          <ObjectName>ToolbarDeckSpacer</ObjectName>
-                          <Connection>
-                            <ConfigKey persist="true">[Skin],show_waveforms</ConfigKey>
-                            <Transform><Not/></Transform>
-                            <BindProperty>visible</BindProperty>
-                          </Connection>
-                        </WidgetGroup><!-- ToolbarDeckSpacer -->
-
-                        <WidgetGroup>
-                          <Layout>horizontal</Layout>
-                          <SizePolicy>me,max</SizePolicy>
-                          <Children>
-                            <Template src="skins:LateNight/decks/decks_left.xml"/>
-                            <Template src="skins:LateNight/mixer.xml"/>
-                            <Template src="skins:LateNight/decks/decks_right.xml"/>
-                          </Children>
-                        </WidgetGroup>
-
+                        <Template src="skins:LateNight/mixer.xml"/>
                         <Template src="skins:LateNight/fx_rack.xml"/>
                         <Template src="skins:LateNight/samplers_rack.xml"/>
                         <Template src="skins:LateNight/mic_aux_rack.xml"/>
