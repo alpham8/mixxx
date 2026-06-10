@@ -308,6 +308,10 @@ void WSpinnyBase::slotLoadTrack(TrackPointer pTrack) {
                 &Track::coverArtUpdated,
                 this,
                 &WSpinnyBase::slotTrackCoverArtUpdated);
+        disconnect(m_pLoadedTrack.get(),
+                &Track::cuesUpdated,
+                this,
+                &WSpinnyBase::cacheCuePoints);
     }
     m_lastRequestedCover = CoverInfo();
 
@@ -319,6 +323,10 @@ void WSpinnyBase::slotLoadTrack(TrackPointer pTrack) {
                 &Track::coverArtUpdated,
                 this,
                 &WSpinnyBase::slotTrackCoverArtUpdated);
+        connect(m_pLoadedTrack.get(),
+                &Track::cuesUpdated,
+                this,
+                &WSpinnyBase::cacheCuePoints);
     }
 
     cacheCuePoints();
@@ -332,6 +340,10 @@ void WSpinnyBase::slotLoadingTrack(TrackPointer pNewTrack, TrackPointer pOldTrac
                 &Track::coverArtUpdated,
                 this,
                 &WSpinnyBase::slotTrackCoverArtUpdated);
+        disconnect(m_pLoadedTrack.get(),
+                &Track::cuesUpdated,
+                this,
+                &WSpinnyBase::cacheCuePoints);
     }
     m_pLoadedTrack.reset();
     m_lastRequestedCover = CoverInfo();
