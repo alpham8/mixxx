@@ -115,7 +115,8 @@ void Os2lManager::disconnectAll() {
 void Os2lManager::slotServiceFound(const QString& name,
         const QHostAddress& host,
         quint16 port) {
-    if (m_connections.contains(name)) {
+    std::string key = name.toStdString();
+    if (m_connections.count(key) > 0) {
         return;
     }
     qDebug() << "[OS2L] Service found:" << name
@@ -131,12 +132,12 @@ void Os2lManager::slotServiceFound(const QString& name,
                 emit connectionStatusChanged(isConnected());
             });
     pConnection->connectToHost();
-    m_connections.insert(name, std::move(pConnection));
+    m_connections.emplace(std::move(key), std::move(pConnection));
 }
 
 void Os2lManager::slotServiceLost(const QString& name) {
     qDebug() << "[OS2L] Service lost:" << name;
-    m_connections.remove(name);
+    m_connections.erase(name.toStdString());
     emit connectionStatusChanged(isConnected());
 }
 

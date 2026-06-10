@@ -5018,6 +5018,22 @@ if(BROADCAST)
   endif()
 endif()
 
+# OS2L lighting support
+if(UNIX AND NOT APPLE)
+  pkg_check_modules(Avahi IMPORTED_TARGET avahi-client)
+  if(Avahi_FOUND)
+    target_compile_definitions(mixxx-lib PUBLIC __OS2L__)
+    target_link_libraries(mixxx-lib PUBLIC PkgConfig::Avahi)
+    target_sources(mixxx-lib PRIVATE
+      src/os2l/os2lconnection.cpp
+      src/os2l/os2ldiscovery.cpp
+      src/os2l/os2lmanager.cpp
+    )
+  else()
+    message(STATUS "avahi-client not found, OS2L lighting support disabled")
+  endif()
+endif()
+
 # Opus (RFC 6716)
 find_package(OpusFile)
 find_package(Opus)
