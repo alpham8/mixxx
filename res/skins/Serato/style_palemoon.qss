@@ -109,6 +109,17 @@ QAbstractScrollArea::corner {
     max-width: 0px;
     max-height: 0px;
   }
+  /* Serato-style overview strip below main waveforms */
+  #SeratoOverviewStrip {
+    background-color: #0a0a0a;
+    border-top: 1px solid #222;
+  }
+  #SeratoOverview1, #SeratoOverview2 {
+    background-color: #0a0a0a;
+  }
+  #OverviewSeparator {
+    background-color: #333;
+  }
 
   #LibSidebarContainer {
     margin-top: 1px;
