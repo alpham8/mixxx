@@ -194,37 +194,38 @@
           <WidgetGroup>
             <ObjectName>SeratoSpinnyColumn</ObjectName>
             <Layout>vertical</Layout>
-            <Size>130f,0min</Size>
+            <Size>140f,0min</Size>
             <Children>
-              <!-- SYNC button -->
-              <Template src="skins:LateNight/controls/button_2state.xml">
-                <SetVariable name="TooltipId">sync_enabled</SetVariable>
-                <SetVariable name="ObjectName">SyncButton</SetVariable>
-                <SetVariable name="Size">0me,28f</SetVariable>
-                <SetVariable name="state_0_text">SYNC</SetVariable>
-                <SetVariable name="state_1_text">SYNC</SetVariable>
-                <SetVariable name="ConfigKey"><Variable name="Group"/>,sync_enabled</SetVariable>
-              </Template>
-              <!-- Play + Cue side by side -->
+              <!-- All transport buttons in ONE horizontal row -->
               <WidgetGroup>
+                <ObjectName>SeratoTransportRow</ObjectName>
                 <Layout>horizontal</Layout>
-                <SizePolicy>me,min</SizePolicy>
+                <SizePolicy>me,f</SizePolicy>
+                <Size>0me,30f</Size>
                 <Children>
+                  <Template src="skins:LateNight/controls/button_2state.xml">
+                    <SetVariable name="TooltipId">sync_enabled</SetVariable>
+                    <SetVariable name="ObjectName">SyncButton</SetVariable>
+                    <SetVariable name="Size">0me,30f</SetVariable>
+                    <SetVariable name="state_0_text">SYNC</SetVariable>
+                    <SetVariable name="state_1_text">SYNC</SetVariable>
+                    <SetVariable name="ConfigKey"><Variable name="Group"/>,sync_enabled</SetVariable>
+                  </Template>
                   <Template src="skins:LateNight/controls/button_2state.xml">
                     <SetVariable name="TooltipId">play_cue_set</SetVariable>
                     <SetVariable name="ObjectName">PlayDeck</SetVariable>
-                    <SetVariable name="Size">0me,28f</SetVariable>
+                    <SetVariable name="Size">0me,30f</SetVariable>
                     <SetVariable name="ConfigKey"><Variable name="Group"/>,play</SetVariable>
                   </Template>
                   <Template src="skins:LateNight/controls/button_2state.xml">
                     <SetVariable name="TooltipId">cue_default_cue_gotoandstop</SetVariable>
                     <SetVariable name="ObjectName">CueDeck</SetVariable>
-                    <SetVariable name="Size">0me,28f</SetVariable>
+                    <SetVariable name="Size">0me,30f</SetVariable>
                     <SetVariable name="ConfigKey"><Variable name="Group"/>,cue_default</SetVariable>
                   </Template>
                 </Children>
               </WidgetGroup>
-              <!-- Spinny -->
+              <!-- Spinny fills remaining height -->
               <WidgetGroup>
                 <ObjectName>SeratoSpinnyContainer</ObjectName>
                 <Layout>horizontal</Layout>

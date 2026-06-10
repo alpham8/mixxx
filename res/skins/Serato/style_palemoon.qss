@@ -136,12 +136,17 @@ QAbstractScrollArea::corner {
   #SeratoLeftControls {
     padding-right: 4px;
   }
-  WPushButton#HotcueButton {
+  WPushButton#HotcueButton,
+  #SeratoHotcueGrid WPushButton#HotcueButton {
     font-size: 11px;
     font-weight: bold;
-    margin: 2px;
-    border: 1px solid #444;
-    border-radius: 3px;
+    margin: 2px !important;
+    border: 1px solid #555 !important;
+    border-radius: 3px !important;
+  }
+  #SeratoHotcueGrid WPushButton#HotcueButton[displayValue="1"],
+  #SeratoHotcueGrid WPushButton#HotcueButton[displayValue="2"] {
+    border: 1px solid #888 !important;
   }
   #SeratoHotcueGrid {
     padding: 2px;
@@ -153,10 +158,13 @@ QAbstractScrollArea::corner {
   #SeratoSpinnyContainer {
     padding: 2px;
   }
+  #SeratoTransportRow WPushButton,
   #SyncButton, #PlayDeck, #CueDeck {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: bold;
     margin: 1px;
+    border: 1px solid #555;
+    border-radius: 2px;
   }
   #SeratoTransport {
     padding: 2px 0px;
