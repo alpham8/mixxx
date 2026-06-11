@@ -8,6 +8,7 @@
 #include <QDropEvent>
 #include <QMimeData>
 #include <QMouseEvent>
+#include <QPainter>
 
 #include "engine/controls/cuecontrol.h"
 #include "mixer/playerinfo.h"
@@ -164,6 +165,29 @@ void WHotcueButton::setup(const QDomNode& node, const SkinContext& context) {
     shortcutKeys.emplace_back(
             createConfigKey(QStringLiteral("activate_preview")), tr("activate preview"));
     setShortcutControlsAndCommands(shortcutKeys);
+}
+
+void WHotcueButton::paintEvent(QPaintEvent* pEvent) {
+    WPushButton::paintEvent(pEvent);
+
+    if (readDisplayValue() > 0) {
+        QPainter p(this);
+        p.setRenderHint(QPainter::Antialiasing);
+
+        const int h = height();
+        const int triSize = qMin(h / 3, 8);
+        const int x = 4;
+        const int y = (h - triSize) / 2;
+
+        QPolygon triangle;
+        triangle << QPoint(x, y)
+                 << QPoint(x + triSize, y + triSize / 2)
+                 << QPoint(x, y + triSize);
+
+        p.setPen(Qt::NoPen);
+        p.setBrush(m_bCueColorDimmed ? QColor(0, 0, 0, 180) : QColor(255, 255, 255, 200));
+        p.drawPolygon(triangle);
+    }
 }
 
 bool WHotcueButton::isActive() const {

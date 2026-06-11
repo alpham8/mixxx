@@ -33,6 +33,7 @@ class WHotcueButton : public WPushButton {
     bool isActive() const;
 
   protected:
+    void paintEvent(QPaintEvent* pEvent) override;
     void mousePressEvent(QMouseEvent* pEvent) override;
     void mouseReleaseEvent(QMouseEvent* pEvent) override;
     void mouseMoveEvent(QMouseEvent* pEvent) override;
