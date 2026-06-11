@@ -164,7 +164,7 @@
         }
       </LaunchImageStyle>
 
-      <Style src="skins:LateNight/style_palemoon.qss"/>
+      <Style src="skins:Serato/style_palemoon.qss"/>
 
       <SetVariable name="BtnScheme">palemoon</SetVariable>
       <SetVariable name="KnobScheme">palemoon</SetVariable>
