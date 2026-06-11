@@ -337,7 +337,7 @@
               </Template>
             </Children>
           </WidgetGroup>
-          <!-- Row 2: 2, 4, 8, 16, 32, 64 -->
+          <!-- Row 2: 2, 4, 8, 16, 32 -->
           <WidgetGroup>
             <Layout>horizontal</Layout>
             <SizePolicy>me,min</SizePolicy>
@@ -366,11 +366,6 @@
                 <SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
                 <SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">32</SetVariable><SetVariable name="state_1_text">32</SetVariable>
                 <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_32_toggle</SetVariable>
-              </Template>
-              <Template src="skins:LateNight/controls/button_2state.xml">
-                <SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
-                <SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">64</SetVariable><SetVariable name="state_1_text">64</SetVariable>
-                <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_64_toggle</SetVariable>
               </Template>
             </Children>
           </WidgetGroup>
