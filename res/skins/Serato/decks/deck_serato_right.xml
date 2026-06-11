@@ -157,7 +157,7 @@
               <WidgetGroup>
                 <ObjectName>SeratoSpinnyContainer</ObjectName>
                 <Layout>horizontal</Layout>
-                <SizePolicy>me,me</SizePolicy>
+                <Size>150f,150f</Size>
                 <Children>
                   <SingletonContainer>
                     <ObjectName>SpinnyCoverart<Variable name="ChanNum"/></ObjectName>

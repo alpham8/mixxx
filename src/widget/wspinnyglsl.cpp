@@ -1,6 +1,7 @@
 #include "widget/wspinnyglsl.h"
 
 #include <QOpenGLTexture>
+#include <QPainter>
 #include <array>
 
 #include "widget/cueglow.h"
@@ -193,6 +194,55 @@ void WSpinnyGLSL::paintGL() {
     }
 
     m_textureShader.release();
+
+    // Serato-style BPM/Time overlay using QPainter on GL surface
+    const double bpm = m_pBpm.get();
+    if (bpm > 0.0 && width() >= 80) {
+        QPainter p(paintDevice());
+        p.setRenderHint(QPainter::Antialiasing);
+
+        const int cx = width() / 2;
+        const int cy = height() / 2;
+        const int overlayRadius = qMin(width(), height()) / 4;
+
+        p.setBrush(QColor(0, 0, 0, 180));
+        p.setPen(Qt::NoPen);
+        p.drawEllipse(QPoint(cx, cy), overlayRadius, overlayRadius);
+
+        QFont bpmFont;
+        bpmFont.setPixelSize(overlayRadius * 2 / 3);
+        bpmFont.setBold(true);
+        p.setFont(bpmFont);
+        p.setPen(QColor(255, 255, 255));
+        QString bpmText = QString::number(bpm, 'f', 1);
+        QRect bpmRect(cx - overlayRadius, cy - overlayRadius,
+                overlayRadius * 2, overlayRadius);
+        p.drawText(bpmRect, Qt::AlignCenter, bpmText);
+
+        const double trackSamples = m_pTrackSamples.get();
+        const double sampleRate = m_pTrackSampleRate.get();
+        const double playPos = m_pPlayPos.get();
+        if (trackSamples > 0.0 && sampleRate > 0.0) {
+            const double totalSeconds = trackSamples / sampleRate / 2.0;
+            const double elapsedSeconds = playPos * totalSeconds;
+            const int mins = static_cast<int>(elapsedSeconds) / 60;
+            const int secs = static_cast<int>(elapsedSeconds) % 60;
+            const int tenths = static_cast<int>(elapsedSeconds * 10) % 10;
+
+            QFont timeFont;
+            timeFont.setPixelSize(overlayRadius / 3);
+            p.setFont(timeFont);
+            p.setPen(QColor(200, 200, 200));
+            QString timeText = QStringLiteral("%1:%2.%3")
+                    .arg(mins, 2, 10, QChar('0'))
+                    .arg(secs, 2, 10, QChar('0'))
+                    .arg(tenths);
+            QRect timeRect(cx - overlayRadius, cy,
+                    overlayRadius * 2, overlayRadius);
+            p.drawText(timeRect, Qt::AlignCenter, timeText);
+        }
+        p.end();
+    }
 }
 
 void WSpinnyGLSL::initializeGL() {
