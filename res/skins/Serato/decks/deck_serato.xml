@@ -9,7 +9,7 @@
     <Group><Variable name="Group"/></Group>
     <Children>
 
-      <!-- Row 1: Track title + Key + BPM -->
+      <!-- Row 1: Track title (full width) + BPM right-aligned -->
       <WidgetGroup>
         <ObjectName>SeratoTrackInfo</ObjectName>
         <Layout>horizontal</Layout>
@@ -17,25 +17,23 @@
         <Children>
           <TrackProperty>
             <ObjectName>SeratoTitle</ObjectName>
-            <Size>0me,26f</Size>
+            <Size>0me,24f</Size>
             <TooltipId>track_title</TooltipId>
             <Property>title</Property>
             <Alignment>left</Alignment>
             <Elide>right</Elide>
             <Channel><Variable name="ChanNum"/></Channel>
           </TrackProperty>
-          <WidgetGroup><Size>3f,0f</Size></WidgetGroup>
           <WKey>
             <ObjectName>SeratoKey</ObjectName>
-            <Size>36f,26f</Size>
+            <Size>36f,24f</Size>
             <TooltipId>visual_key</TooltipId>
             <Channel><Variable name="ChanNum"/></Channel>
             <DisplayCents>false</DisplayCents>
           </WKey>
-          <WidgetGroup><Size>3f,0f</Size></WidgetGroup>
           <NumberBpm>
             <ObjectName>SeratoBpm</ObjectName>
-            <Size>48f,26f</Size>
+            <Size>42f,24f</Size>
             <TooltipId>visual_bpm</TooltipId>
             <Alignment>right</Alignment>
             <Channel><Variable name="ChanNum"/></Channel>
@@ -50,7 +48,7 @@
         <Children>
           <TrackProperty>
             <ObjectName>SeratoArtist</ObjectName>
-            <Size>0me,20f</Size>
+            <Size>0me,18f</Size>
             <TooltipId>track_artist</TooltipId>
             <Property>artist</Property>
             <Alignment>left</Alignment>
@@ -59,7 +57,7 @@
           </TrackProperty>
           <NumberPos>
             <ObjectName>SeratoPosition</ObjectName>
-            <Size>50f,20f</Size>
+            <Size>58f,18f</Size>
             <TooltipId>track_time</TooltipId>
             <Alignment>right</Alignment>
             <Channel><Variable name="ChanNum"/></Channel>
@@ -69,7 +67,7 @@
           </NumberPos>
           <NumberPos>
             <ObjectName>SeratoRemaining</ObjectName>
-            <Size>50f,20f</Size>
+            <Size>58f,18f</Size>
             <TooltipId>track_time</TooltipId>
             <Alignment>right</Alignment>
             <Channel><Variable name="ChanNum"/></Channel>
@@ -300,8 +298,8 @@
         <Children>
           <VuMeter>
             <TooltipId>channel_VuMeter</TooltipId>
-            <PathBack>skins:LateNight/<Variable name="StyleScheme"/>/style/vu_big_level_bg_deck12.png</PathBack>
-            <PathVu>skins:LateNight/<Variable name="StyleScheme"/>/style/vu_big_level_active.png</PathVu>
+            <PathBack>skins:LateNight/<Variable name="StyleScheme"/>/style/vu_deck_level_bg_dark.png</PathBack>
+            <PathVu>skins:LateNight/<Variable name="StyleScheme"/>/style/vu_deck_level_active.png</PathVu>
             <Horizontal>true</Horizontal>
             <PeakHoldSize>3</PeakHoldSize>
             <PeakHoldTime>500</PeakHoldTime>
