@@ -380,7 +380,7 @@
                         <!-- Deck 1 (left, max 350px) -->
                         <WidgetGroup>
                           <SizePolicy>min,me</SizePolicy>
-                          <MaximumSize>360,</MaximumSize>
+                          <MaximumSize>420,</MaximumSize>
                           <Layout>vertical</Layout>
                           <Children>
                             <Template src="skins:LateNight/decks/decks_left.xml"/>
@@ -403,7 +403,7 @@
                         <!-- Deck 2 (right, max 350px) -->
                         <WidgetGroup>
                           <SizePolicy>min,me</SizePolicy>
-                          <MaximumSize>360,</MaximumSize>
+                          <MaximumSize>420,</MaximumSize>
                           <Layout>vertical</Layout>
                           <Children>
                             <Template src="skins:LateNight/decks/decks_right.xml"/>
