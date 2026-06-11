@@ -57,27 +57,6 @@
             <Elide>right</Elide>
             <Channel><Variable name="ChanNum"/></Channel>
           </TrackProperty>
-          <NumberPos>
-            <ObjectName>SeratoPosition</ObjectName>
-            <Size>62f,22f</Size>
-            <TooltipId>track_time</TooltipId>
-            <Alignment>right</Alignment>
-            <Channel><Variable name="ChanNum"/></Channel>
-            <Connection>
-              <ConfigKey><Variable name="Group"/>,playposition</ConfigKey>
-            </Connection>
-          </NumberPos>
-          <NumberPos>
-            <ObjectName>SeratoRemaining</ObjectName>
-            <Size>62f,22f</Size>
-            <TooltipId>track_time</TooltipId>
-            <Alignment>right</Alignment>
-            <Channel><Variable name="ChanNum"/></Channel>
-            <DisplayMode>REMAINING</DisplayMode>
-            <Connection>
-              <ConfigKey><Variable name="Group"/>,playposition</ConfigKey>
-            </Connection>
-          </NumberPos>
         </Children>
       </WidgetGroup>
 

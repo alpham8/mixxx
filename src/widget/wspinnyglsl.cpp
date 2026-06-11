@@ -210,7 +210,7 @@ void WSpinnyGLSL::paintGL() {
         bpmFont.setBold(true);
         bpmFont.setWeight(QFont::Black);
         p.setFont(bpmFont);
-        p.setPen(QColor(40, 40, 40));
+        p.setPen(QColor(0, 0, 0));
         QString bpmText = QString::number(bpm, 'f', 1);
         QRect bpmRect(cx - overlayRadius, cy - overlayRadius * 3 / 4,
                 overlayRadius * 2, overlayRadius / 2);
@@ -221,7 +221,7 @@ void WSpinnyGLSL::paintGL() {
         QFont pitchFont;
         pitchFont.setPixelSize(overlayRadius / 5);
         p.setFont(pitchFont);
-        p.setPen(QColor(80, 80, 80));
+        p.setPen(QColor(0, 0, 0));
         QString pitchText = QStringLiteral("%1%2%")
                 .arg(pitchPct >= 0 ? "+" : "")
                 .arg(pitchPct, 0, 'f', 1);
@@ -242,7 +242,7 @@ void WSpinnyGLSL::paintGL() {
             QFont timeFont;
             timeFont.setPixelSize(overlayRadius / 3);
             p.setFont(timeFont);
-            p.setPen(QColor(60, 60, 60));
+            p.setPen(QColor(0, 0, 0));
             QString timeText = QStringLiteral("%1:%2.%3")
                     .arg(mins, 2, 10, QChar('0'))
                     .arg(secs, 2, 10, QChar('0'))
@@ -258,7 +258,7 @@ void WSpinnyGLSL::paintGL() {
                     .arg(durSecs, 2, 10, QChar('0'));
             QRect durRect(cx - overlayRadius, cy + overlayRadius / 4,
                     overlayRadius * 2, overlayRadius / 2);
-            p.setPen(QColor(100, 100, 100));
+            p.setPen(QColor(50, 50, 50));
             p.drawText(durRect, Qt::AlignCenter, durText);
         }
         p.end();
