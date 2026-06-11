@@ -294,17 +294,27 @@
         </Children>
       </WidgetGroup>
 
-      <!-- Row 4: Beat Loop Buttons (2 rows like Serato) -->
+      <!-- Row 4: Beat Loop Buttons (2 rows, Serato-style with 1/32..32) -->
       <WidgetGroup>
         <ObjectName>SeratoBeatLoops</ObjectName>
         <Layout>vertical</Layout>
         <SizePolicy>me,min</SizePolicy>
         <Children>
-          <!-- Row 1: 1/8, 1/4, 1/2, 1 -->
+          <!-- Row 1: 1/32, 1/16, 1/8, 1/4, 1/2, 1 -->
           <WidgetGroup>
             <Layout>horizontal</Layout>
             <SizePolicy>me,min</SizePolicy>
             <Children>
+              <Template src="skins:LateNight/controls/button_2state.xml">
+                <SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
+                <SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">1/32</SetVariable><SetVariable name="state_1_text">1/32</SetVariable>
+                <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_0.03125_toggle</SetVariable>
+              </Template>
+              <Template src="skins:LateNight/controls/button_2state.xml">
+                <SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
+                <SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">1/16</SetVariable><SetVariable name="state_1_text">1/16</SetVariable>
+                <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_0.0625_toggle</SetVariable>
+              </Template>
               <Template src="skins:LateNight/controls/button_2state.xml">
                 <SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
                 <SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">1/8</SetVariable><SetVariable name="state_1_text">1/8</SetVariable>
@@ -327,7 +337,7 @@
               </Template>
             </Children>
           </WidgetGroup>
-          <!-- Row 2: 2, 4, 8, 16 -->
+          <!-- Row 2: 2, 4, 8, 16, 32, 64 -->
           <WidgetGroup>
             <Layout>horizontal</Layout>
             <SizePolicy>me,min</SizePolicy>
@@ -351,6 +361,16 @@
                 <SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
                 <SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">16</SetVariable><SetVariable name="state_1_text">16</SetVariable>
                 <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_16_toggle</SetVariable>
+              </Template>
+              <Template src="skins:LateNight/controls/button_2state.xml">
+                <SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
+                <SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">32</SetVariable><SetVariable name="state_1_text">32</SetVariable>
+                <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_32_toggle</SetVariable>
+              </Template>
+              <Template src="skins:LateNight/controls/button_2state.xml">
+                <SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
+                <SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">64</SetVariable><SetVariable name="state_1_text">64</SetVariable>
+                <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_64_toggle</SetVariable>
               </Template>
             </Children>
           </WidgetGroup>

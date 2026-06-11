@@ -193,7 +193,7 @@
         </Children>
       </WidgetGroup>
 
-      <!-- Row 4: Beat Loop Buttons (2 rows like Serato) -->
+      <!-- Row 4: Beat Loop Buttons (2 rows, 1/32..64) -->
       <WidgetGroup>
         <ObjectName>SeratoBeatLoops</ObjectName>
         <Layout>vertical</Layout>
@@ -202,6 +202,8 @@
           <WidgetGroup>
             <Layout>horizontal</Layout><SizePolicy>me,min</SizePolicy>
             <Children>
+              <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">1/32</SetVariable><SetVariable name="state_1_text">1/32</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_0.03125_toggle</SetVariable></Template>
+              <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">1/16</SetVariable><SetVariable name="state_1_text">1/16</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_0.0625_toggle</SetVariable></Template>
               <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">1/8</SetVariable><SetVariable name="state_1_text">1/8</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_0.125_toggle</SetVariable></Template>
               <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">1/4</SetVariable><SetVariable name="state_1_text">1/4</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_0.25_toggle</SetVariable></Template>
               <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">1/2</SetVariable><SetVariable name="state_1_text">1/2</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_0.5_toggle</SetVariable></Template>
@@ -215,6 +217,8 @@
               <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">4</SetVariable><SetVariable name="state_1_text">4</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_4_toggle</SetVariable></Template>
               <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">8</SetVariable><SetVariable name="state_1_text">8</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_8_toggle</SetVariable></Template>
               <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">16</SetVariable><SetVariable name="state_1_text">16</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_16_toggle</SetVariable></Template>
+              <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">32</SetVariable><SetVariable name="state_1_text">32</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_32_toggle</SetVariable></Template>
+              <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">64</SetVariable><SetVariable name="state_1_text">64</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_64_toggle</SetVariable></Template>
             </Children>
           </WidgetGroup>
         </Children>
