@@ -178,10 +178,15 @@ QAbstractScrollArea::corner {
   #SeratoBeatLoops {
     padding: 2px 4px 4px 4px;
   }
-  #BeatLoopBtn {
-    font-size: 11px;
+  WPushButton#BeatLoopBtn {
+    font-size: 12px;
     font-weight: bold;
     margin: 1px;
+    color: #ccc;
+  }
+  WPushButton#BeatLoopBtn[displayValue="1"] {
+    color: #fff;
+    background-color: #0066cc;
   }
   /* Serato-style overview strip below main waveforms */
   #SeratoOverviewStrip {

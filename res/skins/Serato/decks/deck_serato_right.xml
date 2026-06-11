@@ -1,0 +1,243 @@
+<Template>
+  <SetVariable name="Group">[Channel<Variable name="ChanNum"/>]</SetVariable>
+  <SetVariable name="BtnType"><Variable name="SubRegion_BtnType"/></SetVariable>
+
+  <!-- Serato DJ Pro deck layout — RIGHT DECK (mirrored: Spinny LEFT, Hotcues RIGHT) -->
+
+  <TrackWidgetGroup>
+    <ObjectName>DeckSerato<Variable name="ChanNum"/></ObjectName>
+    <Layout>vertical</Layout>
+    <SizePolicy>me,min</SizePolicy>
+    <Group><Variable name="Group"/></Group>
+    <Children>
+
+      <!-- Row 1: BPM + Key + Title (mirrored) -->
+      <WidgetGroup>
+        <ObjectName>SeratoTrackInfo</ObjectName>
+        <Layout>horizontal</Layout>
+        <SizePolicy>me,min</SizePolicy>
+        <Children>
+          <NumberBpm>
+            <ObjectName>SeratoBpm</ObjectName>
+            <Size>50f,28f</Size>
+            <TooltipId>visual_bpm</TooltipId>
+            <Alignment>left</Alignment>
+            <Channel><Variable name="ChanNum"/></Channel>
+          </NumberBpm>
+          <WKey>
+            <ObjectName>SeratoKey</ObjectName>
+            <Size>42f,28f</Size>
+            <TooltipId>visual_key</TooltipId>
+            <Channel><Variable name="ChanNum"/></Channel>
+            <DisplayCents>false</DisplayCents>
+          </WKey>
+          <TrackProperty>
+            <ObjectName>SeratoTitle</ObjectName>
+            <Size>0me,28f</Size>
+            <TooltipId>track_title</TooltipId>
+            <Property>title</Property>
+            <Alignment>right</Alignment>
+            <Elide>right</Elide>
+            <Channel><Variable name="ChanNum"/></Channel>
+          </TrackProperty>
+        </Children>
+      </WidgetGroup>
+
+      <!-- Row 2: Position + Remaining + Artist (mirrored) -->
+      <WidgetGroup>
+        <Layout>horizontal</Layout>
+        <SizePolicy>me,min</SizePolicy>
+        <Children>
+          <NumberPos>
+            <ObjectName>SeratoPosition</ObjectName>
+            <Size>62f,22f</Size>
+            <TooltipId>track_time</TooltipId>
+            <Alignment>left</Alignment>
+            <Channel><Variable name="ChanNum"/></Channel>
+            <Connection>
+              <ConfigKey><Variable name="Group"/>,playposition</ConfigKey>
+            </Connection>
+          </NumberPos>
+          <NumberPos>
+            <ObjectName>SeratoRemaining</ObjectName>
+            <Size>62f,22f</Size>
+            <TooltipId>track_time</TooltipId>
+            <Alignment>left</Alignment>
+            <Channel><Variable name="ChanNum"/></Channel>
+            <DisplayMode>REMAINING</DisplayMode>
+            <Connection>
+              <ConfigKey><Variable name="Group"/>,playposition</ConfigKey>
+            </Connection>
+          </NumberPos>
+          <TrackProperty>
+            <ObjectName>SeratoArtist</ObjectName>
+            <Size>0me,22f</Size>
+            <TooltipId>track_artist</TooltipId>
+            <Property>artist</Property>
+            <Alignment>right</Alignment>
+            <Elide>right</Elide>
+            <Channel><Variable name="ChanNum"/></Channel>
+          </TrackProperty>
+        </Children>
+      </WidgetGroup>
+
+      <!-- Track color stripe -->
+      <TrackWidgetGroup>
+        <Size>0me,2f</Size>
+        <Group><Variable name="Group"/></Group>
+        <TrackColorAlpha>255</TrackColorAlpha>
+      </TrackWidgetGroup>
+
+      <!-- Row 3: [Transport+Spinny | Hotcues 2x4] MIRRORED -->
+      <WidgetGroup>
+        <ObjectName>SeratoMainRow</ObjectName>
+        <Layout>horizontal</Layout>
+        <SizePolicy>me,me</SizePolicy>
+        <Children>
+
+          <!-- LEFT on right deck: Transport + Spinny column -->
+          <WidgetGroup>
+            <ObjectName>SeratoSpinnyColumn</ObjectName>
+            <Layout>vertical</Layout>
+            <Size>180f,0min</Size>
+            <Children>
+              <WidgetGroup>
+                <ObjectName>SeratoTransportRow</ObjectName>
+                <Layout>horizontal</Layout>
+                <SizePolicy>me,f</SizePolicy>
+                <Size>0me,32f</Size>
+                <Children>
+                  <PushButton>
+                    <TooltipId>sync_enabled</TooltipId>
+                    <ObjectName>SyncButton</ObjectName>
+                    <Size>0me,32f</Size>
+                    <NumberStates>2</NumberStates>
+                    <State><Number>0</Number><Text>SYNC</Text>
+                      <Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__sync_deck.svg</Unpressed>
+                      <Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__sync_deck_active.svg</Pressed>
+                    </State>
+                    <State><Number>1</Number><Text>SYNC</Text>
+                      <Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__sync_deck_active.svg</Unpressed>
+                      <Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__sync_deck_active.svg</Pressed>
+                    </State>
+                    <Connection><ConfigKey><Variable name="Group"/>,sync_enabled</ConfigKey><ButtonState>LeftButton</ButtonState></Connection>
+                  </PushButton>
+                  <PushButton>
+                    <TooltipId>play_cue_set</TooltipId>
+                    <ObjectName>PlayDeck</ObjectName>
+                    <Size>0me,32f</Size>
+                    <NumberStates>2</NumberStates>
+                    <State><Number>0</Number><Text>&#9654;</Text>
+                      <Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__play_deck.svg</Unpressed>
+                      <Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__play_deck_active.svg</Pressed>
+                    </State>
+                    <State><Number>1</Number><Text>&#9646;&#9646;</Text>
+                      <Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__play_deck_active.svg</Unpressed>
+                      <Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__play_deck_active.svg</Pressed>
+                    </State>
+                    <Connection><ConfigKey><Variable name="Group"/>,play</ConfigKey><ButtonState>LeftButton</ButtonState></Connection>
+                  </PushButton>
+                  <PushButton>
+                    <TooltipId>cue_default_cue_gotoandstop</TooltipId>
+                    <ObjectName>CueDeck</ObjectName>
+                    <Size>0me,32f</Size>
+                    <NumberStates>2</NumberStates>
+                    <State><Number>0</Number><Text>CUE</Text>
+                      <Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__cue_deck.svg</Unpressed>
+                      <Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__cue_deck_active.svg</Pressed>
+                    </State>
+                    <State><Number>1</Number><Text>CUE</Text>
+                      <Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__cue_deck_active.svg</Unpressed>
+                      <Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__cue_deck_active.svg</Pressed>
+                    </State>
+                    <Connection><ConfigKey><Variable name="Group"/>,cue_default</ConfigKey><ButtonState>LeftButton</ButtonState></Connection>
+                  </PushButton>
+                </Children>
+              </WidgetGroup>
+              <WidgetGroup>
+                <ObjectName>SeratoSpinnyContainer</ObjectName>
+                <Layout>horizontal</Layout>
+                <SizePolicy>me,me</SizePolicy>
+                <Children>
+                  <SingletonContainer>
+                    <ObjectName>SpinnyCoverart<Variable name="ChanNum"/></ObjectName>
+                  </SingletonContainer>
+                </Children>
+              </WidgetGroup>
+            </Children>
+          </WidgetGroup>
+
+          <!-- RIGHT on right deck: Hotcue pads -->
+          <WidgetGroup>
+            <ObjectName>SeratoHotcueGrid</ObjectName>
+            <Layout>vertical</Layout>
+            <SizePolicy>me,me</SizePolicy>
+            <Children>
+              <WidgetGroup>
+                <Layout>horizontal</Layout><SizePolicy>me,min</SizePolicy>
+                <Children>
+                  <HotcueButton><ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId><SizePolicy>me,f</SizePolicy><MinimumSize>24,40</MinimumSize><Group><Variable name="Group"/></Group><Hotcue>1</Hotcue><NumberStates>3</NumberStates><DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold><State><Number>0</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___active.svg</Pressed></State><State><Number>1</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___active.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___pressed.svg</Pressed></State><State><Number>2</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___active.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___pressed.svg</Pressed></State></HotcueButton>
+                  <HotcueButton><ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId><SizePolicy>me,f</SizePolicy><MinimumSize>24,40</MinimumSize><Group><Variable name="Group"/></Group><Hotcue>2</Hotcue><NumberStates>3</NumberStates><DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold><State><Number>0</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___active.svg</Pressed></State><State><Number>1</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___active.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___pressed.svg</Pressed></State><State><Number>2</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___active.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___pressed.svg</Pressed></State></HotcueButton>
+                  <HotcueButton><ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId><SizePolicy>me,f</SizePolicy><MinimumSize>24,40</MinimumSize><Group><Variable name="Group"/></Group><Hotcue>3</Hotcue><NumberStates>3</NumberStates><DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold><State><Number>0</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___active.svg</Pressed></State><State><Number>1</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___active.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___pressed.svg</Pressed></State><State><Number>2</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___active.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___pressed.svg</Pressed></State></HotcueButton>
+                  <HotcueButton><ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId><SizePolicy>me,f</SizePolicy><MinimumSize>24,40</MinimumSize><Group><Variable name="Group"/></Group><Hotcue>4</Hotcue><NumberStates>3</NumberStates><DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold><State><Number>0</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___active.svg</Pressed></State><State><Number>1</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___active.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___pressed.svg</Pressed></State><State><Number>2</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___active.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___pressed.svg</Pressed></State></HotcueButton>
+                </Children>
+              </WidgetGroup>
+              <WidgetGroup>
+                <Layout>horizontal</Layout><SizePolicy>me,min</SizePolicy>
+                <Children>
+                  <HotcueButton><ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId><SizePolicy>me,f</SizePolicy><MinimumSize>24,40</MinimumSize><Group><Variable name="Group"/></Group><Hotcue>5</Hotcue><NumberStates>3</NumberStates><DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold><State><Number>0</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___active.svg</Pressed></State><State><Number>1</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___active.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___pressed.svg</Pressed></State><State><Number>2</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___active.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___pressed.svg</Pressed></State></HotcueButton>
+                  <HotcueButton><ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId><SizePolicy>me,f</SizePolicy><MinimumSize>24,40</MinimumSize><Group><Variable name="Group"/></Group><Hotcue>6</Hotcue><NumberStates>3</NumberStates><DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold><State><Number>0</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___active.svg</Pressed></State><State><Number>1</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___active.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___pressed.svg</Pressed></State><State><Number>2</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___active.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___pressed.svg</Pressed></State></HotcueButton>
+                  <HotcueButton><ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId><SizePolicy>me,f</SizePolicy><MinimumSize>24,40</MinimumSize><Group><Variable name="Group"/></Group><Hotcue>7</Hotcue><NumberStates>3</NumberStates><DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold><State><Number>0</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___active.svg</Pressed></State><State><Number>1</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___active.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___pressed.svg</Pressed></State><State><Number>2</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___active.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___pressed.svg</Pressed></State></HotcueButton>
+                  <HotcueButton><ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId><SizePolicy>me,f</SizePolicy><MinimumSize>24,40</MinimumSize><Group><Variable name="Group"/></Group><Hotcue>8</Hotcue><NumberStates>3</NumberStates><DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold><State><Number>0</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___active.svg</Pressed></State><State><Number>1</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___active.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___pressed.svg</Pressed></State><State><Number>2</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___active.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn___pressed.svg</Pressed></State></HotcueButton>
+                </Children>
+              </WidgetGroup>
+            </Children>
+          </WidgetGroup>
+
+        </Children>
+      </WidgetGroup>
+
+      <!-- Row 4: Beat Loop Buttons -->
+      <WidgetGroup>
+        <ObjectName>SeratoBeatLoops</ObjectName>
+        <Layout>horizontal</Layout>
+        <SizePolicy>me,min</SizePolicy>
+        <Children>
+          <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,28f</SetVariable><SetVariable name="state_0_text">1/8</SetVariable><SetVariable name="state_1_text">1/8</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_0.125_toggle</SetVariable></Template>
+          <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,28f</SetVariable><SetVariable name="state_0_text">1/4</SetVariable><SetVariable name="state_1_text">1/4</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_0.25_toggle</SetVariable></Template>
+          <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,28f</SetVariable><SetVariable name="state_0_text">1/2</SetVariable><SetVariable name="state_1_text">1/2</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_0.5_toggle</SetVariable></Template>
+          <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,28f</SetVariable><SetVariable name="state_0_text">1</SetVariable><SetVariable name="state_1_text">1</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_1_toggle</SetVariable></Template>
+          <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,28f</SetVariable><SetVariable name="state_0_text">2</SetVariable><SetVariable name="state_1_text">2</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_2_toggle</SetVariable></Template>
+          <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,28f</SetVariable><SetVariable name="state_0_text">4</SetVariable><SetVariable name="state_1_text">4</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_4_toggle</SetVariable></Template>
+          <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,28f</SetVariable><SetVariable name="state_0_text">8</SetVariable><SetVariable name="state_1_text">8</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_8_toggle</SetVariable></Template>
+          <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,28f</SetVariable><SetVariable name="state_0_text">16</SetVariable><SetVariable name="state_1_text">16</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_16_toggle</SetVariable></Template>
+        </Children>
+      </WidgetGroup>
+
+      <!-- Row 5: VU Meter (when mixer hidden) -->
+      <WidgetGroup>
+        <ObjectName>SeratoVuMeter</ObjectName>
+        <Layout>horizontal</Layout>
+        <SizePolicy>me,f</SizePolicy>
+        <Size>0me,8f</Size>
+        <Children>
+          <VuMeter>
+            <TooltipId>channel_VuMeter</TooltipId>
+            <PathBack>skins:LateNight/<Variable name="StyleScheme"/>/style/vu_deck_level_bg_dark.png</PathBack>
+            <PathVu>skins:LateNight/<Variable name="StyleScheme"/>/style/vu_deck_level_active.png</PathVu>
+            <Horizontal>true</Horizontal>
+            <PeakHoldSize>3</PeakHoldSize><PeakHoldTime>500</PeakHoldTime><PeakFallTime>10</PeakFallTime><PeakFallStep>2</PeakFallStep>
+            <SizePolicy>me,f</SizePolicy>
+            <Connection><ConfigKey><Variable name="Group"/>,vu_meter</ConfigKey></Connection>
+          </VuMeter>
+        </Children>
+        <Connection>
+          <ConfigKey persist="true">[Skin],show_mixer</ConfigKey>
+          <Transform><Not/></Transform>
+          <BindProperty>visible</BindProperty>
+        </Connection>
+      </WidgetGroup>
+
+    </Children>
+  </TrackWidgetGroup>
+</Template>
