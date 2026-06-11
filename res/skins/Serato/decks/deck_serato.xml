@@ -86,7 +86,7 @@
                 <Children>
                   <HotcueButton>
                     <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,40</MinimumSize>
+                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,24</MinimumSize>
                     <Group><Variable name="Group"/></Group><Hotcue>1</Hotcue><NumberStates>3</NumberStates>
                     <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
                     <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:Serato/buttons/hotcue_unset.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/hotcue_pressed.svg</Pressed></State>
@@ -95,7 +95,7 @@
                   </HotcueButton>
                   <HotcueButton>
                     <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,40</MinimumSize>
+                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,24</MinimumSize>
                     <Group><Variable name="Group"/></Group><Hotcue>2</Hotcue><NumberStates>3</NumberStates>
                     <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
                     <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:Serato/buttons/hotcue_unset.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/hotcue_pressed.svg</Pressed></State>
@@ -104,7 +104,7 @@
                   </HotcueButton>
                   <HotcueButton>
                     <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,40</MinimumSize>
+                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,24</MinimumSize>
                     <Group><Variable name="Group"/></Group><Hotcue>3</Hotcue><NumberStates>3</NumberStates>
                     <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
                     <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:Serato/buttons/hotcue_unset.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/hotcue_pressed.svg</Pressed></State>
@@ -113,7 +113,7 @@
                   </HotcueButton>
                   <HotcueButton>
                     <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,40</MinimumSize>
+                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,24</MinimumSize>
                     <Group><Variable name="Group"/></Group><Hotcue>4</Hotcue><NumberStates>3</NumberStates>
                     <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
                     <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:Serato/buttons/hotcue_unset.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/hotcue_pressed.svg</Pressed></State>
@@ -129,7 +129,7 @@
                 <Children>
                   <HotcueButton>
                     <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,40</MinimumSize>
+                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,24</MinimumSize>
                     <Group><Variable name="Group"/></Group><Hotcue>5</Hotcue><NumberStates>3</NumberStates>
                     <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
                     <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:Serato/buttons/hotcue_unset.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/hotcue_pressed.svg</Pressed></State>
@@ -138,7 +138,7 @@
                   </HotcueButton>
                   <HotcueButton>
                     <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,40</MinimumSize>
+                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,24</MinimumSize>
                     <Group><Variable name="Group"/></Group><Hotcue>6</Hotcue><NumberStates>3</NumberStates>
                     <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
                     <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:Serato/buttons/hotcue_unset.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/hotcue_pressed.svg</Pressed></State>
@@ -147,7 +147,7 @@
                   </HotcueButton>
                   <HotcueButton>
                     <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,40</MinimumSize>
+                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,24</MinimumSize>
                     <Group><Variable name="Group"/></Group><Hotcue>7</Hotcue><NumberStates>3</NumberStates>
                     <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
                     <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:Serato/buttons/hotcue_unset.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/hotcue_pressed.svg</Pressed></State>
@@ -156,7 +156,7 @@
                   </HotcueButton>
                   <HotcueButton>
                     <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,40</MinimumSize>
+                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,24</MinimumSize>
                     <Group><Variable name="Group"/></Group><Hotcue>8</Hotcue><NumberStates>3</NumberStates>
                     <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
                     <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:Serato/buttons/hotcue_unset.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/hotcue_pressed.svg</Pressed></State>
