@@ -116,14 +116,28 @@ void WSpinny::draw() {
 
             // BPM large text
             QFont bpmFont;
-            bpmFont.setPixelSize(overlayRadius * 2 / 3);
+            bpmFont.setPixelSize(overlayRadius / 2);
             bpmFont.setBold(true);
             p.setFont(bpmFont);
             p.setPen(QColor(255, 255, 255));
             QString bpmText = QString::number(bpm, 'f', 1);
-            QRect bpmRect(cx - overlayRadius, cy - overlayRadius,
-                    overlayRadius * 2, overlayRadius);
+            QRect bpmRect(cx - overlayRadius, cy - overlayRadius * 3 / 4,
+                    overlayRadius * 2, overlayRadius / 2);
             p.drawText(bpmRect, Qt::AlignCenter, bpmText);
+
+            // Pitch% below BPM
+            const double rateRatio = m_pRateRatio.get();
+            const double pitchPct = (rateRatio - 1.0) * 100.0;
+            QFont pitchFont;
+            pitchFont.setPixelSize(overlayRadius / 5);
+            p.setFont(pitchFont);
+            p.setPen(QColor(180, 180, 180));
+            QString pitchText = QStringLiteral("%1%2%")
+                    .arg(pitchPct >= 0 ? "+" : "")
+                    .arg(pitchPct, 0, 'f', 1);
+            QRect pitchRect(cx - overlayRadius, cy - overlayRadius / 3,
+                    overlayRadius * 2, overlayRadius / 4);
+            p.drawText(pitchRect, Qt::AlignCenter, pitchText);
 
             // Time text below BPM
             if (trackSamples > 0.0 && sampleRate > 0.0) {

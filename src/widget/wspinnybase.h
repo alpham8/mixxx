@@ -120,6 +120,7 @@ class WSpinnyBase : public WGLWidget,
     PollingControlProxy m_pBpm;
     PollingControlProxy m_pScratchToggle;
     PollingControlProxy m_pScratchPos;
+    PollingControlProxy m_pRateRatio;
     parented_ptr<ControlProxy> m_pVinylControlSpeedType;
     parented_ptr<ControlProxy> m_pVinylControlEnabled;
     parented_ptr<ControlProxy> m_pSignalEnabled;

@@ -20,7 +20,7 @@
                 <SizePolicy>me,me</SizePolicy>
                 <MinimumSize>40,40</MinimumSize>
                 <Group><Variable name="Group"/></Group>
-                <PathBackground scalemode="STRETCH_ASPECT">skins:LateNight/<Variable name="StyleScheme"/>/style/spinny_bg.svg</PathBackground>
+                <PathBackground scalemode="STRETCH_ASPECT">skins:Serato/buttons/spinny_bg.svg</PathBackground>
                 <PathMask scalemode="STRETCH_ASPECT">skins:LateNight/<Variable name="StyleScheme"/>/style/spinny_mask_<Variable name="DeckGroup"/>.svg</PathMask>
                 <PathForeground>skins:LateNight/<Variable name="StyleScheme"/>/style/spinny_indicator.svg</PathForeground>
                 <PathGhost>skins:LateNight/<Variable name="StyleScheme"/>/style/spinny_indicator_ghost.svg</PathGhost>
