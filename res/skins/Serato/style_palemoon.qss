@@ -186,12 +186,18 @@ QAbstractScrollArea::corner {
     padding: 2px;
   }
   #SeratoTransportRow WPushButton,
-  #SyncButton, #PlayDeck, #CueDeck {
+  #SyncButton, #PlayDeck, #CueDeck, #SkipButton {
     font-size: 13px;
     font-weight: bold;
     margin: 1px;
     border: 1px solid #555;
     border-radius: 2px;
+    background-color: #222;
+    color: #ccc;
+  }
+  #SkipButton {
+    font-size: 11px;
+    color: #999;
   }
   #SeratoVuMeter {
     background-color: #0a0a0a;
