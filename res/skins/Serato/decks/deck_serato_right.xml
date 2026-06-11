@@ -11,19 +11,21 @@
     <Group><Variable name="Group"/></Group>
     <Children>
 
-      <!-- Row 1: BPM + Key + Title (mirrored) -->
+      <!-- Row 1: Title + Key + BPM (same order as left, right-aligned text) -->
       <WidgetGroup>
         <ObjectName>SeratoTrackInfo</ObjectName>
         <Layout>horizontal</Layout>
         <SizePolicy>me,min</SizePolicy>
         <Children>
-          <NumberBpm>
-            <ObjectName>SeratoBpm</ObjectName>
-            <Size>50f,28f</Size>
-            <TooltipId>visual_bpm</TooltipId>
-            <Alignment>left</Alignment>
+          <TrackProperty>
+            <ObjectName>SeratoTitle</ObjectName>
+            <Size>0me,28f</Size>
+            <TooltipId>track_title</TooltipId>
+            <Property>title</Property>
+            <Alignment>right</Alignment>
+            <Elide>right</Elide>
             <Channel><Variable name="ChanNum"/></Channel>
-          </NumberBpm>
+          </TrackProperty>
           <WKey>
             <ObjectName>SeratoKey</ObjectName>
             <Size>42f,28f</Size>
@@ -31,28 +33,35 @@
             <Channel><Variable name="ChanNum"/></Channel>
             <DisplayCents>false</DisplayCents>
           </WKey>
-          <TrackProperty>
-            <ObjectName>SeratoTitle</ObjectName>
-            <Size>0me,28f</Size>
-            <TooltipId>track_title</TooltipId>
-            <Property>title</Property>
+          <NumberBpm>
+            <ObjectName>SeratoBpm</ObjectName>
+            <Size>50f,28f</Size>
+            <TooltipId>visual_bpm</TooltipId>
             <Alignment>right</Alignment>
-            <Elide>left</Elide>
             <Channel><Variable name="ChanNum"/></Channel>
-          </TrackProperty>
+          </NumberBpm>
         </Children>
       </WidgetGroup>
 
-      <!-- Row 2: Position + Remaining + Artist (mirrored) -->
+      <!-- Row 2: Artist + Position + Remaining -->
       <WidgetGroup>
         <Layout>horizontal</Layout>
         <SizePolicy>me,min</SizePolicy>
         <Children>
+          <TrackProperty>
+            <ObjectName>SeratoArtist</ObjectName>
+            <Size>0me,22f</Size>
+            <TooltipId>track_artist</TooltipId>
+            <Property>artist</Property>
+            <Alignment>right</Alignment>
+            <Elide>right</Elide>
+            <Channel><Variable name="ChanNum"/></Channel>
+          </TrackProperty>
           <NumberPos>
             <ObjectName>SeratoPosition</ObjectName>
             <Size>62f,22f</Size>
             <TooltipId>track_time</TooltipId>
-            <Alignment>left</Alignment>
+            <Alignment>right</Alignment>
             <Channel><Variable name="ChanNum"/></Channel>
             <Connection>
               <ConfigKey><Variable name="Group"/>,playposition</ConfigKey>
@@ -62,22 +71,13 @@
             <ObjectName>SeratoRemaining</ObjectName>
             <Size>62f,22f</Size>
             <TooltipId>track_time</TooltipId>
-            <Alignment>left</Alignment>
+            <Alignment>right</Alignment>
             <Channel><Variable name="ChanNum"/></Channel>
             <DisplayMode>REMAINING</DisplayMode>
             <Connection>
               <ConfigKey><Variable name="Group"/>,playposition</ConfigKey>
             </Connection>
           </NumberPos>
-          <TrackProperty>
-            <ObjectName>SeratoArtist</ObjectName>
-            <Size>0me,22f</Size>
-            <TooltipId>track_artist</TooltipId>
-            <Property>artist</Property>
-            <Alignment>right</Alignment>
-            <Elide>left</Elide>
-            <Channel><Variable name="ChanNum"/></Channel>
-          </TrackProperty>
         </Children>
       </WidgetGroup>
 
