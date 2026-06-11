@@ -17,7 +17,7 @@
         <Children>
           <TrackProperty>
             <ObjectName>SeratoTitle</ObjectName>
-            <Size>0me,24f</Size>
+            <Size>0me,28f</Size>
             <TooltipId>track_title</TooltipId>
             <Property>title</Property>
             <Alignment>left</Alignment>
@@ -26,14 +26,14 @@
           </TrackProperty>
           <WKey>
             <ObjectName>SeratoKey</ObjectName>
-            <Size>36f,24f</Size>
+            <Size>42f,28f</Size>
             <TooltipId>visual_key</TooltipId>
             <Channel><Variable name="ChanNum"/></Channel>
             <DisplayCents>false</DisplayCents>
           </WKey>
           <NumberBpm>
             <ObjectName>SeratoBpm</ObjectName>
-            <Size>42f,24f</Size>
+            <Size>50f,28f</Size>
             <TooltipId>visual_bpm</TooltipId>
             <Alignment>right</Alignment>
             <Channel><Variable name="ChanNum"/></Channel>
@@ -48,7 +48,7 @@
         <Children>
           <TrackProperty>
             <ObjectName>SeratoArtist</ObjectName>
-            <Size>0me,18f</Size>
+            <Size>0me,22f</Size>
             <TooltipId>track_artist</TooltipId>
             <Property>artist</Property>
             <Alignment>left</Alignment>
@@ -57,7 +57,7 @@
           </TrackProperty>
           <NumberPos>
             <ObjectName>SeratoPosition</ObjectName>
-            <Size>58f,18f</Size>
+            <Size>62f,22f</Size>
             <TooltipId>track_time</TooltipId>
             <Alignment>right</Alignment>
             <Channel><Variable name="ChanNum"/></Channel>
@@ -67,7 +67,7 @@
           </NumberPos>
           <NumberPos>
             <ObjectName>SeratoRemaining</ObjectName>
-            <Size>58f,18f</Size>
+            <Size>62f,22f</Size>
             <TooltipId>track_time</TooltipId>
             <Alignment>right</Alignment>
             <Channel><Variable name="ChanNum"/></Channel>
@@ -106,7 +106,7 @@
                 <Children>
                   <HotcueButton>
                     <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>20,36</MinimumSize>
+                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,40</MinimumSize>
                     <Group><Variable name="Group"/></Group><Hotcue>1</Hotcue><NumberStates>3</NumberStates>
                     <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
                     <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed></State>
@@ -115,7 +115,7 @@
                   </HotcueButton>
                   <HotcueButton>
                     <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>20,36</MinimumSize>
+                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,40</MinimumSize>
                     <Group><Variable name="Group"/></Group><Hotcue>2</Hotcue><NumberStates>3</NumberStates>
                     <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
                     <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed></State>
@@ -124,7 +124,7 @@
                   </HotcueButton>
                   <HotcueButton>
                     <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>20,36</MinimumSize>
+                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,40</MinimumSize>
                     <Group><Variable name="Group"/></Group><Hotcue>3</Hotcue><NumberStates>3</NumberStates>
                     <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
                     <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed></State>
@@ -133,7 +133,7 @@
                   </HotcueButton>
                   <HotcueButton>
                     <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>20,36</MinimumSize>
+                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,40</MinimumSize>
                     <Group><Variable name="Group"/></Group><Hotcue>4</Hotcue><NumberStates>3</NumberStates>
                     <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
                     <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed></State>
@@ -149,7 +149,7 @@
                 <Children>
                   <HotcueButton>
                     <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>20,36</MinimumSize>
+                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,40</MinimumSize>
                     <Group><Variable name="Group"/></Group><Hotcue>5</Hotcue><NumberStates>3</NumberStates>
                     <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
                     <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed></State>
@@ -158,7 +158,7 @@
                   </HotcueButton>
                   <HotcueButton>
                     <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>20,36</MinimumSize>
+                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,40</MinimumSize>
                     <Group><Variable name="Group"/></Group><Hotcue>6</Hotcue><NumberStates>3</NumberStates>
                     <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
                     <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed></State>
@@ -167,7 +167,7 @@
                   </HotcueButton>
                   <HotcueButton>
                     <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>20,36</MinimumSize>
+                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,40</MinimumSize>
                     <Group><Variable name="Group"/></Group><Hotcue>7</Hotcue><NumberStates>3</NumberStates>
                     <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
                     <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed></State>
@@ -176,7 +176,7 @@
                   </HotcueButton>
                   <HotcueButton>
                     <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>20,36</MinimumSize>
+                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,40</MinimumSize>
                     <Group><Variable name="Group"/></Group><Hotcue>8</Hotcue><NumberStates>3</NumberStates>
                     <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
                     <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium.svg</Unpressed><Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__medium_active.svg</Pressed></State>
@@ -192,14 +192,14 @@
           <WidgetGroup>
             <ObjectName>SeratoSpinnyColumn</ObjectName>
             <Layout>vertical</Layout>
-            <Size>160f,0min</Size>
+            <Size>180f,0min</Size>
             <Children>
               <!-- All transport buttons in ONE horizontal row -->
               <WidgetGroup>
                 <ObjectName>SeratoTransportRow</ObjectName>
                 <Layout>horizontal</Layout>
                 <SizePolicy>me,f</SizePolicy>
-                <Size>0me,30f</Size>
+                <Size>0me,32f</Size>
                 <Children>
                   <Template src="skins:LateNight/controls/button_2state.xml">
                     <SetVariable name="TooltipId">sync_enabled</SetVariable>
@@ -248,42 +248,42 @@
         <Children>
           <Template src="skins:LateNight/controls/button_2state.xml">
             <SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
-            <SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">1/8</SetVariable><SetVariable name="state_1_text">1/8</SetVariable>
+            <SetVariable name="Size">0me,28f</SetVariable><SetVariable name="state_0_text">1/8</SetVariable><SetVariable name="state_1_text">1/8</SetVariable>
             <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_0.125_toggle</SetVariable>
           </Template>
           <Template src="skins:LateNight/controls/button_2state.xml">
             <SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
-            <SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">1/4</SetVariable><SetVariable name="state_1_text">1/4</SetVariable>
+            <SetVariable name="Size">0me,28f</SetVariable><SetVariable name="state_0_text">1/4</SetVariable><SetVariable name="state_1_text">1/4</SetVariable>
             <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_0.25_toggle</SetVariable>
           </Template>
           <Template src="skins:LateNight/controls/button_2state.xml">
             <SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
-            <SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">1/2</SetVariable><SetVariable name="state_1_text">1/2</SetVariable>
+            <SetVariable name="Size">0me,28f</SetVariable><SetVariable name="state_0_text">1/2</SetVariable><SetVariable name="state_1_text">1/2</SetVariable>
             <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_0.5_toggle</SetVariable>
           </Template>
           <Template src="skins:LateNight/controls/button_2state.xml">
             <SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
-            <SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">1</SetVariable><SetVariable name="state_1_text">1</SetVariable>
+            <SetVariable name="Size">0me,28f</SetVariable><SetVariable name="state_0_text">1</SetVariable><SetVariable name="state_1_text">1</SetVariable>
             <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_1_toggle</SetVariable>
           </Template>
           <Template src="skins:LateNight/controls/button_2state.xml">
             <SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
-            <SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">2</SetVariable><SetVariable name="state_1_text">2</SetVariable>
+            <SetVariable name="Size">0me,28f</SetVariable><SetVariable name="state_0_text">2</SetVariable><SetVariable name="state_1_text">2</SetVariable>
             <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_2_toggle</SetVariable>
           </Template>
           <Template src="skins:LateNight/controls/button_2state.xml">
             <SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
-            <SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">4</SetVariable><SetVariable name="state_1_text">4</SetVariable>
+            <SetVariable name="Size">0me,28f</SetVariable><SetVariable name="state_0_text">4</SetVariable><SetVariable name="state_1_text">4</SetVariable>
             <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_4_toggle</SetVariable>
           </Template>
           <Template src="skins:LateNight/controls/button_2state.xml">
             <SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
-            <SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">8</SetVariable><SetVariable name="state_1_text">8</SetVariable>
+            <SetVariable name="Size">0me,28f</SetVariable><SetVariable name="state_0_text">8</SetVariable><SetVariable name="state_1_text">8</SetVariable>
             <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_8_toggle</SetVariable>
           </Template>
           <Template src="skins:LateNight/controls/button_2state.xml">
             <SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
-            <SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">16</SetVariable><SetVariable name="state_1_text">16</SetVariable>
+            <SetVariable name="Size">0me,28f</SetVariable><SetVariable name="state_0_text">16</SetVariable><SetVariable name="state_1_text">16</SetVariable>
             <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_16_toggle</SetVariable>
           </Template>
         </Children>
