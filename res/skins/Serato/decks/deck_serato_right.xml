@@ -37,7 +37,7 @@
             <TooltipId>track_title</TooltipId>
             <Property>title</Property>
             <Alignment>right</Alignment>
-            <Elide>right</Elide>
+            <Elide>left</Elide>
             <Channel><Variable name="ChanNum"/></Channel>
           </TrackProperty>
         </Children>
@@ -75,7 +75,7 @@
             <TooltipId>track_artist</TooltipId>
             <Property>artist</Property>
             <Alignment>right</Alignment>
-            <Elide>right</Elide>
+            <Elide>left</Elide>
             <Channel><Variable name="ChanNum"/></Channel>
           </TrackProperty>
         </Children>

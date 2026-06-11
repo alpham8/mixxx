@@ -141,9 +141,20 @@ void WSpinny::draw() {
                         .arg(mins, 2, 10, QChar('0'))
                         .arg(secs, 2, 10, QChar('0'))
                         .arg(tenths);
-                QRect timeRect(cx - overlayRadius, cy,
-                        overlayRadius * 2, overlayRadius);
+                QRect timeRect(cx - overlayRadius, cy - overlayRadius / 6,
+                        overlayRadius * 2, overlayRadius / 2);
                 p.drawText(timeRect, Qt::AlignCenter, timeText);
+
+                // Duration below elapsed time
+                const int durMins = static_cast<int>(totalSeconds) / 60;
+                const int durSecs = static_cast<int>(totalSeconds) % 60;
+                QString durText = QStringLiteral("%1:%2")
+                        .arg(durMins, 2, 10, QChar('0'))
+                        .arg(durSecs, 2, 10, QChar('0'));
+                QRect durRect(cx - overlayRadius, cy + overlayRadius / 4,
+                        overlayRadius * 2, overlayRadius / 2);
+                p.setPen(QColor(150, 150, 150));
+                p.drawText(durRect, Qt::AlignCenter, durText);
             }
         }
     }
