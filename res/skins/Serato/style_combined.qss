@@ -1,0 +1,177 @@
+/* Combined stylesheet: LateNight base + Serato deck overrides
+   This file imports LateNight/style.qss content followed by Serato overrides.
+   Loaded as the single root <Style> to ensure correct cascade order. */
+
+/* === LateNight base is loaded via src attribute === */
+/* === Serato deck overrides follow below === */
+
+/* Serato Deck Outline */
+WTrackWidgetGroup#DeckSerato1,
+WTrackWidgetGroup#DeckSerato2,
+WTrackWidgetGroup#DeckSerato3,
+WTrackWidgetGroup#DeckSerato4 {
+    border: 1px solid #555;
+    border-radius: 3px;
+    background-color: #1a1a1a;
+}
+
+#DeckSerato1 #SeratoTrackInfo,
+#DeckSerato2 #SeratoTrackInfo,
+#DeckSerato3 #SeratoTrackInfo,
+#DeckSerato4 #SeratoTrackInfo {
+    padding: 4px 6px 2px 6px;
+}
+
+#DeckSerato1 WTrackProperty#SeratoTitle,
+#DeckSerato2 WTrackProperty#SeratoTitle,
+#DeckSerato3 WTrackProperty#SeratoTitle,
+#DeckSerato4 WTrackProperty#SeratoTitle {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: transparent;
+}
+
+#DeckSerato1 WTrackProperty#SeratoArtist,
+#DeckSerato2 WTrackProperty#SeratoArtist,
+#DeckSerato3 WTrackProperty#SeratoArtist,
+#DeckSerato4 WTrackProperty#SeratoArtist {
+    color: #bbbbbb;
+    font-size: 14px;
+    background-color: transparent;
+}
+
+#DeckSerato1 WKey#SeratoKey,
+#DeckSerato2 WKey#SeratoKey,
+#DeckSerato3 WKey#SeratoKey,
+#DeckSerato4 WKey#SeratoKey {
+    color: #00ccff;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: transparent;
+}
+
+#DeckSerato1 WNumber#SeratoBpm,
+#DeckSerato2 WNumber#SeratoBpm,
+#DeckSerato3 WNumber#SeratoBpm,
+#DeckSerato4 WNumber#SeratoBpm {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: transparent;
+}
+
+/* Hotcue Buttons */
+#DeckSerato1 #SeratoHotcueGrid WPushButton#HotcueButton,
+#DeckSerato2 #SeratoHotcueGrid WPushButton#HotcueButton,
+#DeckSerato3 #SeratoHotcueGrid WPushButton#HotcueButton,
+#DeckSerato4 #SeratoHotcueGrid WPushButton#HotcueButton {
+    margin: 2px;
+    padding: 4px 6px;
+    min-height: 28px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #bbb;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background-color: #222;
+}
+
+#DeckSerato1 #SeratoHotcueGrid WPushButton#HotcueButton[displayValue="1"],
+#DeckSerato1 #SeratoHotcueGrid WPushButton#HotcueButton[displayValue="2"],
+#DeckSerato2 #SeratoHotcueGrid WPushButton#HotcueButton[displayValue="1"],
+#DeckSerato2 #SeratoHotcueGrid WPushButton#HotcueButton[displayValue="2"],
+#DeckSerato3 #SeratoHotcueGrid WPushButton#HotcueButton[displayValue="1"],
+#DeckSerato3 #SeratoHotcueGrid WPushButton#HotcueButton[displayValue="2"],
+#DeckSerato4 #SeratoHotcueGrid WPushButton#HotcueButton[displayValue="1"],
+#DeckSerato4 #SeratoHotcueGrid WPushButton#HotcueButton[displayValue="2"] {
+    color: #fff;
+    font-weight: bold;
+    border: 1px solid #666;
+}
+
+/* Transport Buttons */
+#DeckSerato1 #SeratoTransportRow WPushButton,
+#DeckSerato2 #SeratoTransportRow WPushButton,
+#DeckSerato3 #SeratoTransportRow WPushButton,
+#DeckSerato4 #SeratoTransportRow WPushButton {
+    margin: 1px;
+    border: 1px solid #555;
+    border-radius: 2px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #ccc;
+    background-color: #222;
+}
+
+#DeckSerato1 WPushButton#SkipButton,
+#DeckSerato2 WPushButton#SkipButton,
+#DeckSerato3 WPushButton#SkipButton,
+#DeckSerato4 WPushButton#SkipButton {
+    font-size: 11px;
+    color: #999;
+}
+
+/* BeatLoop Buttons */
+#DeckSerato1 WPushButton#BeatLoopBtn,
+#DeckSerato2 WPushButton#BeatLoopBtn,
+#DeckSerato3 WPushButton#BeatLoopBtn,
+#DeckSerato4 WPushButton#BeatLoopBtn {
+    margin: 2px;
+    padding: 2px 4px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #bbb;
+    border: 1px solid #444;
+    border-radius: 3px;
+    background-color: #222;
+}
+
+#DeckSerato1 WPushButton#BeatLoopBtn[displayValue="1"],
+#DeckSerato2 WPushButton#BeatLoopBtn[displayValue="1"],
+#DeckSerato3 WPushButton#BeatLoopBtn[displayValue="1"],
+#DeckSerato4 WPushButton#BeatLoopBtn[displayValue="1"] {
+    color: #fff;
+    background-color: #0066cc;
+    border: 1px solid #0088ff;
+}
+
+/* VU Meter */
+#DeckSerato1 #SeratoVuMeter,
+#DeckSerato2 #SeratoVuMeter,
+#DeckSerato3 #SeratoVuMeter,
+#DeckSerato4 #SeratoVuMeter {
+    background-color: #0a0a0a;
+    padding: 1px 4px;
+}
+
+/* Loop Page Labels */
+#DeckSerato1 QLabel#LoopPageBtn,
+#DeckSerato2 QLabel#LoopPageBtn,
+#DeckSerato3 QLabel#LoopPageBtn,
+#DeckSerato4 QLabel#LoopPageBtn {
+    border: 1px solid #444;
+    min-width: 16px;
+    max-width: 16px;
+    padding: 0px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #666;
+    background-color: #1a1a1a;
+}
+
+/* Spinny Column */
+#DeckSerato1 #SeratoSpinnyColumn,
+#DeckSerato2 #SeratoSpinnyColumn,
+#DeckSerato3 #SeratoSpinnyColumn,
+#DeckSerato4 #SeratoSpinnyColumn {
+    padding: 2px;
+    border-left: 1px solid #333;
+}
+
+#DeckSerato1 #SeratoBeatLoops,
+#DeckSerato2 #SeratoBeatLoops,
+#DeckSerato3 #SeratoBeatLoops,
+#DeckSerato4 #SeratoBeatLoops {
+    padding: 2px 4px 4px 4px;
+}

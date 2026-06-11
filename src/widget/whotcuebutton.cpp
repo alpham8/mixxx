@@ -170,23 +170,76 @@ void WHotcueButton::setup(const QDomNode& node, const SkinContext& context) {
 void WHotcueButton::paintEvent(QPaintEvent* pEvent) {
     WPushButton::paintEvent(pEvent);
 
-    if (readDisplayValue() > 0) {
-        QPainter p(this);
-        p.setRenderHint(QPainter::Antialiasing);
+    if (m_hotcue == Cue::kNoHotCue) {
+        return;
+    }
 
-        const int h = height();
-        const int triSize = qMin(h / 3, 8);
+    QPainter p(this);
+    p.setRenderHint(QPainter::Antialiasing);
+
+    const bool isSet = readDisplayValue() > 0;
+
+    QString cueLabel;
+    if (isSet) {
+        TrackPointer pTrack = PlayerInfo::instance().getTrackInfo(m_group);
+        if (pTrack) {
+            const QList<CuePointer> cueList = pTrack->getCuePoints();
+            for (const auto& pCue : cueList) {
+                if (pCue->getHotCue() == m_hotcue) {
+                    cueLabel = pCue->getLabel();
+                    break;
+                }
+            }
+        }
+    }
+
+    constexpr int kLabelHeight = 15;
+    const int labelH = cueLabel.isEmpty() ? 0 : kLabelHeight;
+
+    // Serato-style dark label strip on top of the colored pad.
+    if (labelH > 0) {
+        p.fillRect(0, 0, width(), labelH, QColor(18, 18, 18));
+        QFont labelFont;
+        labelFont.setPixelSize(10);
+        p.setFont(labelFont);
+        p.setPen(QColor(225, 225, 225));
+        QRect labelRect(3, 0, width() - 6, labelH);
+        QFontMetrics fm(labelFont);
+        const QString elided = fm.elidedText(cueLabel, Qt::ElideRight, width() - 6);
+        p.drawText(labelRect, Qt::AlignVCenter | Qt::AlignHCenter, elided);
+    }
+
+    const int areaTop = labelH;
+    const int areaH = height() - labelH;
+
+    const QColor fgColor = isSet
+            ? (m_bCueColorDimmed ? QColor(0, 0, 0, 215) : QColor(255, 255, 255, 230))
+            : QColor(110, 110, 110);
+
+    // Play triangle in the colored area (set pads only).
+    if (isSet) {
+        const int triSize = qMin(areaH / 3, 9);
         const int x = 4;
-        const int y = (h - triSize) / 2;
-
+        const int y = areaTop + (areaH - triSize) / 2;
         QPolygon triangle;
         triangle << QPoint(x, y)
                  << QPoint(x + triSize, y + triSize / 2)
                  << QPoint(x, y + triSize);
-
         p.setPen(Qt::NoPen);
-        p.setBrush(m_bCueColorDimmed ? QColor(0, 0, 0, 180) : QColor(255, 255, 255, 200));
+        p.setBrush(fgColor);
         p.drawPolygon(triangle);
+    }
+
+    // Serato style: labeled cues show only the label + triangle. Pads without a
+    // custom label show their number so the user can identify them by index.
+    if (labelH == 0) {
+        QFont numFont;
+        numFont.setPixelSize(qMax(areaH / 2, 11));
+        numFont.setBold(true);
+        p.setFont(numFont);
+        p.setPen(fgColor);
+        QRect numRect(0, areaTop, width(), areaH);
+        p.drawText(numRect, Qt::AlignCenter, QString::number(m_hotcue + 1));
     }
 }
 

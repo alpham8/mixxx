@@ -200,10 +200,10 @@
       <SetVariable name="EndOfTrackColor">#ff3333</SetVariable>
       <SetVariable name="SlipBorderOutlineColor">#ff6600</SetVariable>
       <SetVariable name="PassthroughLabelColor">#b24c12</SetVariable>
-      <SetVariable name="OverviewFontSizeDeck">0</SetVariable>
-      <SetVariable name="OverviewFontSizeDeckMini">0</SetVariable>
-      <SetVariable name="OverviewFontSizeSampler">0</SetVariable>
-      <SetVariable name="OverviewFontSizePreview">0</SetVariable>
+      <SetVariable name="OverviewFontSizeDeck">1</SetVariable>
+      <SetVariable name="OverviewFontSizeDeckMini">1</SetVariable>
+      <SetVariable name="OverviewFontSizeSampler">1</SetVariable>
+      <SetVariable name="OverviewFontSizePreview">1</SetVariable>
 
       <!-- Set the button icons used by templates in LateNight/controls/button...xml
            There, those border icons are stacked on top of the additional icons set in css.
@@ -348,7 +348,10 @@
       <SizePolicy>me,me</SizePolicy>
       <Children>
 
-        <Template src="skins:LateNight/toolbar.xml"/>
+        <Template src="skins:Serato/toolbar.xml"/>
+
+        <!-- small gap below toolbar (Serato-style breathing room) -->
+        <WidgetGroup><Size>0me,4f</Size></WidgetGroup>
 
         <!-- regular/maximized library  |  skin settings menu -->
         <WidgetGroup>
@@ -377,13 +380,20 @@
                       <Layout>horizontal</Layout>
                       <SizePolicy>me,me</SizePolicy>
                       <Children>
-                        <!-- Deck 1 (left, max 350px) -->
+                        <!-- Deck 1 (left, fixed 450px, top-aligned) -->
                         <WidgetGroup>
-                          <SizePolicy>min,me</SizePolicy>
-                          <MaximumSize>460,</MaximumSize>
+                          <SizePolicy>f,me</SizePolicy>
+                          <Size>450f,0me</Size>
                           <Layout>vertical</Layout>
                           <Children>
-                            <Template src="skins:LateNight/decks/decks_left.xml"/>
+                            <WidgetGroup>
+                              <ObjectName>SeratoDeckPanel</ObjectName>
+                              <SizePolicy>me,min</SizePolicy>
+                              <Layout>vertical</Layout>
+                              <Children>
+                                <Template src="skins:LateNight/decks/decks_left.xml"/>
+                              </Children>
+                            </WidgetGroup>
                           </Children>
                         </WidgetGroup>
 
@@ -400,13 +410,20 @@
                           </Connection>
                         </WidgetGroup>
 
-                        <!-- Deck 2 (right, max 350px) -->
+                        <!-- Deck 2 (right, fixed 450px, top-aligned) -->
                         <WidgetGroup>
-                          <SizePolicy>min,me</SizePolicy>
-                          <MaximumSize>460,</MaximumSize>
+                          <SizePolicy>f,me</SizePolicy>
+                          <Size>450f,0me</Size>
                           <Layout>vertical</Layout>
                           <Children>
-                            <Template src="skins:LateNight/decks/decks_right.xml"/>
+                            <WidgetGroup>
+                              <ObjectName>SeratoDeckPanel</ObjectName>
+                              <SizePolicy>me,min</SizePolicy>
+                              <Layout>vertical</Layout>
+                              <Children>
+                                <Template src="skins:LateNight/decks/decks_right.xml"/>
+                              </Children>
+                            </WidgetGroup>
                           </Children>
                         </WidgetGroup>
                       </Children>

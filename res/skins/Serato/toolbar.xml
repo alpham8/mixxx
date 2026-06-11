@@ -304,6 +304,48 @@
         <Size>12f,9min</Size>
       </WidgetGroup>
 
+      <!-- Serato-style Master output VU meter (stereo, horizontal) -->
+      <WidgetGroup>
+        <ObjectName>SeratoMasterVu</ObjectName>
+        <Layout>horizontal</Layout>
+        <SizePolicy>min,min</SizePolicy>
+        <Children>
+          <Label>
+            <ObjectName>SeratoMasterVuLabel</ObjectName>
+            <Size>48f,20f</Size>
+            <Alignment>right</Alignment>
+            <Text>MASTER </Text>
+          </Label>
+          <WidgetGroup>
+            <Layout>vertical</Layout>
+            <SizePolicy>min,min</SizePolicy>
+            <Children>
+              <VuMeter>
+                <TooltipId>main_VuMeterL</TooltipId>
+                <Size>90f,7f</Size>
+                <PathBack>skins:Serato/misc_res/vu_h_bg.png</PathBack>
+                <PathVu>skins:Serato/misc_res/vu_h_active.png</PathVu>
+                <Horizontal>true</Horizontal>
+                <PeakHoldSize>5</PeakHoldSize><PeakHoldTime>500</PeakHoldTime><PeakFallTime>50</PeakFallTime><PeakFallStep>2</PeakFallStep>
+                <Connection><ConfigKey>[Main],vu_meter_left</ConfigKey></Connection>
+              </VuMeter>
+              <WidgetGroup><Size>90f,1f</Size></WidgetGroup>
+              <VuMeter>
+                <TooltipId>main_VuMeterR</TooltipId>
+                <Size>90f,7f</Size>
+                <PathBack>skins:Serato/misc_res/vu_h_bg.png</PathBack>
+                <PathVu>skins:Serato/misc_res/vu_h_active.png</PathVu>
+                <Horizontal>true</Horizontal>
+                <PeakHoldSize>5</PeakHoldSize><PeakHoldTime>500</PeakHoldTime><PeakFallTime>50</PeakFallTime><PeakFallStep>2</PeakFallStep>
+                <Connection><ConfigKey>[Main],vu_meter_right</ConfigKey></Connection>
+              </VuMeter>
+            </Children>
+          </WidgetGroup>
+        </Children>
+      </WidgetGroup>
+
+      <WidgetGroup><Size>10f,1min</Size></WidgetGroup>
+
       <PushButton>
         <Size>80f,20f</Size>
         <TooltipId>skin_settings</TooltipId>

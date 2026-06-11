@@ -112,11 +112,6 @@ void WSpinny::draw() {
 
             const int overlayRadius = qMin(width(), height()) / 4;
 
-            // Dark background circle for text readability
-            p.setBrush(QColor(0, 0, 0, 160));
-            p.setPen(Qt::NoPen);
-            p.drawEllipse(QPoint(cx, cy), overlayRadius, overlayRadius);
-
             // BPM large text
             QFont bpmFont;
             bpmFont.setPixelSize(overlayRadius * 3 / 4);

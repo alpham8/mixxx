@@ -2,7 +2,7 @@
 
   <WidgetGroup>
     <Layout>vertical</Layout>
-    <MaximumSize>,230</MaximumSize>
+    <MaximumSize>,320</MaximumSize>
     <Children>
 
       <Template src="skins:Serato/decks/deck_singletons.xml">

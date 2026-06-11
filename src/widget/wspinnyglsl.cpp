@@ -205,11 +205,6 @@ void WSpinnyGLSL::paintGL() {
         const int cy = height() / 2;
         const int overlayRadius = qMin(width(), height()) / 4;
 
-        // Dark background circle for readability
-        p.setBrush(QColor(0, 0, 0, 160));
-        p.setPen(Qt::NoPen);
-        p.drawEllipse(QPoint(cx, cy), overlayRadius, overlayRadius);
-
         QFont bpmFont;
         bpmFont.setPixelSize(overlayRadius * 3 / 4);
         bpmFont.setBold(true);

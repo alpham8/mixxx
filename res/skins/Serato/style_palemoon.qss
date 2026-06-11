@@ -99,10 +99,10 @@ QAbstractScrollArea::corner {
     border-image: url(skins:Serato/misc_res/beat_ticks.svg) 0 0 0 0 repeat repeat;
   }
   /* ===== Serato Deck Styles ===== */
-  #DeckSerato1, #DeckSerato2, #DeckSerato3, #DeckSerato4 {
+  #SeratoDeckPanel {
+    border: 2px solid #2277dd;
+    border-radius: 3px;
     background-color: #1a1a1a;
-    border: 1px solid #2a2a2a;
-    border-radius: 2px;
   }
   #SeratoTrackInfo {
     padding: 4px 6px 2px 6px;
@@ -159,10 +159,11 @@ QAbstractScrollArea::corner {
     spacing: 3px;
   }
   #SeratoHotcueGrid WPushButton#HotcueButton {
-    font-size: 12px;
-    font-weight: bold;
     margin: 2px;
     padding: 4px 6px;
+    min-height: 28px;
+    font-size: 12px;
+    font-weight: bold;
     color: #bbb;
     border: 1px solid #444;
     border-radius: 4px;
@@ -200,8 +201,9 @@ QAbstractScrollArea::corner {
     color: #999;
   }
   #SeratoVuMeter {
+    border-top: 1px solid #333;
     background-color: #0a0a0a;
-    padding: 1px 4px;
+    padding: 2px 4px;
   }
   #SeratoTransport {
     padding: 2px 0px;
@@ -223,6 +225,16 @@ QAbstractScrollArea::corner {
     color: #fff;
     background-color: #0066cc;
     border: 1px solid #0088ff;
+  }
+  QLabel#LoopPageBtn {
+    border: 1px solid #444;
+    min-width: 16px;
+    max-width: 16px;
+    padding: 0px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #666;
+    background-color: #1a1a1a;
   }
   /* Serato-style overview strip below main waveforms */
   #SeratoOverviewStrip {
@@ -3770,3 +3782,180 @@ WSearchLineEdit::indicator:unchecked:selected {
 }
 /************** common styles for WEffectSelector ******************************
 *************** QSpinBox, QMenu, QToolTip *************************************/
+/* Serato Deck Override Styles
+   Loaded AFTER LateNight/style.qss to override base styles
+   Only contains #DeckSerato-scoped rules */
+
+#SeratoDeckPanel {
+    border: 2px solid #2277dd;
+    border-radius: 3px;
+    background-color: #1a1a1a;
+}
+
+#DeckSerato1 #SeratoTrackInfo,
+#DeckSerato2 #SeratoTrackInfo,
+#DeckSerato3 #SeratoTrackInfo,
+#DeckSerato4 #SeratoTrackInfo {
+    padding: 4px 6px 2px 6px;
+}
+
+#DeckSerato1 WTrackProperty#SeratoTitle,
+#DeckSerato2 WTrackProperty#SeratoTitle,
+#DeckSerato3 WTrackProperty#SeratoTitle,
+#DeckSerato4 WTrackProperty#SeratoTitle {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: transparent;
+}
+
+#DeckSerato1 WTrackProperty#SeratoArtist,
+#DeckSerato2 WTrackProperty#SeratoArtist,
+#DeckSerato3 WTrackProperty#SeratoArtist,
+#DeckSerato4 WTrackProperty#SeratoArtist {
+    color: #bbbbbb;
+    font-size: 14px;
+    background-color: transparent;
+}
+
+#DeckSerato1 WTrackProperty#SeratoDuration,
+#DeckSerato2 WTrackProperty#SeratoDuration,
+#DeckSerato3 WTrackProperty#SeratoDuration,
+#DeckSerato4 WTrackProperty#SeratoDuration {
+    padding-right: 2px;
+    font-size: 13px;
+    color: #cccccc;
+    background-color: transparent;
+}
+
+#DeckSerato1 WKey#SeratoKey,
+#DeckSerato2 WKey#SeratoKey,
+#DeckSerato3 WKey#SeratoKey,
+#DeckSerato4 WKey#SeratoKey {
+    color: #00ccff;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: transparent;
+}
+
+#DeckSerato1 WNumber#SeratoBpm,
+#DeckSerato2 WNumber#SeratoBpm,
+#DeckSerato3 WNumber#SeratoBpm,
+#DeckSerato4 WNumber#SeratoBpm {
+    padding-right: 2px;
+    font-size: 17px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: transparent;
+}
+
+#DeckSerato1 #SeratoHotcueGrid WPushButton#HotcueButton,
+#DeckSerato2 #SeratoHotcueGrid WPushButton#HotcueButton,
+#DeckSerato3 #SeratoHotcueGrid WPushButton#HotcueButton,
+#DeckSerato4 #SeratoHotcueGrid WPushButton#HotcueButton {
+    margin: 2px;
+    padding: 0px;
+    min-height: 34px;
+    color: #777;
+    border: 1px solid #3a3a3a;
+    border-radius: 3px;
+    background-color: #242424;
+}
+
+#DeckSerato1 #SeratoHotcueGrid WPushButton#HotcueButton[displayValue="1"],
+#DeckSerato1 #SeratoHotcueGrid WPushButton#HotcueButton[displayValue="2"],
+#DeckSerato2 #SeratoHotcueGrid WPushButton#HotcueButton[displayValue="1"],
+#DeckSerato2 #SeratoHotcueGrid WPushButton#HotcueButton[displayValue="2"],
+#DeckSerato3 #SeratoHotcueGrid WPushButton#HotcueButton[displayValue="1"],
+#DeckSerato3 #SeratoHotcueGrid WPushButton#HotcueButton[displayValue="2"],
+#DeckSerato4 #SeratoHotcueGrid WPushButton#HotcueButton[displayValue="1"],
+#DeckSerato4 #SeratoHotcueGrid WPushButton#HotcueButton[displayValue="2"] {
+    color: #fff;
+    font-weight: bold;
+    border: 1px solid #666;
+}
+
+#DeckSerato1 #SeratoTransportRow WPushButton,
+#DeckSerato2 #SeratoTransportRow WPushButton,
+#DeckSerato3 #SeratoTransportRow WPushButton,
+#DeckSerato4 #SeratoTransportRow WPushButton {
+    margin: 1px;
+    border: 1px solid #555;
+    border-radius: 2px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #ccc;
+    background-color: #222;
+}
+
+#DeckSerato1 WPushButton#SkipButton,
+#DeckSerato2 WPushButton#SkipButton,
+#DeckSerato3 WPushButton#SkipButton,
+#DeckSerato4 WPushButton#SkipButton {
+    font-size: 11px;
+    color: #999;
+}
+
+#DeckSerato1 WPushButton#BeatLoopBtn,
+#DeckSerato2 WPushButton#BeatLoopBtn,
+#DeckSerato3 WPushButton#BeatLoopBtn,
+#DeckSerato4 WPushButton#BeatLoopBtn {
+    margin: 2px;
+    padding: 2px 4px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #bbb;
+    border: 1px solid #444;
+    border-radius: 3px;
+    background-color: #222;
+}
+
+#DeckSerato1 WPushButton#BeatLoopBtn[displayValue="1"],
+#DeckSerato2 WPushButton#BeatLoopBtn[displayValue="1"],
+#DeckSerato3 WPushButton#BeatLoopBtn[displayValue="1"],
+#DeckSerato4 WPushButton#BeatLoopBtn[displayValue="1"] {
+    border: 2px solid #1f9bff;
+    color: #fff;
+    background-color: #14467a;
+}
+
+#DeckSerato1 #SeratoVuMeter,
+#DeckSerato2 #SeratoVuMeter,
+#DeckSerato3 #SeratoVuMeter,
+#DeckSerato4 #SeratoVuMeter {
+    margin: 0px 2px;
+    padding: 0px;
+    background-color: #0a0a0a;
+}
+
+#DeckSerato1 WPushButton#LoopPageBtn,
+#DeckSerato2 WPushButton#LoopPageBtn,
+#DeckSerato3 WPushButton#LoopPageBtn,
+#DeckSerato4 WPushButton#LoopPageBtn {
+    margin: 2px 0px;
+    border: 1px solid #444;
+    min-width: 16px;
+    max-width: 16px;
+    padding: 0px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #999;
+    background-color: #222;
+}
+#DeckSerato1 WPushButton#LoopPageBtn:pressed,
+#DeckSerato2 WPushButton#LoopPageBtn:pressed,
+#DeckSerato3 WPushButton#LoopPageBtn:pressed,
+#DeckSerato4 WPushButton#LoopPageBtn:pressed {
+    color: #fff;
+    background-color: #14467a;
+}
+
+QLabel#SeratoMasterVuLabel {
+    font-size: 10px;
+    font-weight: bold;
+    color: #888;
+    background-color: transparent;
+}
+#SeratoMasterVu {
+    background-color: transparent;
+}

@@ -17,31 +17,40 @@
         <Children>
           <TrackProperty>
             <ObjectName>SeratoTitle</ObjectName>
-            <Size>0me,28f</Size>
+            <Size>0me,26f</Size>
             <TooltipId>track_title</TooltipId>
             <Property>title</Property>
             <Alignment>left</Alignment>
             <Elide>right</Elide>
             <Channel><Variable name="ChanNum"/></Channel>
           </TrackProperty>
-          <WKey>
+          <Key>
             <ObjectName>SeratoKey</ObjectName>
-            <Size>42f,28f</Size>
+            <Size>46f,26f</Size>
             <TooltipId>visual_key</TooltipId>
             <Channel><Variable name="ChanNum"/></Channel>
+            <Alignment>center</Alignment>
+            <Elide>right</Elide>
             <DisplayCents>false</DisplayCents>
-          </WKey>
+            <Connection>
+              <ConfigKey><Variable name="Group"/>,visual_key</ConfigKey>
+            </Connection>
+          </Key>
           <NumberBpm>
             <ObjectName>SeratoBpm</ObjectName>
-            <Size>50f,28f</Size>
+            <Size>62f,26f</Size>
             <TooltipId>visual_bpm</TooltipId>
             <Alignment>right</Alignment>
             <Channel><Variable name="ChanNum"/></Channel>
+            <NumberOfDigits>1</NumberOfDigits>
+            <Connection>
+              <ConfigKey><Variable name="Group"/>,visual_bpm</ConfigKey>
+            </Connection>
           </NumberBpm>
         </Children>
       </WidgetGroup>
 
-      <!-- Row 2: Artist -->
+      <!-- Row 2: Artist + time -->
       <WidgetGroup>
         <ObjectName>SeratoTrackInfo</ObjectName>
         <Layout>horizontal</Layout>
@@ -49,11 +58,19 @@
         <Children>
           <TrackProperty>
             <ObjectName>SeratoArtist</ObjectName>
-            <Size>0me,22f</Size>
+            <Size>0me,20f</Size>
             <TooltipId>track_artist</TooltipId>
             <Property>artist</Property>
             <Alignment>left</Alignment>
             <Elide>right</Elide>
+            <Channel><Variable name="ChanNum"/></Channel>
+          </TrackProperty>
+          <TrackProperty>
+            <ObjectName>SeratoDuration</ObjectName>
+            <Size>62f,20f</Size>
+            <TooltipId>track_duration</TooltipId>
+            <Property>durationTextCentiseconds</Property>
+            <Alignment>right</Alignment>
             <Channel><Variable name="ChanNum"/></Channel>
           </TrackProperty>
         </Children>
@@ -66,60 +83,29 @@
         <TrackColorAlpha>255</TrackColorAlpha>
       </TrackWidgetGroup>
 
-      <!-- Row 3: [Hotcues 2x4 | Transport+Spinny column] -->
+      <!-- Row 3: [Hotcues + BeatLoops | Transport + Spinny] -->
       <WidgetGroup>
         <ObjectName>SeratoMainRow</ObjectName>
         <Layout>horizontal</Layout>
-        <SizePolicy>me,me</SizePolicy>
+        <SizePolicy>me,f</SizePolicy>
+        <Size>0me,162f</Size>
         <Children>
 
-          <!-- LEFT: Hotcue pads 2x4 -->
+          <!-- LEFT: Hotcue pads (expand) + BeatLoops -->
           <WidgetGroup>
             <ObjectName>SeratoHotcueGrid</ObjectName>
             <Layout>vertical</Layout>
-            <SizePolicy>me,me</SizePolicy>
+            <SizePolicy>me,min</SizePolicy>
             <Children>
               <!-- Hotcues 1-4 -->
               <WidgetGroup>
                 <Layout>horizontal</Layout>
                 <SizePolicy>me,min</SizePolicy>
                 <Children>
-                  <HotcueButton>
-                    <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,24</MinimumSize>
-                    <Group><Variable name="Group"/></Group><Hotcue>1</Hotcue><NumberStates>3</NumberStates>
-                    <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
-                    <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:Serato/buttons/hotcue_unset.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/hotcue_pressed.svg</Pressed></State>
-                    <State><Number>1</Number></State>
-                    <State><Number>2</Number></State>
-                  </HotcueButton>
-                  <HotcueButton>
-                    <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,24</MinimumSize>
-                    <Group><Variable name="Group"/></Group><Hotcue>2</Hotcue><NumberStates>3</NumberStates>
-                    <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
-                    <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:Serato/buttons/hotcue_unset.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/hotcue_pressed.svg</Pressed></State>
-                    <State><Number>1</Number></State>
-                    <State><Number>2</Number></State>
-                  </HotcueButton>
-                  <HotcueButton>
-                    <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,24</MinimumSize>
-                    <Group><Variable name="Group"/></Group><Hotcue>3</Hotcue><NumberStates>3</NumberStates>
-                    <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
-                    <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:Serato/buttons/hotcue_unset.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/hotcue_pressed.svg</Pressed></State>
-                    <State><Number>1</Number></State>
-                    <State><Number>2</Number></State>
-                  </HotcueButton>
-                  <HotcueButton>
-                    <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,24</MinimumSize>
-                    <Group><Variable name="Group"/></Group><Hotcue>4</Hotcue><NumberStates>3</NumberStates>
-                    <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
-                    <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:Serato/buttons/hotcue_unset.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/hotcue_pressed.svg</Pressed></State>
-                    <State><Number>1</Number></State>
-                    <State><Number>2</Number></State>
-                  </HotcueButton>
+                  <HotcueButton><ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId><SizePolicy>me,f</SizePolicy><MinimumSize>24,46</MinimumSize><Group><Variable name="Group"/></Group><Hotcue>1</Hotcue><NumberStates>3</NumberStates><DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold><State><Number>0</Number><Unpressed scalemode="STRETCH">skins:Serato/buttons/hotcue_unset.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/hotcue_pressed.svg</Pressed></State><State><Number>1</Number></State><State><Number>2</Number></State></HotcueButton>
+                  <HotcueButton><ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId><SizePolicy>me,f</SizePolicy><MinimumSize>24,46</MinimumSize><Group><Variable name="Group"/></Group><Hotcue>2</Hotcue><NumberStates>3</NumberStates><DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold><State><Number>0</Number><Unpressed scalemode="STRETCH">skins:Serato/buttons/hotcue_unset.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/hotcue_pressed.svg</Pressed></State><State><Number>1</Number></State><State><Number>2</Number></State></HotcueButton>
+                  <HotcueButton><ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId><SizePolicy>me,f</SizePolicy><MinimumSize>24,46</MinimumSize><Group><Variable name="Group"/></Group><Hotcue>3</Hotcue><NumberStates>3</NumberStates><DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold><State><Number>0</Number><Unpressed scalemode="STRETCH">skins:Serato/buttons/hotcue_unset.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/hotcue_pressed.svg</Pressed></State><State><Number>1</Number></State><State><Number>2</Number></State></HotcueButton>
+                  <HotcueButton><ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId><SizePolicy>me,f</SizePolicy><MinimumSize>24,46</MinimumSize><Group><Variable name="Group"/></Group><Hotcue>4</Hotcue><NumberStates>3</NumberStates><DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold><State><Number>0</Number><Unpressed scalemode="STRETCH">skins:Serato/buttons/hotcue_unset.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/hotcue_pressed.svg</Pressed></State><State><Number>1</Number></State><State><Number>2</Number></State></HotcueButton>
                 </Children>
               </WidgetGroup>
               <!-- Hotcues 5-8 -->
@@ -127,278 +113,136 @@
                 <Layout>horizontal</Layout>
                 <SizePolicy>me,min</SizePolicy>
                 <Children>
-                  <HotcueButton>
-                    <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,24</MinimumSize>
-                    <Group><Variable name="Group"/></Group><Hotcue>5</Hotcue><NumberStates>3</NumberStates>
-                    <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
-                    <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:Serato/buttons/hotcue_unset.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/hotcue_pressed.svg</Pressed></State>
-                    <State><Number>1</Number></State>
-                    <State><Number>2</Number></State>
-                  </HotcueButton>
-                  <HotcueButton>
-                    <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,24</MinimumSize>
-                    <Group><Variable name="Group"/></Group><Hotcue>6</Hotcue><NumberStates>3</NumberStates>
-                    <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
-                    <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:Serato/buttons/hotcue_unset.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/hotcue_pressed.svg</Pressed></State>
-                    <State><Number>1</Number></State>
-                    <State><Number>2</Number></State>
-                  </HotcueButton>
-                  <HotcueButton>
-                    <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,24</MinimumSize>
-                    <Group><Variable name="Group"/></Group><Hotcue>7</Hotcue><NumberStates>3</NumberStates>
-                    <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
-                    <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:Serato/buttons/hotcue_unset.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/hotcue_pressed.svg</Pressed></State>
-                    <State><Number>1</Number></State>
-                    <State><Number>2</Number></State>
-                  </HotcueButton>
-                  <HotcueButton>
-                    <ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId>
-                    <SizePolicy>me,f</SizePolicy><MinimumSize>24,24</MinimumSize>
-                    <Group><Variable name="Group"/></Group><Hotcue>8</Hotcue><NumberStates>3</NumberStates>
-                    <DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold>
-                    <State><Number>0</Number><Unpressed scalemode="STRETCH">skins:Serato/buttons/hotcue_unset.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/hotcue_pressed.svg</Pressed></State>
-                    <State><Number>1</Number></State>
-                    <State><Number>2</Number></State>
-                  </HotcueButton>
+                  <HotcueButton><ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId><SizePolicy>me,f</SizePolicy><MinimumSize>24,46</MinimumSize><Group><Variable name="Group"/></Group><Hotcue>5</Hotcue><NumberStates>3</NumberStates><DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold><State><Number>0</Number><Unpressed scalemode="STRETCH">skins:Serato/buttons/hotcue_unset.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/hotcue_pressed.svg</Pressed></State><State><Number>1</Number></State><State><Number>2</Number></State></HotcueButton>
+                  <HotcueButton><ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId><SizePolicy>me,f</SizePolicy><MinimumSize>24,46</MinimumSize><Group><Variable name="Group"/></Group><Hotcue>6</Hotcue><NumberStates>3</NumberStates><DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold><State><Number>0</Number><Unpressed scalemode="STRETCH">skins:Serato/buttons/hotcue_unset.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/hotcue_pressed.svg</Pressed></State><State><Number>1</Number></State><State><Number>2</Number></State></HotcueButton>
+                  <HotcueButton><ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId><SizePolicy>me,f</SizePolicy><MinimumSize>24,46</MinimumSize><Group><Variable name="Group"/></Group><Hotcue>7</Hotcue><NumberStates>3</NumberStates><DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold><State><Number>0</Number><Unpressed scalemode="STRETCH">skins:Serato/buttons/hotcue_unset.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/hotcue_pressed.svg</Pressed></State><State><Number>1</Number></State><State><Number>2</Number></State></HotcueButton>
+                  <HotcueButton><ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId><SizePolicy>me,f</SizePolicy><MinimumSize>24,46</MinimumSize><Group><Variable name="Group"/></Group><Hotcue>8</Hotcue><NumberStates>3</NumberStates><DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold><State><Number>0</Number><Unpressed scalemode="STRETCH">skins:Serato/buttons/hotcue_unset.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/hotcue_pressed.svg</Pressed></State><State><Number>1</Number></State><State><Number>2</Number></State></HotcueButton>
+                </Children>
+              </WidgetGroup>
+              <!-- Beat Loops -->
+              <WidgetGroup>
+                <ObjectName>SeratoBeatLoops</ObjectName>
+                <Layout>horizontal</Layout>
+                <SizePolicy>me,min</SizePolicy>
+                <Children>
+                  <PushButton><ObjectName>LoopPageBtn</ObjectName><TooltipId>loop_halve</TooltipId><Size>16f,52f</Size><NumberStates>1</NumberStates><State><Number>0</Number><Text>&#x25C0;</Text></State><Connection><ConfigKey><Variable name="Group"/>,loop_halve</ConfigKey><ButtonState>LeftButton</ButtonState></Connection></PushButton>
+                  <WidgetGroup>
+                    <Layout>vertical</Layout>
+                    <SizePolicy>me,min</SizePolicy>
+                    <Children>
+                      <WidgetGroup>
+                        <Layout>horizontal</Layout><SizePolicy>me,min</SizePolicy>
+                        <Children>
+                          <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">1/8</SetVariable><SetVariable name="state_1_text">1/8</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_0.125_toggle</SetVariable></Template>
+                          <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">1/4</SetVariable><SetVariable name="state_1_text">1/4</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_0.25_toggle</SetVariable></Template>
+                          <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">1/2</SetVariable><SetVariable name="state_1_text">1/2</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_0.5_toggle</SetVariable></Template>
+                          <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">1</SetVariable><SetVariable name="state_1_text">1</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_1_toggle</SetVariable></Template>
+                        </Children>
+                      </WidgetGroup>
+                      <WidgetGroup>
+                        <Layout>horizontal</Layout><SizePolicy>me,min</SizePolicy>
+                        <Children>
+                          <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">2</SetVariable><SetVariable name="state_1_text">2</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_2_toggle</SetVariable></Template>
+                          <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">4</SetVariable><SetVariable name="state_1_text">4</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_4_toggle</SetVariable></Template>
+                          <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">8</SetVariable><SetVariable name="state_1_text">8</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_8_toggle</SetVariable></Template>
+                          <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">16</SetVariable><SetVariable name="state_1_text">16</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_16_toggle</SetVariable></Template>
+                        </Children>
+                      </WidgetGroup>
+                    </Children>
+                  </WidgetGroup>
+                  <PushButton><ObjectName>LoopPageBtn</ObjectName><TooltipId>loop_double</TooltipId><Size>16f,52f</Size><NumberStates>1</NumberStates><State><Number>0</Number><Text>&#x25B6;</Text></State><Connection><ConfigKey><Variable name="Group"/>,loop_double</ConfigKey><ButtonState>LeftButton</ButtonState></Connection></PushButton>
                 </Children>
               </WidgetGroup>
             </Children>
           </WidgetGroup>
 
-          <!-- RIGHT: Transport + Spinny column -->
+          <!-- RIGHT: Transport + Spinny -->
           <WidgetGroup>
             <ObjectName>SeratoSpinnyColumn</ObjectName>
             <Layout>vertical</Layout>
-            <Size>180f,0min</Size>
+            <Size>165f,160f</Size>
             <Children>
-              <!-- Transport: SkipBack | SYNC | Play | CUE | SkipFwd -->
+              <!-- Transport: |◄ SYNC ▶ CUE ►| -->
               <WidgetGroup>
                 <ObjectName>SeratoTransportRow</ObjectName>
                 <Layout>horizontal</Layout>
                 <SizePolicy>me,f</SizePolicy>
-                <Size>0me,32f</Size>
+                <Size>0me,26f</Size>
                 <Children>
                   <PushButton>
-                    <TooltipId>start</TooltipId>
-                    <ObjectName>SkipButton</ObjectName>
-                    <Size>28f,32f</Size>
-                    <NumberStates>1</NumberStates>
-                    <State>
-                      <Number>0</Number>
-                      <Text>|◄</Text>
-                    </State>
-                    <Connection>
-                      <ConfigKey><Variable name="Group"/>,start</ConfigKey>
-                      <ButtonState>LeftButton</ButtonState>
-                    </Connection>
+                    <TooltipId>start</TooltipId><ObjectName>SkipButton</ObjectName>
+                    <Size>18f,26f</Size><NumberStates>1</NumberStates>
+                    <State><Number>0</Number><Text>|◄</Text></State>
+                    <Connection><ConfigKey><Variable name="Group"/>,start</ConfigKey><ButtonState>LeftButton</ButtonState></Connection>
                   </PushButton>
                   <PushButton>
-                    <TooltipId>sync_enabled</TooltipId>
-                    <ObjectName>SyncButton</ObjectName>
-                    <Size>0me,32f</Size>
-                    <NumberStates>2</NumberStates>
-                    <State>
-                      <Number>0</Number>
-                      <Text></Text>
-                      <Unpressed scalemode="STRETCH">skins:Serato/buttons/btn_sync.svg</Unpressed>
-                      <Pressed scalemode="STRETCH">skins:Serato/buttons/btn_sync_active.svg</Pressed>
-                    </State>
-                    <State>
-                      <Number>1</Number>
-                      <Text></Text>
-                      <Unpressed scalemode="STRETCH">skins:Serato/buttons/btn_sync_active.svg</Unpressed>
-                      <Pressed scalemode="STRETCH">skins:Serato/buttons/btn_sync_active.svg</Pressed>
-                    </State>
-                    <Connection>
-                      <ConfigKey><Variable name="Group"/>,sync_enabled</ConfigKey>
-                      <ButtonState>LeftButton</ButtonState>
-                    </Connection>
+                    <TooltipId>sync_enabled</TooltipId><ObjectName>SyncButton</ObjectName>
+                    <Size>0me,26f</Size><NumberStates>2</NumberStates>
+                    <State><Number>0</Number><Text></Text><Unpressed scalemode="STRETCH">skins:Serato/buttons/btn_sync.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/btn_sync_active.svg</Pressed></State>
+                    <State><Number>1</Number><Text></Text><Unpressed scalemode="STRETCH">skins:Serato/buttons/btn_sync_active.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/btn_sync_active.svg</Pressed></State>
+                    <Connection><ConfigKey><Variable name="Group"/>,sync_enabled</ConfigKey><ButtonState>LeftButton</ButtonState></Connection>
                   </PushButton>
                   <PushButton>
-                    <TooltipId>play_cue_set</TooltipId>
-                    <ObjectName>PlayDeck</ObjectName>
-                    <Size>0me,32f</Size>
-                    <NumberStates>2</NumberStates>
-                    <State>
-                      <Number>0</Number>
-                      <Text></Text>
-                      <Unpressed scalemode="STRETCH">skins:Serato/buttons/btn_play.svg</Unpressed>
-                      <Pressed scalemode="STRETCH">skins:Serato/buttons/btn_play_active.svg</Pressed>
-                    </State>
-                    <State>
-                      <Number>1</Number>
-                      <Text></Text>
-                      <Unpressed scalemode="STRETCH">skins:Serato/buttons/btn_play_active.svg</Unpressed>
-                      <Pressed scalemode="STRETCH">skins:Serato/buttons/btn_play_active.svg</Pressed>
-                    </State>
-                    <Connection>
-                      <ConfigKey><Variable name="Group"/>,play</ConfigKey>
-                      <ButtonState>LeftButton</ButtonState>
-                    </Connection>
+                    <TooltipId>play_cue_set</TooltipId><ObjectName>PlayDeck</ObjectName>
+                    <Size>0me,26f</Size><NumberStates>2</NumberStates>
+                    <State><Number>0</Number><Text></Text><Unpressed scalemode="STRETCH">skins:Serato/buttons/btn_play.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/btn_play_active.svg</Pressed></State>
+                    <State><Number>1</Number><Text></Text><Unpressed scalemode="STRETCH">skins:Serato/buttons/btn_play_active.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/btn_play_active.svg</Pressed></State>
+                    <Connection><ConfigKey><Variable name="Group"/>,play</ConfigKey><ButtonState>LeftButton</ButtonState></Connection>
                   </PushButton>
                   <PushButton>
-                    <TooltipId>cue_default_cue_gotoandstop</TooltipId>
-                    <ObjectName>CueDeck</ObjectName>
-                    <Size>0me,32f</Size>
-                    <NumberStates>2</NumberStates>
-                    <State>
-                      <Number>0</Number>
-                      <Text></Text>
-                      <Unpressed scalemode="STRETCH">skins:Serato/buttons/btn_cue.svg</Unpressed>
-                      <Pressed scalemode="STRETCH">skins:Serato/buttons/btn_cue_active.svg</Pressed>
-                    </State>
-                    <State>
-                      <Number>1</Number>
-                      <Text></Text>
-                      <Unpressed scalemode="STRETCH">skins:Serato/buttons/btn_cue_active.svg</Unpressed>
-                      <Pressed scalemode="STRETCH">skins:Serato/buttons/btn_cue_active.svg</Pressed>
-                    </State>
-                    <Connection>
-                      <ConfigKey><Variable name="Group"/>,cue_default</ConfigKey>
-                      <ButtonState>LeftButton</ButtonState>
-                    </Connection>
+                    <TooltipId>cue_default_cue_gotoandstop</TooltipId><ObjectName>CueDeck</ObjectName>
+                    <Size>0me,26f</Size><NumberStates>2</NumberStates>
+                    <State><Number>0</Number><Text></Text><Unpressed scalemode="STRETCH">skins:Serato/buttons/btn_cue.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/btn_cue_active.svg</Pressed></State>
+                    <State><Number>1</Number><Text></Text><Unpressed scalemode="STRETCH">skins:Serato/buttons/btn_cue_active.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/btn_cue_active.svg</Pressed></State>
+                    <Connection><ConfigKey><Variable name="Group"/>,cue_default</ConfigKey><ButtonState>LeftButton</ButtonState></Connection>
                   </PushButton>
                   <PushButton>
-                    <TooltipId>end</TooltipId>
-                    <ObjectName>SkipButton</ObjectName>
-                    <Size>28f,32f</Size>
-                    <NumberStates>1</NumberStates>
-                    <State>
-                      <Number>0</Number>
-                      <Text>►|</Text>
-                    </State>
-                    <Connection>
-                      <ConfigKey><Variable name="Group"/>,end</ConfigKey>
-                      <ButtonState>LeftButton</ButtonState>
-                    </Connection>
+                    <TooltipId>end</TooltipId><ObjectName>SkipButton</ObjectName>
+                    <Size>18f,26f</Size><NumberStates>1</NumberStates>
+                    <State><Number>0</Number><Text>►|</Text></State>
+                    <Connection><ConfigKey><Variable name="Group"/>,end</ConfigKey><ButtonState>LeftButton</ButtonState></Connection>
                   </PushButton>
                 </Children>
               </WidgetGroup>
-              <!-- Spinny (forced square via fixed size) -->
+              <!-- Spinny (large platter) + vertical VU meter beside it -->
               <WidgetGroup>
                 <ObjectName>SeratoSpinnyContainer</ObjectName>
                 <Layout>horizontal</Layout>
-                <Size>150f,150f</Size>
+                <SizePolicy>min,min</SizePolicy>
                 <Children>
-                  <SingletonContainer>
-                    <ObjectName>SpinnyCoverart<Variable name="ChanNum"/></ObjectName>
-                  </SingletonContainer>
+                  <WidgetGroup>
+                    <Layout>horizontal</Layout>
+                    <Size>134f,134f</Size>
+                    <Children>
+                      <SingletonContainer>
+                        <ObjectName>SpinnyCoverart<Variable name="ChanNum"/></ObjectName>
+                      </SingletonContainer>
+                    </Children>
+                  </WidgetGroup>
+                  <WidgetGroup>
+                    <ObjectName>SeratoVuMeter</ObjectName>
+                    <Layout>vertical</Layout>
+                    <SizePolicy>f,f</SizePolicy>
+                    <Size>12f,128f</Size>
+                    <Children>
+                      <VuMeter>
+                        <TooltipId>channel_VuMeter</TooltipId>
+                        <PathBack>skins:Serato/misc_res/vu_v_bg.png</PathBack>
+                        <PathVu>skins:Serato/misc_res/vu_v_active.png</PathVu>
+                        <Horizontal>false</Horizontal>
+                        <Size>12f,128f</Size>
+                        <PeakHoldSize>0</PeakHoldSize><PeakHoldTime>200</PeakHoldTime><PeakFallTime>20</PeakFallTime><PeakFallStep>1</PeakFallStep>
+                        <SizePolicy>f,f</SizePolicy>
+                        <Connection><ConfigKey><Variable name="Group"/>,vu_meter</ConfigKey></Connection>
+                      </VuMeter>
+                    </Children>
+                  </WidgetGroup>
                 </Children>
               </WidgetGroup>
             </Children>
           </WidgetGroup>
 
         </Children>
-      </WidgetGroup>
-
-      <!-- Row 4: Beat Loop Buttons (2 rows, Serato-style with 1/32..32) -->
-      <WidgetGroup>
-        <ObjectName>SeratoBeatLoops</ObjectName>
-        <Layout>vertical</Layout>
-        <SizePolicy>me,min</SizePolicy>
-        <Children>
-          <!-- Row 1: 1/32, 1/16, 1/8, 1/4, 1/2, 1 -->
-          <WidgetGroup>
-            <Layout>horizontal</Layout>
-            <SizePolicy>me,min</SizePolicy>
-            <Children>
-              <Template src="skins:LateNight/controls/button_2state.xml">
-                <SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
-                <SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">1/32</SetVariable><SetVariable name="state_1_text">1/32</SetVariable>
-                <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_0.03125_toggle</SetVariable>
-              </Template>
-              <Template src="skins:LateNight/controls/button_2state.xml">
-                <SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
-                <SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">1/16</SetVariable><SetVariable name="state_1_text">1/16</SetVariable>
-                <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_0.0625_toggle</SetVariable>
-              </Template>
-              <Template src="skins:LateNight/controls/button_2state.xml">
-                <SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
-                <SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">1/8</SetVariable><SetVariable name="state_1_text">1/8</SetVariable>
-                <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_0.125_toggle</SetVariable>
-              </Template>
-              <Template src="skins:LateNight/controls/button_2state.xml">
-                <SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
-                <SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">1/4</SetVariable><SetVariable name="state_1_text">1/4</SetVariable>
-                <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_0.25_toggle</SetVariable>
-              </Template>
-              <Template src="skins:LateNight/controls/button_2state.xml">
-                <SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
-                <SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">1/2</SetVariable><SetVariable name="state_1_text">1/2</SetVariable>
-                <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_0.5_toggle</SetVariable>
-              </Template>
-              <Template src="skins:LateNight/controls/button_2state.xml">
-                <SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
-                <SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">1</SetVariable><SetVariable name="state_1_text">1</SetVariable>
-                <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_1_toggle</SetVariable>
-              </Template>
-            </Children>
-          </WidgetGroup>
-          <!-- Row 2: 2, 4, 8, 16, 32 -->
-          <WidgetGroup>
-            <Layout>horizontal</Layout>
-            <SizePolicy>me,min</SizePolicy>
-            <Children>
-              <Template src="skins:LateNight/controls/button_2state.xml">
-                <SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
-                <SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">2</SetVariable><SetVariable name="state_1_text">2</SetVariable>
-                <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_2_toggle</SetVariable>
-              </Template>
-              <Template src="skins:LateNight/controls/button_2state.xml">
-                <SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
-                <SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">4</SetVariable><SetVariable name="state_1_text">4</SetVariable>
-                <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_4_toggle</SetVariable>
-              </Template>
-              <Template src="skins:LateNight/controls/button_2state.xml">
-                <SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
-                <SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">8</SetVariable><SetVariable name="state_1_text">8</SetVariable>
-                <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_8_toggle</SetVariable>
-              </Template>
-              <Template src="skins:LateNight/controls/button_2state.xml">
-                <SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
-                <SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">16</SetVariable><SetVariable name="state_1_text">16</SetVariable>
-                <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_16_toggle</SetVariable>
-              </Template>
-              <Template src="skins:LateNight/controls/button_2state.xml">
-                <SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable>
-                <SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">32</SetVariable><SetVariable name="state_1_text">32</SetVariable>
-                <SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_32_toggle</SetVariable>
-              </Template>
-            </Children>
-          </WidgetGroup>
-        </Children>
-      </WidgetGroup>
-
-      <!-- Row 5: VU Meter (when mixer hidden) -->
-      <WidgetGroup>
-        <ObjectName>SeratoVuMeter</ObjectName>
-        <Layout>horizontal</Layout>
-        <SizePolicy>me,f</SizePolicy>
-        <Size>0me,8f</Size>
-        <Children>
-          <VuMeter>
-            <TooltipId>channel_VuMeter</TooltipId>
-            <PathBack>skins:LateNight/<Variable name="StyleScheme"/>/style/vu_deck_level_bg_dark.png</PathBack>
-            <PathVu>skins:LateNight/<Variable name="StyleScheme"/>/style/vu_deck_level_active.png</PathVu>
-            <Horizontal>true</Horizontal>
-            <PeakHoldSize>3</PeakHoldSize>
-            <PeakHoldTime>500</PeakHoldTime>
-            <PeakFallTime>10</PeakFallTime>
-            <PeakFallStep>2</PeakFallStep>
-            <SizePolicy>me,f</SizePolicy>
-            <Connection>
-              <ConfigKey><Variable name="Group"/>,vu_meter</ConfigKey>
-            </Connection>
-          </VuMeter>
-        </Children>
-        <Connection>
-          <ConfigKey persist="true">[Skin],show_mixer</ConfigKey>
-          <Transform><Not/></Transform>
-          <BindProperty>visible</BindProperty>
-        </Connection>
       </WidgetGroup>
 
     </Children>
