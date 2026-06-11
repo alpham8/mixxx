@@ -43,8 +43,9 @@
         </Children>
       </WidgetGroup>
 
-      <!-- Row 2: Artist + Position + Remaining -->
+      <!-- Row 2: Artist -->
       <WidgetGroup>
+        <ObjectName>SeratoTrackInfo</ObjectName>
         <Layout>horizontal</Layout>
         <SizePolicy>me,min</SizePolicy>
         <Children>
