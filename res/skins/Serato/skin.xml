@@ -200,10 +200,10 @@
       <SetVariable name="EndOfTrackColor">#ff3333</SetVariable>
       <SetVariable name="SlipBorderOutlineColor">#ff6600</SetVariable>
       <SetVariable name="PassthroughLabelColor">#b24c12</SetVariable>
-      <SetVariable name="OverviewFontSizeDeck">13</SetVariable>
-      <SetVariable name="OverviewFontSizeDeckMini">11</SetVariable>
-      <SetVariable name="OverviewFontSizeSampler">10</SetVariable>
-      <SetVariable name="OverviewFontSizePreview">9</SetVariable>
+      <SetVariable name="OverviewFontSizeDeck">0</SetVariable>
+      <SetVariable name="OverviewFontSizeDeckMini">0</SetVariable>
+      <SetVariable name="OverviewFontSizeSampler">0</SetVariable>
+      <SetVariable name="OverviewFontSizePreview">0</SetVariable>
 
       <!-- Set the button icons used by templates in LateNight/controls/button...xml
            There, those border icons are stacked on top of the additional icons set in css.
