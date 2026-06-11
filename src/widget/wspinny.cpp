@@ -95,9 +95,11 @@ void WSpinny::draw() {
     }
 
     // Serato-style BPM/Time overlay on spinny
+    // Must come after cue glow and reset clip path
     {
         p.resetTransform();
         p.setClipping(false);
+        p.setCompositionMode(QPainter::CompositionMode_SourceOver);
 
         const double bpm = m_pBpm.get();
         const double playPos = m_pPlayPos.get();
