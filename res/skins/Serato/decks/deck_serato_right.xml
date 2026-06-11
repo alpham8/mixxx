@@ -165,6 +165,7 @@
                       </VuMeter>
                     </Children>
                   </WidgetGroup>
+                  <WidgetGroup><Size>16f,1min</Size></WidgetGroup>
                   <WidgetGroup>
                     <Layout>horizontal</Layout>
                     <Size>134f,134f</Size>

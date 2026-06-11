@@ -3923,7 +3923,7 @@ WSearchLineEdit::indicator:unchecked:selected {
 #DeckSerato2 #SeratoVuMeter,
 #DeckSerato3 #SeratoVuMeter,
 #DeckSerato4 #SeratoVuMeter {
-    margin: 0px 2px;
+    margin: 0px;
     padding: 0px;
     background-color: #0a0a0a;
 }

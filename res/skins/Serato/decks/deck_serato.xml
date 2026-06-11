@@ -219,6 +219,7 @@
                       </SingletonContainer>
                     </Children>
                   </WidgetGroup>
+                  <WidgetGroup><Size>16f,1min</Size></WidgetGroup>
                   <WidgetGroup>
                     <ObjectName>SeratoVuMeter</ObjectName>
                     <Layout>vertical</Layout>
