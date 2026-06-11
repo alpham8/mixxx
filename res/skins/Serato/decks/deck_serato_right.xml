@@ -113,12 +113,12 @@
                     <Size>0me,32f</Size>
                     <NumberStates>2</NumberStates>
                     <State><Number>0</Number><Text></Text>
-                      <Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__sync_deck.svg</Unpressed>
-                      <Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__sync_deck_active.svg</Pressed>
+                      <Unpressed scalemode="STRETCH">skins:Serato/buttons/btn_sync.svg</Unpressed>
+                      <Pressed scalemode="STRETCH">skins:Serato/buttons/btn_sync_active.svg</Pressed>
                     </State>
                     <State><Number>1</Number><Text></Text>
-                      <Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__sync_deck_active.svg</Unpressed>
-                      <Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__sync_deck_active.svg</Pressed>
+                      <Unpressed scalemode="STRETCH">skins:Serato/buttons/btn_sync_active.svg</Unpressed>
+                      <Pressed scalemode="STRETCH">skins:Serato/buttons/btn_sync_active.svg</Pressed>
                     </State>
                     <Connection><ConfigKey><Variable name="Group"/>,sync_enabled</ConfigKey><ButtonState>LeftButton</ButtonState></Connection>
                   </PushButton>
@@ -128,12 +128,12 @@
                     <Size>0me,32f</Size>
                     <NumberStates>2</NumberStates>
                     <State><Number>0</Number><Text></Text>
-                      <Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__play_deck.svg</Unpressed>
-                      <Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__play_deck_active.svg</Pressed>
+                      <Unpressed scalemode="STRETCH">skins:Serato/buttons/btn_play.svg</Unpressed>
+                      <Pressed scalemode="STRETCH">skins:Serato/buttons/btn_play_active.svg</Pressed>
                     </State>
                     <State><Number>1</Number><Text></Text>
-                      <Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__play_deck_active.svg</Unpressed>
-                      <Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__play_deck_active.svg</Pressed>
+                      <Unpressed scalemode="STRETCH">skins:Serato/buttons/btn_play_active.svg</Unpressed>
+                      <Pressed scalemode="STRETCH">skins:Serato/buttons/btn_play_active.svg</Pressed>
                     </State>
                     <Connection><ConfigKey><Variable name="Group"/>,play</ConfigKey><ButtonState>LeftButton</ButtonState></Connection>
                   </PushButton>
@@ -143,12 +143,12 @@
                     <Size>0me,32f</Size>
                     <NumberStates>2</NumberStates>
                     <State><Number>0</Number><Text></Text>
-                      <Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__cue_deck.svg</Unpressed>
-                      <Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__cue_deck_active.svg</Pressed>
+                      <Unpressed scalemode="STRETCH">skins:Serato/buttons/btn_cue.svg</Unpressed>
+                      <Pressed scalemode="STRETCH">skins:Serato/buttons/btn_cue_active.svg</Pressed>
                     </State>
                     <State><Number>1</Number><Text></Text>
-                      <Unpressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__cue_deck_active.svg</Unpressed>
-                      <Pressed scalemode="STRETCH">skins:LateNight/<Variable name="BtnScheme"/>/buttons/btn__cue_deck_active.svg</Pressed>
+                      <Unpressed scalemode="STRETCH">skins:Serato/buttons/btn_cue_active.svg</Unpressed>
+                      <Pressed scalemode="STRETCH">skins:Serato/buttons/btn_cue_active.svg</Pressed>
                     </State>
                     <Connection><ConfigKey><Variable name="Group"/>,cue_default</ConfigKey><ButtonState>LeftButton</ButtonState></Connection>
                   </PushButton>
