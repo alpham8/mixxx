@@ -9,6 +9,7 @@
 #include <QMimeData>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QPainterPath>
 
 #include "engine/controls/cuecontrol.h"
 #include "mixer/playerinfo.h"
@@ -36,7 +37,8 @@ WHotcueButton::WHotcueButton(QWidget* pParent, const QString& group)
           m_cueColorDimThreshold(kDefaultDimBrightThreshold),
           m_bCueColorDimmed(false),
           m_bCueColorIsLight(false),
-          m_bCueColorIsDark(false) {
+          m_bCueColorIsDark(false),
+          m_cueColor(0x26, 0x26, 0x26) {
     setAcceptDrops(true);
 }
 
@@ -193,54 +195,77 @@ void WHotcueButton::paintEvent(QPaintEvent* pEvent) {
         }
     }
 
-    constexpr int kLabelHeight = 15;
-    const int labelH = cueLabel.isEmpty() ? 0 : kLabelHeight;
+    // Serato layout: the pad is a rounded rectangle in the cue color. When the
+    // cue carries a label, a black strip with padded white text sits on top of
+    // the pad; the play triangle is always white. Empty pads show the hotcue
+    // number on a neutral dark pad.
+    const QRectF padRect(0.5, 0.5, width() - 1.0, height() - 1.0);
+    const QColor padColor = isSet ? m_cueColor : QColor(0x26, 0x26, 0x26);
+    p.setPen(QPen(QColor(0, 0, 0, 80), 1.0));
+    p.setBrush(padColor);
+    p.drawRoundedRect(padRect, 3.0, 3.0);
 
-    // Serato-style dark label strip on top of the colored pad.
-    if (labelH > 0) {
-        p.fillRect(0, 0, width(), labelH, QColor(18, 18, 18));
-        QFont labelFont;
-        labelFont.setPixelSize(10);
-        p.setFont(labelFont);
-        p.setPen(QColor(225, 225, 225));
-        QRect labelRect(3, 0, width() - 6, labelH);
-        QFontMetrics fm(labelFont);
-        const QString elided = fm.elidedText(cueLabel, Qt::ElideRight, width() - 6);
-        p.drawText(labelRect, Qt::AlignVCenter | Qt::AlignHCenter, elided);
-    }
-
-    const int areaTop = labelH;
-    const int areaH = height() - labelH;
-
-    const QColor fgColor = isSet
-            ? (m_bCueColorDimmed ? QColor(0, 0, 0, 215) : QColor(255, 255, 255, 230))
-            : QColor(110, 110, 110);
-
-    // Play triangle in the colored area (set pads only).
-    if (isSet) {
-        const int triSize = qMin(areaH / 3, 9);
-        const int x = 4;
-        const int y = areaTop + (areaH - triSize) / 2;
-        QPolygon triangle;
-        triangle << QPoint(x, y)
-                 << QPoint(x + triSize, y + triSize / 2)
-                 << QPoint(x, y + triSize);
-        p.setPen(Qt::NoPen);
-        p.setBrush(fgColor);
-        p.drawPolygon(triangle);
-    }
-
-    // Serato style: labeled cues show only the label + triangle. Pads without a
-    // custom label show their number so the user can identify them by index.
-    if (labelH == 0) {
+    if (!isSet) {
+        // Empty pad: show the hotcue number centered.
         QFont numFont;
-        numFont.setPixelSize(qMax(areaH / 2, 11));
         numFont.setBold(true);
+        numFont.setPixelSize(qMax(static_cast<int>(padRect.height()) / 2, 10));
         p.setFont(numFont);
-        p.setPen(fgColor);
-        QRect numRect(0, areaTop, width(), areaH);
-        p.drawText(numRect, Qt::AlignCenter, QString::number(m_hotcue + 1));
+        p.setPen(QColor(120, 120, 120));
+        p.drawText(padRect, Qt::AlignCenter, QString::number(m_hotcue + 1));
+        return;
     }
+
+    qreal regionTop = 0.0;
+    qreal regionH = height();
+
+    if (!cueLabel.isEmpty()) {
+        const int labelH = qBound(12, height() * 2 / 5, 18);
+
+        // Black label strip, clipped to the pad so it keeps the rounded top
+        // corners but meets the colored pad with a straight bottom edge.
+        QPainterPath padPath;
+        padPath.addRoundedRect(padRect, 3.0, 3.0);
+        p.save();
+        p.setClipPath(padPath);
+        p.fillRect(QRectF(padRect.left(), padRect.top(), padRect.width(), labelH),
+                QColor(0, 0, 0));
+        p.restore();
+
+        const int padX = 4;
+        const int avail = width() - 2 * padX;
+        QFont labelFont;
+        labelFont.setBold(true);
+        int fontPx = qBound(8, labelH - 4, 11);
+        labelFont.setPixelSize(fontPx);
+        QFontMetrics fm(labelFont);
+        // Shrink the font until the cue name fits, so labels like "Energy 5"
+        // are shown in full instead of being elided.
+        while (fontPx > 7 && fm.horizontalAdvance(cueLabel) > avail) {
+            labelFont.setPixelSize(--fontPx);
+            fm = QFontMetrics(labelFont);
+        }
+        p.setFont(labelFont);
+        p.setPen(QColor(255, 255, 255));
+        const QString elided = fm.elidedText(cueLabel, Qt::ElideRight, avail);
+        p.drawText(QRectF(padX, 0, avail, labelH),
+                Qt::AlignVCenter | Qt::AlignHCenter, elided);
+
+        regionTop = labelH;
+        regionH = height() - labelH;
+    }
+
+    // White play triangle, centered in the colored region below the label.
+    const int triSize = qBound(6, static_cast<int>(regionH) / 2, 12);
+    const int cx = static_cast<int>(width() / 2.0);
+    const int cy = static_cast<int>(regionTop + regionH / 2.0);
+    QPolygon triangle;
+    triangle << QPoint(cx - triSize / 2, cy - triSize / 2)
+             << QPoint(cx + triSize / 2, cy)
+             << QPoint(cx - triSize / 2, cy + triSize / 2);
+    p.setPen(Qt::NoPen);
+    p.setBrush(QColor(255, 255, 255, 240));
+    p.drawPolygon(triangle);
 }
 
 bool WHotcueButton::isActive() const {
@@ -384,26 +409,11 @@ void WHotcueButton::slotColorChanged(double color) {
     VERIFY_OR_DEBUG_ASSERT(color >= 0 && color <= 0xFFFFFF) {
         return;
     }
-    QColor cueColor = QColor::fromRgb(static_cast<QRgb>(color));
-    m_bCueColorDimmed = Color::isDimColorCustom(cueColor, m_cueColorDimThreshold);
+    m_cueColor = QColor::fromRgb(static_cast<QRgb>(color));
+    m_bCueColorDimmed = Color::isDimColorCustom(m_cueColor, m_cueColorDimThreshold);
 
-    QString style =
-            QStringLiteral(
-                    "WWidget[displayValue=\"1\"], "
-                    "WWidget[displayValue=\"2\"] { background-color: ") +
-            cueColor.name() +
-            QStringLiteral("; }");
-
-    if (m_hoverCueColor) {
-        style +=
-                QStringLiteral(
-                        "WWidget[displayValue=\"1\"]:hover, "
-                        "WWidget[displayValue=\"2\"]:hover { background-color: ") +
-                cueColor.lighter(m_bCueColorDimmed ? 120 : 80).name() +
-                QStringLiteral("; }");
-    }
-
-    setStyleSheet(style);
+    // The colored pad and its label are drawn in paintEvent, so we no longer
+    // set a per-widget background stylesheet here.
     restyleAndRepaint();
 }
 

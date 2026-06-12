@@ -2,7 +2,7 @@
 
   <WidgetGroup>
     <Layout>vertical</Layout>
-    <MaximumSize>,320</MaximumSize>
+    <MaximumSize>,360</MaximumSize>
     <Children>
 
       <Template src="skins:Serato/decks/deck_singletons_right.xml">
@@ -46,12 +46,12 @@
             </Children>
           </WidgetStack>
 
-          <!-- mixer shown = full deck -->
+          <!-- mixer shown: keep the Serato panel (EQ now lives in the inner columns) -->
           <WidgetGroup trigger="[Skin],show_mixer" on_hide_select="0">
             <Layout>horizontal</Layout>
             <Children>
               <SingletonContainer>
-                <ObjectName>Deck<Variable name="ChanNum"/>_Full</ObjectName>
+                <ObjectName>Deck<Variable name="ChanNum"/>_Compact</ObjectName>
               </SingletonContainer>
             </Children>
           </WidgetGroup>

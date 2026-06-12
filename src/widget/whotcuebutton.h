@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QColor>
 #include <QString>
 
 #include "util/parented_ptr.h"
@@ -63,6 +64,7 @@ class WHotcueButton : public WPushButton {
     bool m_bCueColorDimmed;
     bool m_bCueColorIsLight;
     bool m_bCueColorIsDark;
+    QColor m_cueColor;
     QString m_type;
     QString m_direction;
     QMargins m_dndRectMargins;

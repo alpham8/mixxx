@@ -5,6 +5,62 @@
     <SizePolicy>e,min</SizePolicy>
     <Children>
 
+      <!-- Serato-style far-left clock with buffer readout beneath it -->
+      <WidgetGroup>
+        <ObjectName>SeratoClockColumn</ObjectName>
+        <Layout>vertical</Layout>
+        <SizePolicy>min,min</SizePolicy>
+        <Children>
+          <WidgetGroup>
+            <ObjectName>ClockWidget</ObjectName>
+            <Layout>horizontal</Layout>
+            <SizePolicy>min,min</SizePolicy>
+            <Children>
+              <Time>
+                <TooltipId>time</TooltipId>
+              </Time>
+            </Children>
+          </WidgetGroup>
+          <WidgetGroup>
+            <ObjectName>LatencyMeterBox</ObjectName>
+            <Size>61f,7f</Size>
+            <Layout>vertical</Layout>
+            <Children>
+              <VuMeter>
+                <TooltipId>audio_latency_usage</TooltipId>
+                <Size>59f,5f</Size>
+                <PathBack>skins:LateNight/<Variable name="StyleScheme"/>/style/latency_bg.png</PathBack>
+                <PathVu>skins:LateNight/<Variable name="StyleScheme"/>/style/latency_over.png</PathVu>
+                <Horizontal>true</Horizontal>
+                <PeakHoldSize>5</PeakHoldSize>
+                <PeakHoldTime>1000</PeakHoldTime>
+                <PeakFallTime>100</PeakFallTime>
+                <PeakFallStep>1</PeakFallStep>
+                <Connection>
+                  <ConfigKey>[App],audio_latency_usage</ConfigKey>
+                </Connection>
+              </VuMeter>
+            </Children>
+            <Connection>
+              <ConfigKey>[App],audio_latency_overload</ConfigKey>
+              <BindProperty>highlight</BindProperty>
+            </Connection>
+          </WidgetGroup>
+          <Label>
+            <ObjectName>LatencyLabel</ObjectName>
+            <TooltipId>audio_latency_usage</TooltipId>
+            <Size>0min,10f</Size>
+            <Alignment>center</Alignment>
+            <Text>Buffer %</Text>
+          </Label>
+        </Children>
+      </WidgetGroup>
+
+      <WidgetGroup>
+        <ObjectName>ToolbarSeparator</ObjectName>
+        <Size>12f,9min</Size>
+      </WidgetGroup>
+
       <Template src="skins:LateNight/controls/button_2state.xml">
         <SetVariable name="TooltipId">maximize_library</SetVariable>
         <SetVariable name="ObjectName">GuiToggleButton</SetVariable>
@@ -88,6 +144,20 @@
             <SetVariable name="ConfigKey">[OS2L],enabled</SetVariable>
           </Template>
 
+          <!-- Quantize: one toolbar toggle drives all four decks (Serato-style) -->
+          <PushButton>
+            <ObjectName>GuiToggleButton</ObjectName>
+            <TooltipId>quantize</TooltipId>
+            <Size>72f,20f</Size>
+            <NumberStates>2</NumberStates>
+            <State><Number>0</Number><Text>QUANTIZE</Text></State>
+            <State><Number>1</Number><Text>QUANTIZE</Text></State>
+            <Connection><ConfigKey>[Channel1],quantize</ConfigKey><ButtonState>LeftButton</ButtonState></Connection>
+            <Connection><ConfigKey>[Channel2],quantize</ConfigKey><ButtonState>LeftButton</ButtonState></Connection>
+            <Connection><ConfigKey>[Channel3],quantize</ConfigKey><ButtonState>LeftButton</ButtonState></Connection>
+            <Connection><ConfigKey>[Channel4],quantize</ConfigKey><ButtonState>LeftButton</ButtonState></Connection>
+          </PushButton>
+
         </Children>
         <Connection>
           <ConfigKey>[Skin],show_maximized_library</ConfigKey>
@@ -138,6 +208,24 @@
 
       <WidgetGroup><Size>me,min</Size></WidgetGroup>
 
+      <!-- Crossfader, centered in the free toolbar space, shown with the mixer -->
+      <WidgetGroup>
+        <ObjectName>SeratoToolbarXfader</ObjectName>
+        <Layout>horizontal</Layout>
+        <SizePolicy>min,min</SizePolicy>
+        <Children>
+          <SingletonContainer>
+            <ObjectName>CrossfaderSingleton</ObjectName>
+          </SingletonContainer>
+        </Children>
+        <Connection>
+          <ConfigKey persist="true">[Skin],show_mixer</ConfigKey>
+          <BindProperty>visible</BindProperty>
+        </Connection>
+      </WidgetGroup>
+
+      <WidgetGroup><Size>me,min</Size></WidgetGroup>
+
       <StatusLight>
         <TooltipId>autodj_status</TooltipId>
         <ObjectName>AutoDjStatus</ObjectName>
@@ -154,69 +242,6 @@
           <BindProperty>visible</BindProperty>
         </Connection>
       </StatusLight>
-
-      <WidgetGroup>
-        <ObjectName>ClockWidget</ObjectName>
-        <Layout>horizontal</Layout>
-        <SizePolicy>min,min</SizePolicy>
-        <Children>
-          <Time>
-            <TooltipId>time</TooltipId>
-          </Time>
-        </Children>
-      </WidgetGroup>
-
-      <WidgetGroup><Size>7f,1min</Size></WidgetGroup>
-
-      <WidgetGroup>
-        <ObjectName>LatencyBatteryContainer</ObjectName>
-        <Layout>horizontal</Layout>
-        <SizePolicy>min,min</SizePolicy>
-        <Children>
-
-          <WidgetGroup>
-            <ObjectName></ObjectName>
-            <Layout>vertical</Layout>
-            <Children>
-              <WidgetGroup><Size>,0min</Size></WidgetGroup>
-              <WidgetGroup>
-                <ObjectName>LatencyMeterBox</ObjectName>
-                <Size>61f,7f</Size>
-                <Layout>vertical</Layout>
-                <Children>
-                  <VuMeter>
-                    <TooltipId>audio_latency_usage</TooltipId>
-                    <Size>59f,5f</Size>
-                    <PathBack>skins:LateNight/<Variable name="StyleScheme"/>/style/latency_bg.png</PathBack>
-                    <PathVu>skins:LateNight/<Variable name="StyleScheme"/>/style/latency_over.png</PathVu>
-                    <Horizontal>true</Horizontal>
-                    <PeakHoldSize>5</PeakHoldSize>
-                    <PeakHoldTime>1000</PeakHoldTime>
-                    <PeakFallTime>100</PeakFallTime>
-                    <PeakFallStep>1</PeakFallStep>
-                    <Connection>
-                      <ConfigKey>[App],audio_latency_usage</ConfigKey>
-                    </Connection>
-                  </VuMeter>
-                </Children>
-                <Connection>
-                  <ConfigKey>[App],audio_latency_overload</ConfigKey>
-                  <BindProperty>highlight</BindProperty>
-                </Connection>
-              </WidgetGroup><!-- LatencyMeterBox -->
-              <Label>
-                <ObjectName>LatencyLabel</ObjectName>
-                <TooltipId>audio_latency_usage</TooltipId>
-                <Size>0min,10f</Size>
-                <Alignment>center</Alignment>
-                <Text>Buffer %</Text>
-              </Label>
-            </Children>
-          </WidgetGroup><!-- LatencyMeterBox -->
-        </Children>
-      </WidgetGroup><!-- LatencyBatteryContainer -->
-
-      <WidgetGroup><Size>7f,1min</Size></WidgetGroup>
 
       <WidgetGroup>
         <ObjectName>BatteryBox</ObjectName>
