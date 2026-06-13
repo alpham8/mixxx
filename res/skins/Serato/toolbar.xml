@@ -8,7 +8,7 @@
       <!-- Serato-style far-left clock with buffer readout beneath it -->
       <WidgetGroup>
         <ObjectName>SeratoClockColumn</ObjectName>
-        <Layout>vertical</Layout>
+        <Layout>horizontal</Layout>
         <SizePolicy>min,min</SizePolicy>
         <Children>
           <WidgetGroup>
@@ -21,38 +21,48 @@
               </Time>
             </Children>
           </WidgetGroup>
+
+          <WidgetGroup><Size>10f,1min</Size></WidgetGroup>
+
           <WidgetGroup>
-            <ObjectName>LatencyMeterBox</ObjectName>
-            <Size>61f,7f</Size>
+            <ObjectName>SeratoBufferBox</ObjectName>
             <Layout>vertical</Layout>
+            <SizePolicy>min,min</SizePolicy>
             <Children>
-              <VuMeter>
-                <TooltipId>audio_latency_usage</TooltipId>
-                <Size>59f,5f</Size>
-                <PathBack>skins:LateNight/<Variable name="StyleScheme"/>/style/latency_bg.png</PathBack>
-                <PathVu>skins:LateNight/<Variable name="StyleScheme"/>/style/latency_over.png</PathVu>
-                <Horizontal>true</Horizontal>
-                <PeakHoldSize>5</PeakHoldSize>
-                <PeakHoldTime>1000</PeakHoldTime>
-                <PeakFallTime>100</PeakFallTime>
-                <PeakFallStep>1</PeakFallStep>
+              <WidgetGroup>
+                <ObjectName>LatencyMeterBox</ObjectName>
+                <Size>61f,7f</Size>
+                <Layout>vertical</Layout>
+                <Children>
+                  <VuMeter>
+                    <TooltipId>audio_latency_usage</TooltipId>
+                    <Size>59f,5f</Size>
+                    <PathBack>skins:LateNight/<Variable name="StyleScheme"/>/style/latency_bg.png</PathBack>
+                    <PathVu>skins:LateNight/<Variable name="StyleScheme"/>/style/latency_over.png</PathVu>
+                    <Horizontal>true</Horizontal>
+                    <PeakHoldSize>5</PeakHoldSize>
+                    <PeakHoldTime>1000</PeakHoldTime>
+                    <PeakFallTime>100</PeakFallTime>
+                    <PeakFallStep>1</PeakFallStep>
+                    <Connection>
+                      <ConfigKey>[App],audio_latency_usage</ConfigKey>
+                    </Connection>
+                  </VuMeter>
+                </Children>
                 <Connection>
-                  <ConfigKey>[App],audio_latency_usage</ConfigKey>
+                  <ConfigKey>[App],audio_latency_overload</ConfigKey>
+                  <BindProperty>highlight</BindProperty>
                 </Connection>
-              </VuMeter>
+              </WidgetGroup>
+              <Label>
+                <ObjectName>LatencyLabel</ObjectName>
+                <TooltipId>audio_latency_usage</TooltipId>
+                <Size>0min,10f</Size>
+                <Alignment>center</Alignment>
+                <Text>Buffer %</Text>
+              </Label>
             </Children>
-            <Connection>
-              <ConfigKey>[App],audio_latency_overload</ConfigKey>
-              <BindProperty>highlight</BindProperty>
-            </Connection>
           </WidgetGroup>
-          <Label>
-            <ObjectName>LatencyLabel</ObjectName>
-            <TooltipId>audio_latency_usage</TooltipId>
-            <Size>0min,10f</Size>
-            <Alignment>center</Alignment>
-            <Text>Buffer %</Text>
-          </Label>
         </Children>
       </WidgetGroup>
 

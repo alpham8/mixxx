@@ -154,8 +154,8 @@ QAbstractScrollArea::corner {
     background-color: transparent;
   }
   #SeratoMainRow {
-    margin: 4px 0px;
-    padding: 4px 8px;
+    margin: 0px 0px;
+    padding: 2px 8px;
   }
   #SeratoLeftControls {
     padding-right: 4px;
@@ -3805,6 +3805,7 @@ WSearchLineEdit::indicator:unchecked:selected {
 #SeratoDeckPanel {
     border: 1px solid #1a5dab;
     border-radius: 3px;
+    padding: 1px 7px 0px 7px;
     background-color: #1a1a1a;
 }
 
@@ -3812,7 +3813,7 @@ WSearchLineEdit::indicator:unchecked:selected {
 #DeckSerato2 #SeratoTrackInfo,
 #DeckSerato3 #SeratoTrackInfo,
 #DeckSerato4 #SeratoTrackInfo {
-    padding: 5px 10px 3px 10px;
+    padding: 2px 10px 1px 10px;
     background-color: #000000;
 }
 
@@ -3870,7 +3871,7 @@ WSearchLineEdit::indicator:unchecked:selected {
 #DeckSerato2 #SeratoHotcueGrid WPushButton#HotcueButton,
 #DeckSerato3 #SeratoHotcueGrid WPushButton#HotcueButton,
 #DeckSerato4 #SeratoHotcueGrid WPushButton#HotcueButton {
-    margin: 2px;
+    margin: 4px;
     padding: 0px;
     min-height: 32px;
     max-height: 38px;
@@ -4028,8 +4029,8 @@ QLabel#SeratoMasterVuLabel {
 
 /* Compact control row (key shift, keylock, slip, vinyl, FX, beatjump) */
 #SeratoCtlRow {
-    margin: 4px 0px 10px 0px;
-    padding: 4px 8px 6px 8px;
+    margin: 8px 0px 0px 0px;
+    padding: 4px 8px 4px 8px;
     background-color: transparent;
 }
 #DeckSerato1 WPushButton#SeratoCtlBtn,

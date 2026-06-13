@@ -256,6 +256,9 @@
         <SetVariable name="Group"><Variable name="Group"/></SetVariable>
       </Template>
 
+      <!-- Bottom inner spacing so the control row doesn't touch the outline -->
+      <WidgetGroup><Size>0me,2f</Size></WidgetGroup>
+
     </Children>
   </TrackWidgetGroup>
 </Template>
