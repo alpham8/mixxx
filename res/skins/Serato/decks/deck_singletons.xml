@@ -5,7 +5,7 @@
     <SingletonDefinition>
       <ObjectName>SpinnyCoverart<Variable name="ChanNum"/></ObjectName>
       <Children>
-        <Template src="skins:LateNight/decks/spinny_coverart.xml"/>
+        <Template src="skins:Serato/decks/spinny_serato.xml"/>
       </Children>
     </SingletonDefinition>
 

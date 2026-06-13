@@ -1,6 +1,6 @@
 <!--
-  Serato-style vertical tempo/pitch fader with a rate percentage readout on top.
-  Variables: ChanNum, Group
+  Serato-style vertical tempo/pitch fader (inner side, toward the waveform)
+  with a small rate % readout on top. Variables: ChanNum, Group
 -->
 <Template>
   <WidgetGroup>
@@ -13,7 +13,7 @@
       <NumberRate>
         <ObjectName>SeratoRateText</ObjectName>
         <TooltipId>rate_display</TooltipId>
-        <Size>44f,18f</Size>
+        <Size>44f,16f</Size>
         <Alignment>center</Alignment>
         <Channel><Variable name="ChanNum"/></Channel>
         <NumberOfDigits>2</NumberOfDigits>

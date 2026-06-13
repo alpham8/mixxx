@@ -9,12 +9,18 @@
     <Group><Variable name="Group"/></Group>
     <Children>
 
-      <!-- Row 1: Title + Key + BPM -->
+      <!-- Row 1: Deck number + Title + Key + BPM -->
       <WidgetGroup>
         <ObjectName>SeratoTrackInfo</ObjectName>
         <Layout>horizontal</Layout>
         <SizePolicy>me,min</SizePolicy>
         <Children>
+          <Label>
+            <ObjectName>SeratoDeckNumber</ObjectName>
+            <Size>16f,26f</Size>
+            <Alignment>center</Alignment>
+            <Text><Variable name="ChanNum"/></Text>
+          </Label>
           <TrackProperty>
             <ObjectName>SeratoTitle</ObjectName>
             <Size>0me,26f</Size>
@@ -24,18 +30,15 @@
             <Elide>right</Elide>
             <Channel><Variable name="ChanNum"/></Channel>
           </TrackProperty>
-          <Key>
+          <TrackProperty>
             <ObjectName>SeratoKey</ObjectName>
             <Size>46f,26f</Size>
-            <TooltipId>visual_key</TooltipId>
-            <Group><Variable name="Group"/></Group>
+            <TooltipId>track_key</TooltipId>
+            <Property>keyText</Property>
             <Alignment>center</Alignment>
             <Elide>right</Elide>
-            <DisplayCents>false</DisplayCents>
-            <Connection>
-              <ConfigKey><Variable name="Group"/>,visual_key</ConfigKey>
-            </Connection>
-          </Key>
+            <Channel><Variable name="ChanNum"/></Channel>
+          </TrackProperty>
           <NumberBpm>
             <ObjectName>SeratoBpm</ObjectName>
             <Size>62f,26f</Size>
@@ -136,7 +139,7 @@
           <WidgetGroup>
             <ObjectName>SeratoSpinnyColumn</ObjectName>
             <Layout>vertical</Layout>
-            <Size>176f,168f</Size>
+            <Size>170f,168f</Size>
             <Children>
               <!-- Transport: |◄ SYNC ▶ CUE ►| -->
               <WidgetGroup>
@@ -191,7 +194,7 @@
                       </SingletonContainer>
                     </Children>
                   </WidgetGroup>
-                  <WidgetGroup><Size>22f,1min</Size></WidgetGroup>
+                  <WidgetGroup><Size>18f,1min</Size></WidgetGroup>
                   <WidgetGroup>
                     <ObjectName>SeratoVuMeter</ObjectName>
                     <Layout>vertical</Layout>

@@ -170,13 +170,13 @@
             <Channel><Variable name="ChanNum"/></Channel>
             <BgColor><Variable name="BgColorWaveform"/></BgColor>
             <SignalColor><Variable name="SignalColor"/></SignalColor>
-            <!-- Default colors are used for high/mid/low: blue/green/red -->
             <SignalHighColor></SignalHighColor>
             <SignalMidColor></SignalMidColor>
             <SignalLowColor></SignalLowColor>
-            <SignalRGBHighColor></SignalRGBHighColor>
-            <SignalRGBMidColor></SignalRGBMidColor>
-            <SignalRGBLowColor></SignalRGBLowColor>
+            <!-- Serato-like RGB palette: red lows, green mids, blue highs -->
+            <SignalRGBHighColor>#3f64e8</SignalRGBHighColor>
+            <SignalRGBMidColor>#2cb432</SignalRGBMidColor>
+            <SignalRGBLowColor>#d83333</SignalRGBLowColor>
             <BeatColor><Variable name="BeatColor"/></BeatColor>
             <DownbeatColor><Variable name="DownbeatColor"/></DownbeatColor>
             <BarCounterColor><Variable name="BeatColor"/></BarCounterColor>

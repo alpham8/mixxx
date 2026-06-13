@@ -200,18 +200,19 @@ void WHotcueButton::paintEvent(QPaintEvent* pEvent) {
     // the pad; the play triangle is always white. Empty pads show the hotcue
     // number on a neutral dark pad.
     const QRectF padRect(0.5, 0.5, width() - 1.0, height() - 1.0);
-    const QColor padColor = isSet ? m_cueColor : QColor(0x26, 0x26, 0x26);
+    const QColor padColor = isSet ? m_cueColor : QColor(0x1f, 0x1f, 0x1f);
     p.setPen(QPen(QColor(0, 0, 0, 80), 1.0));
     p.setBrush(padColor);
     p.drawRoundedRect(padRect, 3.0, 3.0);
 
     if (!isSet) {
-        // Empty pad: show the hotcue number centered.
+        // Empty pad: Serato keeps unused slots almost invisible, so render the
+        // hotcue number small and dark instead of as a prominent label.
         QFont numFont;
         numFont.setBold(true);
-        numFont.setPixelSize(qMax(static_cast<int>(padRect.height()) / 2, 10));
+        numFont.setPixelSize(qBound(9, static_cast<int>(padRect.height()) / 3, 11));
         p.setFont(numFont);
-        p.setPen(QColor(120, 120, 120));
+        p.setPen(QColor(0x4a, 0x4a, 0x4a));
         p.drawText(padRect, Qt::AlignCenter, QString::number(m_hotcue + 1));
         return;
     }

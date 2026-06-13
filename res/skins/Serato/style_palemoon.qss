@@ -15,6 +15,11 @@
 
 /**********************************************************************
 ************** container background colors & borders *****************/
+/* Serato uses a compact grotesk; Open Sans ships with Mixxx and comes closest. */
+* {
+  font-family: "Open Sans";
+}
+
 #SkinContainer {
   background-color: #111111;
 }
@@ -100,7 +105,7 @@ QAbstractScrollArea::corner {
   }
   /* ===== Serato Deck Styles ===== */
   #SeratoDeckPanel {
-    border: 2px solid #2277dd;
+    border: 1px solid #1a5dab;
     border-radius: 3px;
     background-color: #1a1a1a;
   }
@@ -125,7 +130,7 @@ QAbstractScrollArea::corner {
   }
   #DeckSerato1 #SeratoKey, #DeckSerato2 #SeratoKey,
   #DeckSerato3 #SeratoKey, #DeckSerato4 #SeratoKey,
-  WKey#SeratoKey {
+  WTrackProperty#SeratoKey {
     color: #00ccff;
     font-size: 16px;
     font-weight: bold;
@@ -150,7 +155,7 @@ QAbstractScrollArea::corner {
   }
   #SeratoMainRow {
     margin: 4px 0px;
-    padding: 4px 10px;
+    padding: 4px 8px;
   }
   #SeratoLeftControls {
     padding-right: 4px;
@@ -181,8 +186,8 @@ QAbstractScrollArea::corner {
     padding: 4px 6px;
   }
   #SeratoSpinnyColumn {
-    padding: 2px 6px;
-    border-left: 1px solid #333;
+    border: none;
+    padding: 2px 2px;
   }
   #SeratoSpinnyContainer {
     padding: 2px;
@@ -209,7 +214,7 @@ QAbstractScrollArea::corner {
     padding: 2px 0px;
   }
   #SeratoBeatLoops {
-    margin-top: 4px;
+    margin-top: 6px;
     padding: 4px 6px 6px 6px;
   }
   WPushButton#BeatLoopBtn {
@@ -3798,7 +3803,7 @@ WSearchLineEdit::indicator:unchecked:selected {
    Only contains #DeckSerato-scoped rules */
 
 #SeratoDeckPanel {
-    border: 2px solid #2277dd;
+    border: 1px solid #1a5dab;
     border-radius: 3px;
     background-color: #1a1a1a;
 }
@@ -3807,7 +3812,7 @@ WSearchLineEdit::indicator:unchecked:selected {
 #DeckSerato2 #SeratoTrackInfo,
 #DeckSerato3 #SeratoTrackInfo,
 #DeckSerato4 #SeratoTrackInfo {
-    padding: 6px 11px 4px 11px;
+    padding: 5px 10px 3px 10px;
     background-color: #000000;
 }
 
@@ -3816,7 +3821,7 @@ WSearchLineEdit::indicator:unchecked:selected {
 #DeckSerato3 WTrackProperty#SeratoTitle,
 #DeckSerato4 WTrackProperty#SeratoTitle {
     color: #ffffff;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
     background-color: transparent;
 }
@@ -3836,16 +3841,16 @@ WSearchLineEdit::indicator:unchecked:selected {
 #DeckSerato4 WTrackProperty#SeratoDuration {
     padding-right: 2px;
     font-size: 13px;
-    color: #cccccc;
+    color: #ffffff;
     background-color: transparent;
 }
 
-#DeckSerato1 WKey#SeratoKey,
-#DeckSerato2 WKey#SeratoKey,
-#DeckSerato3 WKey#SeratoKey,
-#DeckSerato4 WKey#SeratoKey {
+#DeckSerato1 WTrackProperty#SeratoKey,
+#DeckSerato2 WTrackProperty#SeratoKey,
+#DeckSerato3 WTrackProperty#SeratoKey,
+#DeckSerato4 WTrackProperty#SeratoKey {
     color: #00ccff;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
     background-color: transparent;
 }
@@ -3855,7 +3860,7 @@ WSearchLineEdit::indicator:unchecked:selected {
 #DeckSerato3 WNumber#SeratoBpm,
 #DeckSerato4 WNumber#SeratoBpm {
     padding-right: 2px;
-    font-size: 17px;
+    font-size: 20px;
     font-weight: bold;
     color: #ffffff;
     background-color: transparent;
@@ -4070,4 +4075,42 @@ QLabel#SeratoMasterVuLabel {
     font-weight: bold;
     color: #ffffff;
     background-color: #1a1a1a;
+}
+
+/* Serato platter: center readouts on the black hub */
+#SeratoPlatter,
+#SeratoPlatterInfo {
+    margin: 0px;
+    padding: 0px;
+    background-color: transparent;
+}
+WNumber#SeratoPlatterBpm {
+    font-size: 19px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: transparent;
+}
+WNumber#SeratoPlatterRate,
+QLabel#SeratoPlatterRatePct,
+WLabel#SeratoPlatterRange,
+#SeratoPlatterRange {
+    font-size: 9px;
+    color: #c8c8c8;
+    background-color: transparent;
+}
+WNumberPos#SeratoPlatterPos,
+WTrackProperty#SeratoPlatterDur {
+    font-size: 13px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: transparent;
+}
+
+/* Deck number in the title bar */
+QLabel#SeratoDeckNumber {
+    margin-right: 2px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #8a8a8a;
+    background-color: transparent;
 }
