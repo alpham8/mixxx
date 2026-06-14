@@ -30,7 +30,13 @@
             <Size>100me,40me</Size>
             <Children>
 
-              <!-- Overview 1 above Waveform 1 (Serato style) -->
+              <!-- All four waveforms are equal-height "me" siblings so they
+                   share the vertical space evenly. Each deck draws its own
+                   beat-match marker bar at its inner edge; deck 1+2 and deck
+                   3+4 are placed back-to-back so those bars meet to form one
+                   central lane per pair (Serato style). -->
+
+              <!-- Deck 1: overview on top, waveform below -->
               <WidgetGroup>
                 <Layout>vertical</Layout>
                 <SizePolicy>me,me</SizePolicy>
@@ -62,13 +68,7 @@
                 </Children>
               </WidgetGroup>
 
-              <!-- Beat-match marker lane between deck 1 and deck 2 -->
-              <WidgetGroup>
-                <ObjectName>BeatTicks</ObjectName>
-                <Size>0me,12f</Size>
-              </WidgetGroup>
-
-              <!-- Waveform 2 + its overview below -->
+              <!-- Deck 2: waveform on top, overview below -->
               <WidgetGroup>
                 <Layout>vertical</Layout>
                 <SizePolicy>me,me</SizePolicy>
@@ -100,13 +100,22 @@
                 </Children>
               </WidgetGroup>
 
-              <!-- 4-deck mode: deck 3 + deck 4 stacked as a pair with their
-                   own beat-match marker lane between them, mirroring 1 + 2. -->
+              <!-- Deck 3 (4-deck only): overview on top, waveform below -->
               <WidgetGroup>
                 <Layout>vertical</Layout>
                 <SizePolicy>me,me</SizePolicy>
                 <Children>
-
+                  <WidgetGroup>
+                    <ObjectName>SeratoOverview1</ObjectName>
+                    <Layout>horizontal</Layout>
+                    <SizePolicy>me,f</SizePolicy>
+                    <Size>0me,24f</Size>
+                    <Children>
+                      <SingletonContainer>
+                        <ObjectName>DeckOverview3</ObjectName>
+                      </SingletonContainer>
+                    </Children>
+                  </WidgetGroup>
                   <WidgetGroup>
                     <Layout>horizontal</Layout>
                     <SizePolicy>me,me</SizePolicy>
@@ -120,13 +129,18 @@
                       </Template>
                     </Children>
                   </WidgetGroup>
+                </Children>
+                <Connection>
+                  <ConfigKey persist="true">[Skin],show_4decks</ConfigKey>
+                  <BindProperty>visible</BindProperty>
+                </Connection>
+              </WidgetGroup>
 
-                  <!-- Beat-match marker lane between deck 3 and deck 4 -->
-                  <WidgetGroup>
-                    <ObjectName>BeatTicks</ObjectName>
-                    <Size>0me,12f</Size>
-                  </WidgetGroup>
-
+              <!-- Deck 4 (4-deck only): waveform on top, overview below -->
+              <WidgetGroup>
+                <Layout>vertical</Layout>
+                <SizePolicy>me,me</SizePolicy>
+                <Children>
                   <WidgetGroup>
                     <Layout>horizontal</Layout>
                     <SizePolicy>me,me</SizePolicy>
@@ -140,7 +154,17 @@
                       </Template>
                     </Children>
                   </WidgetGroup>
-
+                  <WidgetGroup>
+                    <ObjectName>SeratoOverview2</ObjectName>
+                    <Layout>horizontal</Layout>
+                    <SizePolicy>me,f</SizePolicy>
+                    <Size>0me,24f</Size>
+                    <Children>
+                      <SingletonContainer>
+                        <ObjectName>DeckOverview4</ObjectName>
+                      </SingletonContainer>
+                    </Children>
+                  </WidgetGroup>
                 </Children>
                 <Connection>
                   <ConfigKey persist="true">[Skin],show_4decks</ConfigKey>
