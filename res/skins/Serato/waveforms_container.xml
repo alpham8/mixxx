@@ -30,23 +30,6 @@
             <Size>100me,40me</Size>
             <Children>
 
-              <WidgetGroup>
-                <Layout>horizontal</Layout>
-                <SizePolicy>me,me</SizePolicy>
-                <Children>
-                  <Template src="skins:LateNight/waveform.xml">
-                    <SetVariable name="ChanNum">3</SetVariable>
-                    <SetVariable name="SignalColor"><Variable name="SignalColor_34"/></SetVariable>
-                    <SetVariable name="BgColorWaveform"><Variable name="BgColorWaveform_34"/></SetVariable>
-                    <SetVariable name="Highlight">[Skin],show_4decks</SetVariable>
-                  </Template>
-                </Children>
-                <Connection>
-                  <ConfigKey persist="true">[Skin],show_4decks</ConfigKey>
-                  <BindProperty>visible</BindProperty>
-                </Connection>
-              </WidgetGroup>
-
               <!-- Overview 1 above Waveform 1 (Serato style) -->
               <WidgetGroup>
                 <Layout>vertical</Layout>
@@ -79,7 +62,7 @@
                 </Children>
               </WidgetGroup>
 
-              <!-- Dark lane between deck 1 and deck 2 -->
+              <!-- Beat-match marker lane between deck 1 and deck 2 -->
               <WidgetGroup>
                 <ObjectName>BeatTicks</ObjectName>
                 <Size>0me,12f</Size>
@@ -117,16 +100,47 @@
                 </Children>
               </WidgetGroup>
 
-              <!-- Deck 4 waveform (4-deck mode) -->
+              <!-- 4-deck mode: deck 3 + deck 4 stacked as a pair with their
+                   own beat-match marker lane between them, mirroring 1 + 2. -->
               <WidgetGroup>
-                <Layout>horizontal</Layout>
+                <Layout>vertical</Layout>
                 <SizePolicy>me,me</SizePolicy>
                 <Children>
-                  <Template src="skins:LateNight/waveform.xml">
-                    <SetVariable name="ChanNum">4</SetVariable>
-                    <SetVariable name="SignalColor"><Variable name="SignalColor_34"/></SetVariable>
-                    <SetVariable name="BgColorWaveform"><Variable name="BgColorWaveform_34"/></SetVariable>
-                  </Template>
+
+                  <WidgetGroup>
+                    <Layout>horizontal</Layout>
+                    <SizePolicy>me,me</SizePolicy>
+                    <Children>
+                      <Template src="skins:LateNight/waveform.xml">
+                        <SetVariable name="ChanNum">3</SetVariable>
+                        <SetVariable name="SignalColor"><Variable name="SignalColor_34"/></SetVariable>
+                        <SetVariable name="BgColorWaveform"><Variable name="BgColorWaveform_34"/></SetVariable>
+                        <SetVariable name="BeatMatchEdge">bottom</SetVariable>
+                        <SetVariable name="Highlight">[Skin],show_4decks</SetVariable>
+                      </Template>
+                    </Children>
+                  </WidgetGroup>
+
+                  <!-- Beat-match marker lane between deck 3 and deck 4 -->
+                  <WidgetGroup>
+                    <ObjectName>BeatTicks</ObjectName>
+                    <Size>0me,12f</Size>
+                  </WidgetGroup>
+
+                  <WidgetGroup>
+                    <Layout>horizontal</Layout>
+                    <SizePolicy>me,me</SizePolicy>
+                    <Children>
+                      <Template src="skins:LateNight/waveform.xml">
+                        <SetVariable name="ChanNum">4</SetVariable>
+                        <SetVariable name="SignalColor"><Variable name="SignalColor_34"/></SetVariable>
+                        <SetVariable name="BgColorWaveform"><Variable name="BgColorWaveform_34"/></SetVariable>
+                        <SetVariable name="BeatMatchEdge">top</SetVariable>
+                        <SetVariable name="Highlight">[Skin],show_4decks</SetVariable>
+                      </Template>
+                    </Children>
+                  </WidgetGroup>
+
                 </Children>
                 <Connection>
                   <ConfigKey persist="true">[Skin],show_4decks</ConfigKey>

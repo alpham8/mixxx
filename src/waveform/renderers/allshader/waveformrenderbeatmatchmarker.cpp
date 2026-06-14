@@ -21,8 +21,10 @@ namespace {
 // Height of the coloured marker band at the waveform edge (logical pixels).
 constexpr float kBandHeight = 16.0f;
 // Marker half-width = base + bass-energy * scale (logical pixels).
-constexpr float kMinHalfWidth = 0.5f;
-constexpr float kBassHalfWidthScale = 8.0f;
+// The base is wide enough that every beat shows a clearly visible tooth; the
+// bass term makes kick-heavy (down)beats noticeably fatter, like Serato.
+constexpr float kMinHalfWidth = 1.5f;
+constexpr float kBassHalfWidthScale = 6.0f;
 
 constexpr int kVerticesPerRectangle = 6; // 2 triangles
 } // namespace
@@ -171,6 +173,12 @@ bool WaveformRenderBeatMatchMarker::preprocessInner() {
             red *= norm;
             green *= norm;
             blue *= norm;
+        } else {
+            // Silent beat: still draw a visible neutral-grey tooth so the
+            // beat is never missing from the row.
+            red = 0.5f;
+            green = 0.5f;
+            blue = 0.5f;
         }
 
         const float halfWidth =
