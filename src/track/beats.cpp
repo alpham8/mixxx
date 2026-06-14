@@ -773,6 +773,9 @@ std::optional<BeatsPointer> Beats::trySetBeatsPerBar(int beatsPerBar) const {
 }
 
 std::optional<BeatsPointer> Beats::trySetDownbeatOffset(int downbeatOffset) const {
+    if (downbeatOffset < 0) {
+        return std::nullopt;
+    }
     auto pBeats = BeatsPointer(new Beats(
             m_markers,
             m_lastMarkerPosition,
