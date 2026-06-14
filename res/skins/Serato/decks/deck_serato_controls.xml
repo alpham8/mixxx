@@ -6,8 +6,8 @@
   <WidgetGroup>
     <ObjectName>SeratoCtlRow</ObjectName>
     <Layout>horizontal</Layout>
-    <SizePolicy>me,f</SizePolicy>
-    <Size>0me,26f</Size>
+    <SizePolicy>me,min</SizePolicy>
+    <Size>0me,0min</Size>
     <Children>
 
       <!-- Key shift down / up (semitones) -->

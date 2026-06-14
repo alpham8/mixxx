@@ -379,6 +379,7 @@
                     <WidgetGroup>
                       <Layout>horizontal</Layout>
                       <SizePolicy>me,me</SizePolicy>
+                      <MinimumSize>,290</MinimumSize>
                       <Children>
                         <!-- Deck 1 (left, fixed 450px, top-aligned) -->
                         <WidgetGroup>

@@ -7,7 +7,7 @@
     <ObjectName>SeratoPitchColumn</ObjectName>
     <Layout>vertical</Layout>
     <SizePolicy>f,f</SizePolicy>
-    <Size>44f,168f</Size>
+    <Size>44f,0min</Size>
     <Children>
 
       <NumberRate>

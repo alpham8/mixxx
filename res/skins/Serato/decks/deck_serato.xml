@@ -90,8 +90,8 @@
       <WidgetGroup>
         <ObjectName>SeratoMainRow</ObjectName>
         <Layout>horizontal</Layout>
-        <SizePolicy>me,f</SizePolicy>
-        <Size>0me,168f</Size>
+        <SizePolicy>me,min</SizePolicy>
+        <Size>0me,0min</Size>
         <Children>
 
           <!-- OUTER: tempo/pitch fader -->
@@ -139,7 +139,7 @@
           <WidgetGroup>
             <ObjectName>SeratoSpinnyColumn</ObjectName>
             <Layout>vertical</Layout>
-            <Size>170f,168f</Size>
+            <Size>170f,0min</Size>
             <Children>
               <!-- Transport: |◄ SYNC ▶ CUE ►| -->
               <WidgetGroup>
@@ -254,7 +254,7 @@
         <SetVariable name="Group"><Variable name="Group"/></SetVariable>
       </Template>
 
-      <!-- Bottom inner spacing so the control row doesn't touch the outline -->
+J      <!-- Bottom inner spacing so the control row doesn't touch the outline -->
       <WidgetGroup><Size>0me,2f</Size></WidgetGroup>
 
     </Children>

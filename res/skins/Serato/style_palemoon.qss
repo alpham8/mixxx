@@ -155,7 +155,7 @@ QAbstractScrollArea::corner {
   }
   #SeratoMainRow {
     margin: 0px 0px;
-    padding: 2px 8px;
+    padding: 0px 8px;
   }
   #SeratoLeftControls {
     padding-right: 4px;
@@ -214,8 +214,8 @@ QAbstractScrollArea::corner {
     padding: 2px 0px;
   }
   #SeratoBeatLoops {
-    margin-top: 6px;
-    padding: 4px 6px 6px 6px;
+    margin-top: 3px;
+    padding: 2px 6px 2px 6px;
   }
   WPushButton#BeatLoopBtn {
     font-size: 12px;
@@ -3805,7 +3805,7 @@ WSearchLineEdit::indicator:unchecked:selected {
 #SeratoDeckPanel {
     border: 1px solid #1a5dab;
     border-radius: 3px;
-    padding: 1px 7px 0px 7px;
+    padding: 3px 7px 0px 7px;
     background-color: #1a1a1a;
 }
 
@@ -3873,8 +3873,8 @@ WSearchLineEdit::indicator:unchecked:selected {
 #DeckSerato4 #SeratoHotcueGrid WPushButton#HotcueButton {
     margin: 4px;
     padding: 0px;
-    min-height: 32px;
-    max-height: 38px;
+    min-height: 28px;
+    max-height: 31px;
     border: none;
     background-color: transparent;
 }

@@ -92,15 +92,15 @@
       <WidgetGroup>
         <ObjectName>SeratoMainRow</ObjectName>
         <Layout>horizontal</Layout>
-        <SizePolicy>me,f</SizePolicy>
-        <Size>0me,168f</Size>
+        <SizePolicy>me,min</SizePolicy>
+        <Size>0me,0min</Size>
         <Children>
 
           <!-- Transport + Spinny -->
           <WidgetGroup>
             <ObjectName>SeratoSpinnyColumn</ObjectName>
             <Layout>vertical</Layout>
-            <Size>170f,168f</Size>
+            <Size>170f,0min</Size>
             <Children>
               <!-- Transport: |◄ SYNC ▶ CUE ►| -->
               <WidgetGroup>
