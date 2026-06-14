@@ -360,7 +360,9 @@ QByteArray Beats::toBeatGridByteArray() const {
     grid.mutable_bpm()->set_bpm(m_lastMarkerBpm.value());
 
     std::string output;
-    grid.SerializeToString(&output);
+    if (!grid.SerializeToString(&output)) {
+        qWarning() << "Failed to serialize beat grid";
+    }
     return QByteArray(output.data(), static_cast<int>(output.length()));
 };
 
@@ -374,7 +376,9 @@ QByteArray Beats::toBeatMapByteArray() const {
     }
 
     std::string output;
-    map.SerializeToString(&output);
+    if (!map.SerializeToString(&output)) {
+        qWarning() << "Failed to serialize beat map";
+    }
     return QByteArray(output.data(), static_cast<int>(output.length()));
 };
 

@@ -101,7 +101,6 @@ QAbstractScrollArea::corner {
   }
   #BeatTicks {
     background-color: #0a0a0a;
-    border-image: url(skins:Serato/misc_res/beat_ticks.svg) 0 0 0 0 repeat repeat;
   }
   /* ===== Serato Deck Styles ===== */
   #SeratoDeckPanel {

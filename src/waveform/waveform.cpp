@@ -147,7 +147,9 @@ QByteArray Waveform::toByteArray() const {
              << "audioVisualRatio" << waveform.audio_visual_ratio();
 
     std::string output;
-    waveform.SerializeToString(&output);
+    if (!waveform.SerializeToString(&output)) {
+        qWarning() << "Failed to serialize waveform";
+    }
     return QByteArray(output.data(), static_cast<int>(output.length()));
 }
 

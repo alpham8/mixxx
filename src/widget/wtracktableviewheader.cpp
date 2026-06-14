@@ -82,7 +82,9 @@ QString HeaderViewState::saveState() const {
     int size = m_view_state.ByteSize();
 #endif
     QByteArray array(size, '\0');
-    m_view_state.SerializeToArray(array.data(), size);
+    if (!m_view_state.SerializeToArray(array.data(), size)) {
+        qWarning() << "Failed to serialize track table header state";
+    }
     return QString(array.toBase64());
 }
 

@@ -9,6 +9,7 @@
 #include "waveform/renderers/allshader/waveformrenderbackground.h"
 #include "waveform/renderers/allshader/waveformrenderbarcounter.h"
 #include "waveform/renderers/allshader/waveformrenderbeat.h"
+#include "waveform/renderers/allshader/waveformrenderbeatmatchmarker.h"
 #include "waveform/renderers/allshader/waveformrendercuetriangle.h"
 #include "waveform/renderers/allshader/waveformrendererendoftrack.h"
 #include "waveform/renderers/allshader/waveformrendererfiltered.h"
@@ -62,6 +63,7 @@ WaveformWidget::WaveformWidget(QWidget* parent,
         pOpacityNode->appendChildNode(std::unique_ptr<rendergraph::BaseNode>(pNode));
     }
     pOpacityNode->appendChildNode(addRendererNode<WaveformRenderBeat>());
+    pOpacityNode->appendChildNode(addRendererNode<WaveformRenderBeatMatchMarker>());
     pOpacityNode->appendChildNode(addRendererNode<WaveformRenderBarCounter>());
     pOpacityNode->appendChildNode(addRendererNode<WaveformRenderCueTriangle>());
     m_pWaveformRenderMark = pOpacityNode->appendChildNode(addRendererNode<WaveformRenderMark>());

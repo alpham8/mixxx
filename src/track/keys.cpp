@@ -17,7 +17,9 @@ Keys::Keys(const KeyMap& keyMap)
 
 QByteArray Keys::toByteArray() const {
     std::string output;
-    m_keyMap.SerializeToString(&output);
+    if (!m_keyMap.SerializeToString(&output)) {
+        qWarning() << "Failed to serialize keys";
+    }
     return QByteArray(output.data(), static_cast<int>(output.length()));
 }
 

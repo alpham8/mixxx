@@ -190,8 +190,10 @@
       <SetVariable name="DndRectMarginHotcueBtn">1</SetVariable>
 
       <SetVariable name="AxesColor">#555</SetVariable>
-      <SetVariable name="BeatColor">#444</SetVariable>
-      <SetVariable name="DownbeatColor">#666</SetVariable>
+      <!-- Full-height beat lines at every beat; downbeats emphasised. -->
+      <SetVariable name="BeatColor">#666666</SetVariable>
+      <SetVariable name="DownbeatColor">#ffffff</SetVariable>
+      <SetVariable name="BarCounterColor">#cccccc</SetVariable>
       <SetVariable name="PlayPosColor">#ff0000</SetVariable>
       <SetVariable name="CueColor">#00aaff</SetVariable>
       <SetVariable name="LoopColor">#00cc00</SetVariable>

@@ -71,6 +71,7 @@
                         <SetVariable name="ChanNum">1</SetVariable>
                         <SetVariable name="SignalColor"><Variable name="SignalColor_12"/></SetVariable>
                         <SetVariable name="BgColorWaveform"><Variable name="BgColorWaveform_12"/></SetVariable>
+                        <SetVariable name="BeatMatchEdge">bottom</SetVariable>
                         <SetVariable name="Highlight">[Skin],show_4decks</SetVariable>
                       </Template>
                     </Children>
@@ -78,10 +79,10 @@
                 </Children>
               </WidgetGroup>
 
-              <!-- Beat alignment ticks between deck 1 and deck 2 -->
+              <!-- Dark lane between deck 1 and deck 2 -->
               <WidgetGroup>
                 <ObjectName>BeatTicks</ObjectName>
-                <Size>0me,6f</Size>
+                <Size>0me,18f</Size>
               </WidgetGroup>
 
               <!-- Waveform 2 + its overview below -->
@@ -97,6 +98,7 @@
                         <SetVariable name="ChanNum">2</SetVariable>
                         <SetVariable name="SignalColor"><Variable name="SignalColor_12"/></SetVariable>
                         <SetVariable name="BgColorWaveform"><Variable name="BgColorWaveform_12"/></SetVariable>
+                        <SetVariable name="BeatMatchEdge">top</SetVariable>
                         <SetVariable name="Highlight">[Skin],show_4decks</SetVariable>
                       </Template>
                     </Children>
