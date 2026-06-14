@@ -4,6 +4,7 @@
 #include <QVector2D>
 #include <QVector3D>
 #include <algorithm>
+#include <vector>
 
 #include "moc_waveformrenderbeatmatchmarker.cpp"
 #include "rendergraph/geometry.h"
@@ -18,19 +19,23 @@
 using namespace rendergraph;
 
 namespace {
-// Height of the marker bar at the waveform's inner edge (logical pixels). Two
-// decks placed back-to-back make a central lane twice this height.
-constexpr float kBandHeight = 10.0f;
-// Marker half-width = base + bass-energy * scale (logical pixels).
-// The base is wide enough that every beat shows a clearly visible tooth; the
-// bass term makes kick-heavy (down)beats noticeably fatter, like Serato.
+// Length of a tooth, measured from the waveform's inner edge into the lane
+// (logical pixels). Two decks back-to-back make a central lane twice this.
+constexpr float kBandHeight = 16.0f;
+// A tooth is also drawn on each half-beat for a denser grid. It has the same
+// length as the beat teeth so the whole row reads as one uniform, easily
+// readable grid (Serato style) instead of an alternating long/short pattern.
+constexpr float kHalfBeatLengthScale = 1.0f;
+// Marker half-width = base + bass-energy * scale (logical pixels). A modest
+// bass term keeps kick-heavy beats a little fatter without making the row look
+// irregular.
 constexpr float kMinHalfWidth = 1.5f;
-constexpr float kBassHalfWidthScale = 6.0f;
+constexpr float kBassHalfWidthScale = 4.0f;
 // Dark backing of the marker bar so the teeth sit in their own lane instead of
 // overlapping the coloured audio.
 constexpr float kBarBackingGrey = 0.10f;
 
-constexpr int kVerticesPerTooth = 3;     // one triangle per beat
+constexpr int kVerticesPerTooth = 3;     // one triangle per tooth
 constexpr int kVerticesPerRectangle = 6; // the dark bar backing (2 triangles)
 } // namespace
 
@@ -122,51 +127,54 @@ bool WaveformRenderBeatMatchMarker::preprocessInner() {
     const float length = m_waveformRenderer->getLength() * devicePixelRatio;
     const float bandHeight = kBandHeight * devicePixelRatio;
 
-    int numBeats = 0;
+    std::vector<double> beatPositions;
     for (auto it = trackBeats->iteratorFrom(startPosition);
             it != trackBeats->cend() && *it <= endPosition;
             ++it) {
-        numBeats++;
+        beatPositions.push_back(it->toEngineSamplePos());
     }
+    const int numBeats = static_cast<int>(beatPositions.size());
     if (numBeats == 0) {
         geometry().allocate(0);
         markDirtyGeometry();
         return true;
     }
 
-    // One dark backing rectangle (the lane) plus one tooth per beat.
-    geometry().allocate(kVerticesPerRectangle + numBeats * kVerticesPerTooth);
+    // A full tooth on every beat plus a shorter one on every half-beat between
+    // consecutive beats, for a denser Serato-like grid.
+    const int numTeeth = numBeats + std::max(numBeats - 1, 0);
+
+    // One dark backing rectangle (the lane) plus the teeth.
+    geometry().allocate(kVerticesPerRectangle + numTeeth * kVerticesPerTooth);
     RGBVertexUpdater updater{geometry().vertexDataAs<Geometry::RGBColoredPoint2D>()};
 
-    // The marker bar sits in a band at the waveform's inner edge. Each beat is
-    // a triangular "tooth" (Serato-style Zapfen): the wide base sits against the
-    // waveform body and the apex points into the lane between the two waveforms,
-    // giving a precise per-beat alignment point.
+    // The marker bar sits in a band at the waveform's inner edge. Each tooth is a
+    // triangle (Serato-style Zapfen): the wide base sits against the waveform
+    // body and the apex points into the lane between the two waveforms.
     const bool top = (m_edge == Edge::Top);
     const float bandTop = top ? 0.f : breadth - bandHeight;
     const float bandBottom = top ? bandHeight : breadth;
-    const float baseY = top ? bandHeight : breadth - bandHeight;
-    const float apexY = top ? 0.f : breadth;
+    // Serato orientation: the wide base sits at the centre-lane edge (where the
+    // two decks meet) and the tip points outward toward this deck's waveform.
+    const float baseY = top ? 0.f : breadth;
 
-    // Dark lane behind the teeth so they sit in their own narrow bar instead of
+    // Dark lane behind the teeth so they sit in their own bar instead of
     // overlapping the coloured audio.
     updater.addRectangle({0.f, bandTop},
             {length, bandBottom},
             {kBarBackingGrey, kBarBackingGrey, kBarBackingGrey});
 
-    for (auto it = trackBeats->iteratorFrom(startPosition);
-            it != trackBeats->cend() && *it <= endPosition;
-            ++it) {
-        const double beatPosition = it->toEngineSamplePos();
-        double xBeatPoint =
-                m_waveformRenderer->transformSamplePositionInRendererWorld(
-                        beatPosition, positionType);
-        xBeatPoint = qRound(xBeatPoint * devicePixelRatio) / devicePixelRatio;
-        const float x = static_cast<float>(xBeatPoint);
+    // Draw one tooth at an engine-sample position. lengthScale 1.0 is a full
+    // beat, a smaller value a half-beat. Colour comes from the frequency bands
+    // (bass = red, mid = green, high = blue, normalised) and the width from the
+    // bass energy, both sampled from the analysed waveform at that position.
+    const auto emitTooth = [&](double position, float lengthScale) {
+        double xPoint = m_waveformRenderer->transformSamplePositionInRendererWorld(
+                position, positionType);
+        xPoint = qRound(xPoint * devicePixelRatio) / devicePixelRatio;
+        const float x = static_cast<float>(xPoint);
 
-        // Sample the analysed waveform around the beat for the frequency
-        // content (colour) and the bass energy (bar width).
-        const double frac = beatPosition / trackSamples;
+        const double frac = position / trackSamples;
         const int centre = std::clamp(
                 static_cast<int>(frac * dataSize), 0, dataSize - 1);
         constexpr int kWindow = 8;
@@ -181,8 +189,6 @@ bool WaveformRenderBeatMatchMarker::preprocessInner() {
             maxHigh = math_max(maxHigh, waveform->getHigh(i));
         }
 
-        // Colour from the frequency bands (bass = red, mid = green, high =
-        // blue), normalised so the dominant band is full intensity.
         float red = static_cast<float>(maxLow);
         float green = static_cast<float>(maxMid);
         float blue = static_cast<float>(maxHigh);
@@ -193,8 +199,7 @@ bool WaveformRenderBeatMatchMarker::preprocessInner() {
             green *= norm;
             blue *= norm;
         } else {
-            // Silent beat: still draw a visible neutral-grey tooth so the
-            // beat is never missing from the row.
+            // Silent position: still draw a visible neutral-grey tooth.
             red = 0.5f;
             green = 0.5f;
             blue = 0.5f;
@@ -203,14 +208,24 @@ bool WaveformRenderBeatMatchMarker::preprocessInner() {
         const float halfWidth =
                 (kMinHalfWidth + (static_cast<float>(maxLow) / 255.f) * kBassHalfWidthScale) *
                 devicePixelRatio;
+        const float apex = top ? bandHeight * lengthScale
+                               : breadth - bandHeight * lengthScale;
 
         updater.addTriangle({x - halfWidth, baseY},
                 {x + halfWidth, baseY},
-                {x, apexY},
+                {x, apex},
                 {red, green, blue});
+    };
+
+    for (int i = 0; i < numBeats; ++i) {
+        emitTooth(beatPositions[i], 1.0f);
+        if (i + 1 < numBeats) {
+            const double midPosition = 0.5 * (beatPositions[i] + beatPositions[i + 1]);
+            emitTooth(midPosition, kHalfBeatLengthScale);
+        }
     }
 
-    DEBUG_ASSERT(kVerticesPerRectangle + numBeats * kVerticesPerTooth == updater.index());
+    DEBUG_ASSERT(kVerticesPerRectangle + numTeeth * kVerticesPerTooth == updater.index());
 
     markDirtyGeometry();
     return true;
