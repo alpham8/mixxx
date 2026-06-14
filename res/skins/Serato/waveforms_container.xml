@@ -82,7 +82,7 @@
               <!-- Dark lane between deck 1 and deck 2 -->
               <WidgetGroup>
                 <ObjectName>BeatTicks</ObjectName>
-                <Size>0me,18f</Size>
+                <Size>0me,12f</Size>
               </WidgetGroup>
 
               <!-- Waveform 2 + its overview below -->

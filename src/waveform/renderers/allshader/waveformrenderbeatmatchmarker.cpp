@@ -1,6 +1,8 @@
 #include "waveform/renderers/allshader/waveformrenderbeatmatchmarker.h"
 
 #include <QDomNode>
+#include <QVector2D>
+#include <QVector3D>
 #include <algorithm>
 
 #include "moc_waveformrenderbeatmatchmarker.cpp"
@@ -18,7 +20,7 @@ using namespace rendergraph;
 namespace {
 // Height of the coloured marker band at the waveform edge (logical pixels).
 constexpr float kBandHeight = 16.0f;
-// Bar width = base + bass-energy * scale (logical pixels, half-width).
+// Marker half-width = base + bass-energy * scale (logical pixels).
 constexpr float kMinHalfWidth = 0.5f;
 constexpr float kBassHalfWidthScale = 8.0f;
 
@@ -127,6 +129,7 @@ bool WaveformRenderBeatMatchMarker::preprocessInner() {
     geometry().allocate(numBeats * kVerticesPerRectangle);
     RGBVertexUpdater updater{geometry().vertexDataAs<Geometry::RGBColoredPoint2D>()};
 
+    // The coloured bars sit in a band at the waveform edge facing the gap.
     const float y1 = (m_edge == Edge::Top) ? 0.f : breadth - bandHeight;
     const float y2 = (m_edge == Edge::Top) ? bandHeight : breadth;
 

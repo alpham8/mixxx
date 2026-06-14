@@ -377,16 +377,19 @@
                   <Collapsible>0,0</Collapsible>
                   <Children>
 
-                    <!-- Serato layout: Deck1 | Waveforms | Deck2 in one row -->
+                    <!-- Serato layout: Deck1 | Waveforms | Deck2 in one row.
+                         Vertical policy is "min" so the row sizes to its tallest
+                         column. In 4-deck mode the deck columns stack two full
+                         decks (~580px) and the splitter shrinks the library pane
+                         to fit, instead of clipping the second deck. -->
                     <WidgetGroup>
                       <Layout>horizontal</Layout>
-                      <SizePolicy>me,me</SizePolicy>
-                      <MinimumSize>,290</MinimumSize>
+                      <SizePolicy>me,min</SizePolicy>
                       <Children>
                         <!-- Deck 1 (left, fixed 450px, top-aligned) -->
                         <WidgetGroup>
-                          <SizePolicy>f,me</SizePolicy>
-                          <Size>450f,0me</Size>
+                          <SizePolicy>f,min</SizePolicy>
+                          <Size>450f,0min</Size>
                           <Layout>vertical</Layout>
                           <Children>
                             <WidgetGroup>
@@ -449,8 +452,8 @@
 
                         <!-- Deck 2 (right, fixed 450px, top-aligned) -->
                         <WidgetGroup>
-                          <SizePolicy>f,me</SizePolicy>
-                          <Size>450f,0me</Size>
+                          <SizePolicy>f,min</SizePolicy>
+                          <Size>450f,0min</Size>
                           <Layout>vertical</Layout>
                           <Children>
                             <WidgetGroup>
