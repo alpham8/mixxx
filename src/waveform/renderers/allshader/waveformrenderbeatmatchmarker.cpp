@@ -34,6 +34,9 @@ constexpr float kBassHalfWidthScale = 4.0f;
 // Dark backing of the marker bar so the teeth sit in their own lane instead of
 // overlapping the coloured audio.
 constexpr float kBarBackingGrey = 0.10f;
+// Scan this fraction of the visible span past each edge so teeth are already
+// built before a beat scrolls into view, instead of popping in at the edge.
+constexpr double kRangeMarginFraction = 0.15;
 
 constexpr int kVerticesPerTooth = 3;     // one triangle per tooth
 constexpr int kVerticesPerRectangle = 6; // the dark bar backing (2 triangles)
@@ -114,10 +117,17 @@ bool WaveformRenderBeatMatchMarker::preprocessInner() {
     const double lastDisplayedPosition =
             m_waveformRenderer->getLastDisplayedPosition(positionType);
 
+    // Scan a little past both visible edges (clamped to the track) so teeth are
+    // already built before their beat scrolls into view.
+    const double margin =
+            (lastDisplayedPosition - firstDisplayedPosition) * kRangeMarginFraction;
+    const double startFraction = std::max(firstDisplayedPosition - margin, 0.0);
+    const double endFraction = std::min(lastDisplayedPosition + margin, 1.0);
+
     const auto startPosition = mixxx::audio::FramePos::fromEngineSamplePos(
-            firstDisplayedPosition * trackSamples);
+            startFraction * trackSamples);
     const auto endPosition = mixxx::audio::FramePos::fromEngineSamplePos(
-            lastDisplayedPosition * trackSamples);
+            endFraction * trackSamples);
     if (!startPosition.isValid() || !endPosition.isValid()) {
         return false;
     }
