@@ -1,0 +1,40 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 21,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "developer",
+      "displayName": "Developer (Ninja, Debug)",
+      "description": "Fast local development build. Uses the Ninja generator and a Debug build type. The mold/lld linker, ccache/sccache and precompiled headers are auto-detected and used when available. Note: enabling ccache/sccache disables precompiled headers.",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "release",
+      "displayName": "Release (Ninja, RelWithDebInfo)",
+      "description": "Optimised build with debug info, using the Ninja generator.",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build-release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "developer",
+      "configurePreset": "developer"
+    },
+    {
+      "name": "release",
+      "configurePreset": "release"
+    }
+  ]
+}
