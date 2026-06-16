@@ -2,7 +2,13 @@
 
 #include <portmidi.h>
 
+#include <QByteArray>
 #include <QScopedPointer>
+#include <condition_variable>
+#include <cstdint>
+#include <deque>
+#include <mutex>
+#include <thread>
 
 #include "controllers/midi/midicontroller.h"
 #include "controllers/midi/portmididevice.h"
@@ -113,6 +119,29 @@ class PortMidiController : public MidiController {
         m_pOutputDevice.reset(device);
     }
 
+    // For testing only: keep output synchronous so test fixtures can verify the
+    // exact writeShort()/writeSysEx() calls right after a send.
+    void setOutputThreadEnabledForTesting(bool enabled) {
+        m_outputThreadEnabled = enabled;
+    }
+
+    // A single queued outgoing MIDI message. Short messages carry a packed
+    // PortMidi word; sysex messages carry the raw bytes (including 0xF0..0xF7).
+    struct OutputMessage {
+        bool isSysex;
+        int32_t shortWord;
+        QByteArray sysex;
+    };
+
+    // Output worker: a dedicated thread drains m_outputQueue and performs the
+    // actual blocking PortMidi writes. This keeps a slow or erroring sysex write
+    // from stalling the input-polling thread (PortMidi's Windows backend makes
+    // Pm_WriteSysEx block and can return pmHostError under load).
+    void startOutputThread();
+    void stopOutputThread();
+    void outputWorker();
+    void writeOutputNow(const OutputMessage& message);
+
     QScopedPointer<PortMidiDevice> m_pInputDevice;
     QScopedPointer<PortMidiDevice> m_pOutputDevice;
 
@@ -122,6 +151,17 @@ class PortMidiController : public MidiController {
     unsigned char m_cReceiveMsg[MIXXX_SYSEX_BUFFER_LEN];
     int m_cReceiveMsg_index;
     bool m_bInSysex;
+
+    // Output queue + worker thread. m_outputThreadEnabled/m_outputThreadRunning
+    // are only touched on the controller thread (open/close/send); the queue and
+    // the two flags below are guarded by m_outputMutex.
+    std::thread m_outputThread;
+    std::mutex m_outputMutex;
+    std::condition_variable m_outputCond;
+    std::deque<OutputMessage> m_outputQueue;
+    bool m_outputThreadStop;
+    bool m_outputThreadRunning;
+    bool m_outputThreadEnabled;
 
     friend class PortMidiControllerTest;
 };

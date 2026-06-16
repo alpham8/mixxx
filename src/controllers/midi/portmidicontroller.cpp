@@ -1,10 +1,22 @@
 #include "controllers/midi/portmidicontroller.h"
 
+#include <chrono>
+
 #include "controllers/midi/midiutils.h"
 #include "moc_portmidicontroller.cpp"
 
 namespace {
 const QString kUnknownControllerName = QStringLiteral("Unknown PortMidiController");
+
+// Bound the output queue so a permanently failing device cannot grow it without
+// limit. A 1024-message backlog is far more than any real burst.
+constexpr std::size_t kMaxOutputQueueLen = 1024;
+
+// PortMidi's Windows backend can transiently return pmHostError when the driver
+// has not yet released the previous sysex buffer. Retry a few times with a short
+// back-off before giving up on a message.
+constexpr int kMaxSysexSendRetries = 3;
+constexpr auto kSysexRetryBackoff = std::chrono::milliseconds(2);
 } // namespace
 
 PortMidiController::PortMidiController(const PmDeviceInfo* inputDeviceInfo,
@@ -17,7 +29,10 @@ PortMidiController::PortMidiController(const PmDeviceInfo* inputDeviceInfo,
                                             : outputDeviceInfo->name)
                           : kUnknownControllerName),
           m_cReceiveMsg_index(0),
-          m_bInSysex(false) {
+          m_bInSysex(false),
+          m_outputThreadStop(false),
+          m_outputThreadRunning(false),
+          m_outputThreadEnabled(true) {
     for (int k = 0; k < MIXXX_PORTMIDI_BUFFER_LEN; ++k) {
         m_midiBuffer[k] = {0, 0};
     }
@@ -77,6 +92,7 @@ int PortMidiController::open(const QString& resourcePath) {
             qCWarning(m_logBase) << "PortMidi error:" << Pm_GetErrorText(err);
             return -2;
         }
+        startOutputThread();
     }
     startEngine();
     applyMapping(resourcePath);
@@ -92,6 +108,9 @@ int PortMidiController::close() {
 
     stopEngine();
     MidiController::close();
+
+    // Stop the output worker before closing the device it writes to.
+    stopOutputThread();
 
     int result = 0;
 
@@ -200,25 +219,28 @@ void PortMidiController::sendShortMsg(unsigned char status, unsigned char byte1,
     unsigned int word = (((unsigned int)byte2) << 16) |
                          (((unsigned int)byte1) << 8) | status;
 
-    PmError err = m_pOutputDevice->writeShort(word);
-    if (err == pmNoError) {
-        qCDebug(m_logOutput) << QStringLiteral("outgoing: ")
-                             << MidiUtils::formatMidiOpCode(getName(),
-                                        status,
-                                        byte1,
-                                        byte2,
-                                        MidiUtils::channelFromStatus(status),
-                                        MidiUtils::opCodeFromStatus(status));
+    OutputMessage message;
+    message.isSysex = false;
+    message.shortWord = static_cast<int32_t>(word);
+
+    if (m_outputThreadRunning) {
+        std::size_t dropped = 0;
+        {
+            std::lock_guard<std::mutex> lock(m_outputMutex);
+            while (m_outputQueue.size() >= kMaxOutputQueueLen) {
+                m_outputQueue.pop_front();
+                ++dropped;
+            }
+            m_outputQueue.push_back(std::move(message));
+        }
+        m_outputCond.notify_one();
+        if (dropped > 0) {
+            qCWarning(m_logOutput) << "Output queue full, dropped" << dropped
+                                   << "messages";
+        }
     } else {
-        // Use two qWarnings() to ensure line break works on all operating systems
-        qCWarning(m_logOutput) << "Error sending short message"
-                               << MidiUtils::formatMidiOpCode(getName(),
-                                          status,
-                                          byte1,
-                                          byte2,
-                                          MidiUtils::channelFromStatus(status),
-                                          MidiUtils::opCodeFromStatus(status));
-        qCWarning(m_logOutput) << "PortMidi error:" << Pm_GetErrorText(err);
+        // Synchronous fallback (tests, or output thread disabled).
+        writeOutputNow(message);
     }
 }
 
@@ -236,16 +258,135 @@ bool PortMidiController::sendBytes(const QByteArray& data) {
         return false;
     }
 
-    PmError err = m_pOutputDevice->writeSysEx((unsigned char*)data.constData());
+    OutputMessage message;
+    message.isSysex = true;
+    message.shortWord = 0;
+    message.sysex = data;
+
+    if (m_outputThreadRunning) {
+        std::size_t dropped = 0;
+        {
+            std::lock_guard<std::mutex> lock(m_outputMutex);
+            while (m_outputQueue.size() >= kMaxOutputQueueLen) {
+                m_outputQueue.pop_front();
+                ++dropped;
+            }
+            m_outputQueue.push_back(std::move(message));
+        }
+        m_outputCond.notify_one();
+        if (dropped > 0) {
+            qCWarning(m_logOutput) << "Output queue full, dropped" << dropped
+                                   << "messages";
+        }
+        return true;
+    }
+
+    // Synchronous fallback (tests, or output thread disabled).
+    writeOutputNow(message);
+    return true;
+}
+
+void PortMidiController::startOutputThread() {
+    if (!m_outputThreadEnabled || m_outputThreadRunning) {
+        return;
+    }
+    if (m_pOutputDevice.isNull()) {
+        return;
+    }
+    {
+        std::lock_guard<std::mutex> lock(m_outputMutex);
+        m_outputThreadStop = false;
+        m_outputQueue.clear();
+    }
+    m_outputThread = std::thread(&PortMidiController::outputWorker, this);
+    m_outputThreadRunning = true;
+}
+
+void PortMidiController::stopOutputThread() {
+    if (!m_outputThreadRunning) {
+        return;
+    }
+    {
+        std::lock_guard<std::mutex> lock(m_outputMutex);
+        m_outputThreadStop = true;
+    }
+    m_outputCond.notify_all();
+    if (m_outputThread.joinable()) {
+        m_outputThread.join();
+    }
+    m_outputThreadRunning = false;
+}
+
+void PortMidiController::outputWorker() {
+    for (;;) {
+        OutputMessage message;
+        {
+            std::unique_lock<std::mutex> lock(m_outputMutex);
+            m_outputCond.wait(lock, [this] {
+                return m_outputThreadStop || !m_outputQueue.empty();
+            });
+            // On stop, keep draining so queued shutdown messages (e.g. LEDs off)
+            // still go out; exit only once the queue is empty.
+            if (m_outputQueue.empty()) {
+                return;
+            }
+            message = std::move(m_outputQueue.front());
+            m_outputQueue.pop_front();
+        }
+        writeOutputNow(message);
+    }
+}
+
+void PortMidiController::writeOutputNow(const OutputMessage& message) {
+    if (m_pOutputDevice.isNull() || !m_pOutputDevice->isOpen()) {
+        return;
+    }
+
+    if (!message.isSysex) {
+        const unsigned char status = message.shortWord & 0xFF;
+        const unsigned char byte1 = (message.shortWord >> 8) & 0xFF;
+        const unsigned char byte2 = (message.shortWord >> 16) & 0xFF;
+        PmError err = m_pOutputDevice->writeShort(message.shortWord);
+        if (err == pmNoError) {
+            qCDebug(m_logOutput) << QStringLiteral("outgoing: ")
+                                 << MidiUtils::formatMidiOpCode(getName(),
+                                            status,
+                                            byte1,
+                                            byte2,
+                                            MidiUtils::channelFromStatus(status),
+                                            MidiUtils::opCodeFromStatus(status));
+        } else {
+            // Use two qWarnings() to ensure line break works on all operating systems
+            qCWarning(m_logOutput) << "Error sending short message"
+                                   << MidiUtils::formatMidiOpCode(getName(),
+                                              status,
+                                              byte1,
+                                              byte2,
+                                              MidiUtils::channelFromStatus(status),
+                                              MidiUtils::opCodeFromStatus(status));
+            qCWarning(m_logOutput) << "PortMidi error:" << Pm_GetErrorText(err);
+        }
+        return;
+    }
+
+    PmError err = pmNoError;
+    for (int attempt = 0; attempt < kMaxSysexSendRetries; ++attempt) {
+        err = m_pOutputDevice->writeSysEx(
+                (unsigned char*)message.sysex.constData());
+        if (err != pmHostError) {
+            break;
+        }
+        // Driver buffer not yet free; back off briefly and retry.
+        std::this_thread::sleep_for(kSysexRetryBackoff);
+    }
+
     if (err == pmNoError) {
         qCDebug(m_logOutput) << QStringLiteral("outgoing: ")
-                             << MidiUtils::formatSysexMessage(getName(), data);
-        return true;
+                             << MidiUtils::formatSysexMessage(getName(), message.sysex);
     } else {
         // Use two qWarnings() to ensure line break works on all operating systems
         qCWarning(m_logOutput) << "Error sending SysEx message:"
-                               << MidiUtils::formatSysexMessage(getName(), data);
+                               << MidiUtils::formatSysexMessage(getName(), message.sysex);
         qCWarning(m_logOutput) << "PortMidi error:" << Pm_GetErrorText(err);
     }
-    return false;
 }

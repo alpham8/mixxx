@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MixxxControllerPreset schemaVersion="1" mixxxVersion="2.6">
+    <info>
+        <name>Pioneer DJ PLX-CRSS12</name>
+        <author>Thomas Wunner</author>
+        <description>Mapping for the Pioneer DJ PLX-CRSS12 turntable performance pads. The platter is a DVS timecode source (configure under Preferences > Vinyl Control, NOT here). Deck is taken from the MIDI channel, so one mapping serves both turntables (deck 1 = 0x90/0x97, deck 2 = 0x91/0x98).</description>
+    </info>
+    <controller id="PLX-CRSS12">
+        <scriptfiles>
+            <file functionprefix="PioneerPLXCRSS12" filename="Pioneer-PLX-CRSS12-script.js"/>
+        </scriptfiles>
+        <controls>
+            <!--
+                The PLATTER is DVS timecode, not MIDI: set it up under
+                Preferences > Vinyl Control. The unit has two physical pad-mode
+                buttons (HOT CUE, SAMPLER); each toggles two modes (press once /
+                press twice), so the firmware reports four active modes via four
+                notes: 0x30 roll, 0x31 hotcue, 0x32 savedloop, 0x33 sampler. Pads
+                send 0x00-0x07 (hotcue/roll/savedloop) or 0x10-0x17 (sampler). The
+                deck comes from the channel: deck1 = 0x90/0x97, deck2 = 0x91/0x98.
+            -->
+
+            <!-- ===== DECK 1 (channel 0x90 / pads 0x97) ===== -->
+            <control>
+                <description>D1 PAD MODE 0x30</description>
+                <group>[Channel1]</group>
+                <key>PioneerPLXCRSS12.padModeButton</key>
+                <status>0x90</status>
+                <midino>0x30</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>D1 PAD MODE 0x31</description>
+                <group>[Channel1]</group>
+                <key>PioneerPLXCRSS12.padModeButton</key>
+                <status>0x90</status>
+                <midino>0x31</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>D1 PAD MODE 0x32</description>
+                <group>[Channel1]</group>
+                <key>PioneerPLXCRSS12.padModeButton</key>
+                <status>0x90</status>
+                <midino>0x32</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>D1 PAD MODE 0x33</description>
+                <group>[Channel1]</group>
+                <key>PioneerPLXCRSS12.padModeButton</key>
+                <status>0x90</status>
+                <midino>0x33</midino>
+                <options><Script-Binding/></options>
+            </control>
+
+            <!-- ===== DECK 2 (channel 0x91 / pads 0x98) ===== -->
+            <control>
+                <description>D2 PAD MODE 0x30</description>
+                <group>[Channel2]</group>
+                <key>PioneerPLXCRSS12.padModeButton</key>
+                <status>0x91</status>
+                <midino>0x30</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>D2 PAD MODE 0x31</description>
+                <group>[Channel2]</group>
+                <key>PioneerPLXCRSS12.padModeButton</key>
+                <status>0x91</status>
+                <midino>0x31</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>D2 PAD MODE 0x32</description>
+                <group>[Channel2]</group>
+                <key>PioneerPLXCRSS12.padModeButton</key>
+                <status>0x91</status>
+                <midino>0x32</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>D2 PAD MODE 0x33</description>
+                <group>[Channel2]</group>
+                <key>PioneerPLXCRSS12.padModeButton</key>
+                <status>0x91</status>
+                <midino>0x33</midino>
+                <options><Script-Binding/></options>
+            </control>
+
+            <!-- ===== DECK 1 PADS (0x97): range 0x00-0x07 and 0x10-0x17 ===== -->
+            <control><description>D1 PAD 0x00</description><group>[Channel1]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x97</status><midino>0x00</midino><options><Script-Binding/></options></control>
+            <control><description>D1 PAD 0x01</description><group>[Channel1]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x97</status><midino>0x01</midino><options><Script-Binding/></options></control>
+            <control><description>D1 PAD 0x02</description><group>[Channel1]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x97</status><midino>0x02</midino><options><Script-Binding/></options></control>
+            <control><description>D1 PAD 0x03</description><group>[Channel1]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x97</status><midino>0x03</midino><options><Script-Binding/></options></control>
+            <control><description>D1 PAD 0x04</description><group>[Channel1]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x97</status><midino>0x04</midino><options><Script-Binding/></options></control>
+            <control><description>D1 PAD 0x05</description><group>[Channel1]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x97</status><midino>0x05</midino><options><Script-Binding/></options></control>
+            <control><description>D1 PAD 0x06</description><group>[Channel1]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x97</status><midino>0x06</midino><options><Script-Binding/></options></control>
+            <control><description>D1 PAD 0x07</description><group>[Channel1]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x97</status><midino>0x07</midino><options><Script-Binding/></options></control>
+            <control><description>D1 PAD 0x10</description><group>[Channel1]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x97</status><midino>0x10</midino><options><Script-Binding/></options></control>
+            <control><description>D1 PAD 0x11</description><group>[Channel1]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x97</status><midino>0x11</midino><options><Script-Binding/></options></control>
+            <control><description>D1 PAD 0x12</description><group>[Channel1]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x97</status><midino>0x12</midino><options><Script-Binding/></options></control>
+            <control><description>D1 PAD 0x13</description><group>[Channel1]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x97</status><midino>0x13</midino><options><Script-Binding/></options></control>
+            <control><description>D1 PAD 0x14</description><group>[Channel1]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x97</status><midino>0x14</midino><options><Script-Binding/></options></control>
+            <control><description>D1 PAD 0x15</description><group>[Channel1]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x97</status><midino>0x15</midino><options><Script-Binding/></options></control>
+            <control><description>D1 PAD 0x16</description><group>[Channel1]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x97</status><midino>0x16</midino><options><Script-Binding/></options></control>
+            <control><description>D1 PAD 0x17</description><group>[Channel1]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x97</status><midino>0x17</midino><options><Script-Binding/></options></control>
+
+            <!-- ===== DECK 2 PADS (0x98): range 0x00-0x07 and 0x10-0x17 ===== -->
+            <control><description>D2 PAD 0x00</description><group>[Channel2]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x98</status><midino>0x00</midino><options><Script-Binding/></options></control>
+            <control><description>D2 PAD 0x01</description><group>[Channel2]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x98</status><midino>0x01</midino><options><Script-Binding/></options></control>
+            <control><description>D2 PAD 0x02</description><group>[Channel2]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x98</status><midino>0x02</midino><options><Script-Binding/></options></control>
+            <control><description>D2 PAD 0x03</description><group>[Channel2]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x98</status><midino>0x03</midino><options><Script-Binding/></options></control>
+            <control><description>D2 PAD 0x04</description><group>[Channel2]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x98</status><midino>0x04</midino><options><Script-Binding/></options></control>
+            <control><description>D2 PAD 0x05</description><group>[Channel2]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x98</status><midino>0x05</midino><options><Script-Binding/></options></control>
+            <control><description>D2 PAD 0x06</description><group>[Channel2]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x98</status><midino>0x06</midino><options><Script-Binding/></options></control>
+            <control><description>D2 PAD 0x07</description><group>[Channel2]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x98</status><midino>0x07</midino><options><Script-Binding/></options></control>
+            <control><description>D2 PAD 0x10</description><group>[Channel2]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x98</status><midino>0x10</midino><options><Script-Binding/></options></control>
+            <control><description>D2 PAD 0x11</description><group>[Channel2]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x98</status><midino>0x11</midino><options><Script-Binding/></options></control>
+            <control><description>D2 PAD 0x12</description><group>[Channel2]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x98</status><midino>0x12</midino><options><Script-Binding/></options></control>
+            <control><description>D2 PAD 0x13</description><group>[Channel2]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x98</status><midino>0x13</midino><options><Script-Binding/></options></control>
+            <control><description>D2 PAD 0x14</description><group>[Channel2]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x98</status><midino>0x14</midino><options><Script-Binding/></options></control>
+            <control><description>D2 PAD 0x15</description><group>[Channel2]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x98</status><midino>0x15</midino><options><Script-Binding/></options></control>
+            <control><description>D2 PAD 0x16</description><group>[Channel2]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x98</status><midino>0x16</midino><options><Script-Binding/></options></control>
+            <control><description>D2 PAD 0x17</description><group>[Channel2]</group><key>PioneerPLXCRSS12.padPressed</key><status>0x98</status><midino>0x17</midino><options><Script-Binding/></options></control>
+
+            <!-- ===== TEMPO / PITCH FADER (14-bit, deck channel) =====
+                 Absolute fader: 0% adjustment = centre (MSB 0x40 / value 8192),
+                 +8% = top (16383), -8% = bottom (0). A script handler combines
+                 MSB+LSB and sets the deck rate explicitly so centre = 0%. -->
+            <control>
+                <description>D1 TEMPO FADER (MSB)</description>
+                <group>[Channel1]</group>
+                <key>PioneerPLXCRSS12.tempoFaderMsb</key>
+                <status>0xB0</status>
+                <midino>0x10</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>D1 TEMPO FADER (LSB)</description>
+                <group>[Channel1]</group>
+                <key>PioneerPLXCRSS12.tempoFaderLsb</key>
+                <status>0xB0</status>
+                <midino>0x30</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>D2 TEMPO FADER (MSB)</description>
+                <group>[Channel2]</group>
+                <key>PioneerPLXCRSS12.tempoFaderMsb</key>
+                <status>0xB1</status>
+                <midino>0x10</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>D2 TEMPO FADER (LSB)</description>
+                <group>[Channel2]</group>
+                <key>PioneerPLXCRSS12.tempoFaderLsb</key>
+                <status>0xB1</status>
+                <midino>0x30</midino>
+                <options><Script-Binding/></options>
+            </control>
+        </controls>
+        <outputs>
+        </outputs>
+    </controller>
+</MixxxControllerPreset>
