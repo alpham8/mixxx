@@ -113,6 +113,13 @@ PioneerPLXCRSS12.padColorPalette = {
 PioneerPLXCRSS12.colorMapper = null;
 PioneerPLXCRSS12.emptyPadColor = 0x0A;
 
+// Fixed pad colours for the non-hotcue modes (same palette/indices as the DJM-S7).
+PioneerPLXCRSS12.modeColor = {
+    roll: 0x0C,      // cyan
+    savedloop: 0x1D, // yellow
+    sampler: 0x37,   // magenta
+};
+
 // ---------------------------------------------------------------------------
 // Init / Shutdown
 // ---------------------------------------------------------------------------
@@ -280,7 +287,7 @@ PioneerPLXCRSS12.updatePadLeds = function(group) {
     for (let i = 0; i < 8; i++) {
         const velocity = mode === "hotcue"
             ? PioneerPLXCRSS12.hotcueColorIndex(group, i)
-            : PioneerPLXCRSS12.emptyPadColor;
+            : PioneerPLXCRSS12.modeColor[mode];
         midi.sendShortMsg(padStatus, i, velocity);
     }
 };

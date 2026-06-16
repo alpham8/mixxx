@@ -123,13 +123,18 @@ PioneerDJMS7.enableSysexHex = [
     "F0 00 20 7F 31 11 F7",
 ];
 
-// Periodic keep-alive that Serato keeps sending after the handshake (~250 ms).
-// At this cadence the unit stays in host mode and pad colours persist.
+// Periodic keep-alive that Serato keeps sending after the handshake. Only while
+// this keeps arriving does the unit stay in the persistent pad-LED mode in which
+// host-set Note On colours stick. The device never holds pad colours on its own -
+// confirmed on hardware: without the handshake the pads are dead (no input) and
+// only flash a fixed default; with the handshake but a slow keep-alive the colours
+// flash and revert. Persistent colours therefore need Serato's ~250 ms cadence.
 //
-// IMPORTANT: 250 ms only works on a Mixxx build with the asynchronous PortMidi
-// output queue (dedicated output thread). On stock Mixxx the blocking sysex send
-// at 250 ms jams the pad subsystem (pad presses stop arriving, LEDs go dark) -
-// there, raise this to 1000 (pads work but colours fade).
+// 250 ms requires this branch's asynchronous PortMidi output queue (dedicated
+// output thread); with it the send is non-blocking and pad input keeps working.
+// On a stock Mixxx WITHOUT that queue the blocking sysex at 250 ms jams the pad
+// subsystem (presses stop arriving, LEDs go dark) - raise to 1000 there (pads
+// work, colours fade).
 PioneerDJMS7.heartbeatSysex = [0xF0, 0x00, 0x20, 0x7F, 0x50, 0x01, 0xF7];
 PioneerDJMS7.heartbeatIntervalMs = 250;
 PioneerDJMS7.heartbeatTimer = 0;
