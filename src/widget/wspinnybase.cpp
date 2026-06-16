@@ -1,5 +1,7 @@
 #include "widget/wspinnybase.h"
 
+#include <algorithm>
+
 #include <QApplication>
 #include <QtDebug>
 
@@ -260,6 +262,12 @@ void WSpinnyBase::cacheCuePoints() {
         point.color = mixxx::RgbColor::toQColor(pCue->getColor());
         m_cueGlowPoints.append(point);
     }
+    // updateCueGlow() relies on ascending order to find the surrounding cues.
+    std::sort(m_cueGlowPoints.begin(),
+            m_cueGlowPoints.end(),
+            [](const CueGlowPoint& a, const CueGlowPoint& b) {
+                return a.normalizedPosition < b.normalizedPosition;
+            });
 }
 
 void WSpinnyBase::updateCueGlow() {
@@ -274,33 +282,43 @@ void WSpinnyBase::updateCueGlow() {
         return;
     }
 
-    const double bpm = m_pBpm.get();
-    const double trackSamples = m_pTrackSamples.get();
-    const double sampleRate = m_pTrackSampleRate.get();
-    if (bpm <= 0.0 || trackSamples <= 0.0 || sampleRate <= 0.0) {
-        m_cueGlowIntensity = 0.0f;
-        return;
+    // Find the first cue after the playhead; the cue before it is the previous
+    // one. m_cueGlowPoints is sorted ascending (see cacheCuePoints).
+    int nextIdx = -1;
+    for (int i = 0; i < m_cueGlowPoints.size(); ++i) {
+        if (m_cueGlowPoints.at(i).normalizedPosition > playPos) {
+            nextIdx = i;
+            break;
+        }
     }
-    const double totalSeconds = (trackSamples / 2.0) / sampleRate;
-    const double beatsPerSecond = bpm / 60.0;
+    const bool hasNext = nextIdx >= 0;
+    const int prevIdx = hasNext ? nextIdx - 1 : m_cueGlowPoints.size() - 1;
+    const bool hasPrev = prevIdx >= 0;
 
-    float bestIntensity = 0.0f;
-    QColor bestColor;
+    // The track boundaries (0.0 / 1.0) act as neutral anchors when there is no
+    // cue on that side, so the glow fades out toward the start/end of the track.
+    const double prevPos = hasPrev ? m_cueGlowPoints.at(prevIdx).normalizedPosition : 0.0;
+    const double nextPos = hasNext ? m_cueGlowPoints.at(nextIdx).normalizedPosition : 1.0;
 
-    for (const auto& cue : m_cueGlowPoints) {
-        const double distNorm = playPos - cue.normalizedPosition;
-        const double distSeconds = distNorm * totalSeconds;
-        const double distBeats = distSeconds * beatsPerSecond;
+    const mixxx::cueglow::CueGlowResult result =
+            mixxx::cueglow::calcCrossfadeIntensity(prevPos, playPos, nextPos);
 
-        const float intensity = mixxx::cueglow::calcIntensity(distBeats);
-        if (intensity > bestIntensity) {
-            bestIntensity = intensity;
-            bestColor = cue.color;
+    float intensity = result.intensity;
+    if (result.useNext) {
+        if (hasNext) {
+            m_cueGlowColor = m_cueGlowPoints.at(nextIdx).color;
+        } else {
+            intensity = 0.0f;
+        }
+    } else {
+        if (hasPrev) {
+            m_cueGlowColor = m_cueGlowPoints.at(prevIdx).color;
+        } else {
+            intensity = 0.0f;
         }
     }
 
-    m_cueGlowIntensity = bestIntensity * mixxx::cueglow::kMaxAlpha;
-    m_cueGlowColor = bestColor;
+    m_cueGlowIntensity = intensity * mixxx::cueglow::kMaxAlpha;
 }
 
 void WSpinnyBase::slotLoadTrack(TrackPointer pTrack) {

@@ -10,23 +10,35 @@
 namespace mixxx {
 namespace cueglow {
 
-constexpr double kDrainBeats = 16.0;
 constexpr float kMaxAlpha = 0.25f;
 constexpr int kGlowCircleSize = 64;
 
-// Returns raw intensity [0.0, 1.0] based on beat distance past a cue point.
-// distBeats < 0 means the playhead has not yet reached the cue (no glow).
-// distBeats >= 0 means the playhead has passed the cue — intensity drains
-// linearly from 1.0 down to 0.0 over kDrainBeats beats.
-// Multiply the result by kMaxAlpha to get the final overlay alpha.
-inline float calcIntensity(double distBeats) {
-    if (distBeats < 0.0) {
-        return 0.0f;
+struct CueGlowResult {
+    float intensity; // [0.0, 1.0]
+    bool useNext;    // true: apply the next cue's colour, false: the previous one
+};
+
+// Crossfades the glow between the previous and next cue around the playhead.
+// All positions are normalized to [0, 1] with prevPos <= playPos <= nextPos.
+// The glow is full (1.0) at each cue and fades to neutral (0.0) exactly at the
+// midpoint between them: the previous cue drains 1.0 -> 0.0 over the first half,
+// then the next cue fills 0.0 -> 1.0 over the second half. useNext tells the
+// caller which cue's colour to apply. Multiply intensity by kMaxAlpha for the
+// final overlay alpha.
+inline CueGlowResult calcCrossfadeIntensity(double prevPos, double playPos, double nextPos) {
+    const double midpoint = (prevPos + nextPos) / 2.0;
+    if (playPos <= midpoint) {
+        const double span = midpoint - prevPos;
+        const float intensity = span > 0.0
+                ? static_cast<float>((midpoint - playPos) / span)
+                : 0.0f;
+        return {intensity, false};
     }
-    if (distBeats >= kDrainBeats) {
-        return 0.0f;
-    }
-    return static_cast<float>(1.0 - distBeats / kDrainBeats);
+    const double span = nextPos - midpoint;
+    const float intensity = span > 0.0
+            ? static_cast<float>((playPos - midpoint) / span)
+            : 0.0f;
+    return {intensity, true};
 }
 
 inline QImage createTintedForeground(

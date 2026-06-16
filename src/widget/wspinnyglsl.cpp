@@ -251,15 +251,18 @@ void WSpinnyGLSL::paintGL() {
                     overlayRadius * 2, overlayRadius / 2);
             p.drawText(timeRect, Qt::AlignCenter, timeText);
 
-            const int durMins = static_cast<int>(totalSeconds) / 60;
-            const int durSecs = static_cast<int>(totalSeconds) % 60;
-            QString durText = QStringLiteral("%1:%2")
-                    .arg(durMins, 2, 10, QChar('0'))
-                    .arg(durSecs, 2, 10, QChar('0'));
-            QRect durRect(cx - overlayRadius, cy + overlayRadius / 4,
+            const double remainingSeconds = totalSeconds - elapsedSeconds;
+            const int remMins = static_cast<int>(remainingSeconds) / 60;
+            const int remSecs = static_cast<int>(remainingSeconds) % 60;
+            const int remTenths = static_cast<int>(remainingSeconds * 10) % 10;
+            QString remText = QStringLiteral("%1:%2.%3")
+                    .arg(remMins, 2, 10, QChar('0'))
+                    .arg(remSecs, 2, 10, QChar('0'))
+                    .arg(remTenths);
+            QRect remRect(cx - overlayRadius, cy + overlayRadius / 4,
                     overlayRadius * 2, overlayRadius / 2);
             p.setPen(QColor(200, 200, 200));
-            p.drawText(durRect, Qt::AlignCenter, durText);
+            p.drawText(remRect, Qt::AlignCenter, remText);
         }
         p.end();
     }

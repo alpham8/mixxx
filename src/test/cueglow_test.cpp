@@ -4,64 +4,74 @@
 
 using namespace mixxx::cueglow;
 
-TEST(CueGlowTest, ZeroIntensityBeforeCue) {
-    EXPECT_FLOAT_EQ(calcIntensity(-0.01), 0.0f);
-    EXPECT_FLOAT_EQ(calcIntensity(-1.0), 0.0f);
-    EXPECT_FLOAT_EQ(calcIntensity(-100.0), 0.0f);
+TEST(CueGlowTest, FullAtPreviousCue) {
+    // At the previous cue the glow is full and uses the previous colour.
+    CueGlowResult r = calcCrossfadeIntensity(0.2, 0.2, 0.6);
+    EXPECT_FLOAT_EQ(r.intensity, 1.0f);
+    EXPECT_FALSE(r.useNext);
 }
 
-TEST(CueGlowTest, ZeroIntensityWellAfterDrain) {
-    EXPECT_FLOAT_EQ(calcIntensity(kDrainBeats + 0.01), 0.0f);
-    EXPECT_FLOAT_EQ(calcIntensity(32.0), 0.0f);
-    EXPECT_FLOAT_EQ(calcIntensity(100.0), 0.0f);
+TEST(CueGlowTest, FullAtNextCue) {
+    // At the next cue the glow is full and uses the next colour.
+    CueGlowResult r = calcCrossfadeIntensity(0.2, 0.6, 0.6);
+    EXPECT_FLOAT_EQ(r.intensity, 1.0f);
+    EXPECT_TRUE(r.useNext);
 }
 
-TEST(CueGlowTest, FullIntensityAtCuePoint) {
-    EXPECT_FLOAT_EQ(calcIntensity(0.0), 1.0f);
+TEST(CueGlowTest, NeutralAtMidpoint) {
+    // Exactly at the midpoint the glow is neutral.
+    CueGlowResult r = calcCrossfadeIntensity(0.2, 0.4, 0.6);
+    EXPECT_FLOAT_EQ(r.intensity, 0.0f);
+    EXPECT_FALSE(r.useNext);
 }
 
-TEST(CueGlowTest, DrainMidpoint) {
-    EXPECT_FLOAT_EQ(calcIntensity(kDrainBeats / 2.0), 0.5f);
+TEST(CueGlowTest, DrainsPreviousInFirstHalf) {
+    // midpoint = 0.2, span = 0.2, intensity = (0.2 - 0.1) / 0.2 = 0.5
+    CueGlowResult r = calcCrossfadeIntensity(0.0, 0.1, 0.4);
+    EXPECT_FLOAT_EQ(r.intensity, 0.5f);
+    EXPECT_FALSE(r.useNext);
 }
 
-TEST(CueGlowTest, DrainQuarter) {
-    EXPECT_FLOAT_EQ(calcIntensity(kDrainBeats * 0.25), 0.75f);
+TEST(CueGlowTest, FillsNextInSecondHalf) {
+    // midpoint = 0.2, span = 0.2, intensity = (0.3 - 0.2) / 0.2 = 0.5
+    CueGlowResult r = calcCrossfadeIntensity(0.0, 0.3, 0.4);
+    EXPECT_FLOAT_EQ(r.intensity, 0.5f);
+    EXPECT_TRUE(r.useNext);
 }
 
-TEST(CueGlowTest, DrainThreeQuarters) {
-    EXPECT_FLOAT_EQ(calcIntensity(kDrainBeats * 0.75), 0.25f);
+TEST(CueGlowTest, UsesNextColourPastMidpoint) {
+    CueGlowResult r = calcCrossfadeIntensity(0.0, 0.21, 0.4);
+    EXPECT_TRUE(r.useNext);
 }
 
-TEST(CueGlowTest, DrainEnd) {
-    EXPECT_FLOAT_EQ(calcIntensity(kDrainBeats), 0.0f);
+TEST(CueGlowTest, SymmetricAroundMidpoint) {
+    // Equal distance either side of the midpoint -> equal intensity.
+    const double prevPos = 0.0;
+    const double nextPos = 0.8; // midpoint = 0.4
+    CueGlowResult before = calcCrossfadeIntensity(prevPos, 0.3, nextPos);
+    CueGlowResult after = calcCrossfadeIntensity(prevPos, 0.5, nextPos);
+    EXPECT_FLOAT_EQ(before.intensity, after.intensity);
+    EXPECT_FALSE(before.useNext);
+    EXPECT_TRUE(after.useNext);
 }
 
 TEST(CueGlowTest, IntensityAlwaysInRange) {
-    for (double b = -8.0; b <= 24.0; b += 0.01) {
-        float intensity = calcIntensity(b);
-        EXPECT_GE(intensity, 0.0f) << "at beats=" << b;
-        EXPECT_LE(intensity, 1.0f) << "at beats=" << b;
+    const double prevPos = 0.25;
+    const double nextPos = 0.75;
+    for (double p = prevPos; p <= nextPos; p += 0.001) {
+        CueGlowResult r = calcCrossfadeIntensity(prevPos, p, nextPos);
+        EXPECT_GE(r.intensity, 0.0f) << "at pos=" << p;
+        EXPECT_LE(r.intensity, 1.0f) << "at pos=" << p;
     }
 }
 
-TEST(CueGlowTest, DrainIsMonotonicallyDecreasing) {
-    float prev = 1.0f;
-    for (double b = 0.0; b <= kDrainBeats; b += 0.01) {
-        float intensity = calcIntensity(b);
-        EXPECT_LE(intensity, prev + 1e-6f) << "at beats=" << b;
-        prev = intensity;
-    }
+TEST(CueGlowTest, DegenerateZeroSpan) {
+    // Coincident cues must not divide by zero.
+    CueGlowResult r = calcCrossfadeIntensity(0.5, 0.5, 0.5);
+    EXPECT_FLOAT_EQ(r.intensity, 0.0f);
 }
 
 TEST(CueGlowTest, MaxAlphaScaling) {
-    EXPECT_FLOAT_EQ(calcIntensity(0.0) * kMaxAlpha, 0.25f);
-    EXPECT_FLOAT_EQ(calcIntensity(kDrainBeats / 2.0) * kMaxAlpha, 0.125f);
-}
-
-TEST(CueGlowTest, SingleBeatSteps) {
-    for (int i = 0; i <= static_cast<int>(kDrainBeats); ++i) {
-        float expected = static_cast<float>(1.0 - static_cast<double>(i) / kDrainBeats);
-        EXPECT_FLOAT_EQ(calcIntensity(static_cast<double>(i)), expected)
-                << "at beat " << i;
-    }
+    EXPECT_FLOAT_EQ(calcCrossfadeIntensity(0.2, 0.2, 0.6).intensity * kMaxAlpha, 0.25f);
+    EXPECT_FLOAT_EQ(calcCrossfadeIntensity(0.0, 0.1, 0.4).intensity * kMaxAlpha, 0.125f);
 }
