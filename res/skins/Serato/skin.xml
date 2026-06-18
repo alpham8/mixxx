@@ -476,6 +476,35 @@
                       <SizePolicy>me,me</SizePolicy>
                       <Children>
 
+                        <!-- Crossfader strip below the decks (its own row, over
+                             the FX). The decks are symmetric (450f each), so the
+                             waveform column is centred in this full-width row;
+                             the beatgrid-reserve on the right shifts the fader
+                             onto the visible waveform's centre (not the panel). -->
+                        <WidgetGroup>
+                          <ObjectName>SeratoCrossfaderStrip</ObjectName>
+                          <Layout>horizontal</Layout>
+                          <SizePolicy>me,min</SizePolicy>
+                          <Children>
+                            <WidgetGroup>
+                              <Layout>horizontal</Layout>
+                              <SizePolicy>me,min</SizePolicy>
+                              <Children>
+                                <WidgetGroup><Size>me,1min</Size></WidgetGroup>
+                                <SingletonContainer>
+                                  <ObjectName>CrossfaderSingleton</ObjectName>
+                                </SingletonContainer>
+                                <WidgetGroup><Size>me,1min</Size></WidgetGroup>
+                              </Children>
+                            </WidgetGroup>
+                            <Template src="skins:Serato/beatgrid_reserve.xml"/>
+                          </Children>
+                          <Connection>
+                            <ConfigKey persist="true">[Skin],show_mixer</ConfigKey>
+                            <BindProperty>visible</BindProperty>
+                          </Connection>
+                        </WidgetGroup>
+
                         <Template src="skins:LateNight/fx_rack.xml"/>
                         <Template src="skins:LateNight/samplers_rack.xml"/>
                         <Template src="skins:LateNight/mic_aux_rack.xml"/>

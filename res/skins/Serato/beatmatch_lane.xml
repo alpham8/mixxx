@@ -1,0 +1,38 @@
+<Template>
+  <!--
+    Thin beat-match cone lane for one channel, placed between the two stacked
+    decks. The waveform itself stays full-height and centred; this lane renders
+    only the frequency-coloured cones (the C++ side gates every other waveform
+    layer when "BeatMatchLane" is set). It is a normal Visual for the channel,
+    so it scrolls and zooms in lock-step with the main waveform.
+
+    The cones must align horizontally with the waveform, so the lane reserves the
+    same BeatgridControls width on the right as the waveform row does - otherwise
+    the lane would be wider and the cones would drift off the beats.
+
+    Variables:
+      ChanNum        - channel number
+      BeatMatchEdge  - "bottom" (cones point up) or "top" (cones point down)
+      BgColorWaveform, SignalColor
+  -->
+  <!-- 32 px = 24 px cone + 8 px gap toward the waveform (cones are anchored to
+       the edge away from the waveform, i.e. toward the centre line). -->
+  <WidgetGroup>
+    <Layout>horizontal</Layout>
+    <SizePolicy>me,f</SizePolicy>
+    <Size>0me,32f</Size>
+    <Children>
+      <Visual>
+        <SizePolicy>me,me</SizePolicy>
+        <Channel><Variable name="ChanNum"/></Channel>
+        <BeatMatchLane>true</BeatMatchLane>
+        <BeatMatchEdge><Variable name="BeatMatchEdge"/></BeatMatchEdge>
+        <BgColor><Variable name="BgColorWaveform"/></BgColor>
+        <SignalColor><Variable name="SignalColor"/></SignalColor>
+        <EndOfTrackColor>#ff0000</EndOfTrackColor>
+        <PlayPosColor>#ff00ff</PlayPosColor>
+      </Visual>
+      <Template src="skins:Serato/beatgrid_reserve.xml"/>
+    </Children>
+  </WidgetGroup>
+</Template>

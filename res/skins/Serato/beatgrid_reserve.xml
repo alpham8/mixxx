@@ -1,0 +1,28 @@
+<Template>
+  <!--
+    Reserves exactly the width of the BeatgridControls panel that sits to the
+    right of each waveform (1f gap + 4*26f buttons + 2px border = 107f, plus a
+    26f hotcue-shift column when timing_shift_buttons is on). Gated by the same
+    config keys as the panel, so anything placed left of it (overview, cone lane)
+    ends flush with the waveform Visual when the panel shows, and spans full
+    width when it is hidden.
+  -->
+  <WidgetGroup>
+    <Layout>horizontal</Layout>
+    <SizePolicy>max,f</SizePolicy>
+    <Children>
+      <WidgetGroup><Size>107f,1min</Size></WidgetGroup>
+      <WidgetGroup>
+        <Size>26f,1min</Size>
+        <Connection>
+          <ConfigKey persist="true">[Skin],timing_shift_buttons</ConfigKey>
+          <BindProperty>visible</BindProperty>
+        </Connection>
+      </WidgetGroup>
+    </Children>
+    <Connection>
+      <ConfigKey persist="true">[Skin],show_beatgrid_controls</ConfigKey>
+      <BindProperty>visible</BindProperty>
+    </Connection>
+  </WidgetGroup>
+</Template>

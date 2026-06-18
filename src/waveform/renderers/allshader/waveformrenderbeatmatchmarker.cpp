@@ -20,9 +20,9 @@
 using namespace rendergraph;
 
 namespace {
-// Cone height (logical pixels). Must match mixxx::kBeatMatchLaneHeight so the
-// cones fit exactly in the band the signal renderer reserves for them. Every
-// cone is drawn at this full height - only the colour varies with the audio.
+// Full cone height (logical pixels) = the tallest a cone reaches at peak level.
+// Must match mixxx::kBeatMatchLaneHeight so the cones fit exactly in the band
+// the signal renderer reserves for them.
 constexpr float kBandHeight = mixxx::kBeatMatchLaneHeight;
 // Mild brightness boost for the cone colour; kept low so deep bass stays a rich
 // red instead of washing to a saturated orange/yellow wall - clamped to 1.0.
@@ -34,6 +34,13 @@ constexpr float kConeStepPx = 10.0f;
 // Fraction of each step the cone base fills (the rest is gap). 0.70 gives a
 // ~7 px base with ~3 px gap, which is clearly triangular at this step size.
 constexpr float kConeFillFraction = 0.70f;
+// Cone height tracks the audio envelope so the row echoes the waveform's
+// dynamics. The shortest cone still reaches this fraction of the band, so even
+// near-silent beats stay readable instead of collapsing to a flat line.
+constexpr float kMinHeightFraction = 0.22f;
+// Gamma applied to the 0..1 envelope before it scales the height. Below 1.0 it
+// lifts mid-level beats a touch while keeping quiet and loud clearly apart.
+constexpr float kHeightGamma = 0.80f;
 // Scan this fraction of the visible span past each edge so the row is already
 // built before it scrolls into view.
 constexpr double kRangeMarginFraction = 0.15;
@@ -191,15 +198,24 @@ bool WaveformRenderBeatMatchMarker::preprocessInner() {
         const double centreFrac = (b + 0.5) * indexStep / dataSize;
         const float x = static_cast<float>(qRound(worldX(centreFrac)));
 
-        // Every cone is the same full-band-height triangle - only the colour
-        // (bass = red, mid = green, high = blue) varies with the audio. The row
-        // reads as an even Serato-style strip instead of a second waveform that
-        // follows the amplitude with uneven peaks.
+        // Colour from the three bands (bass = red, mid = green, high = blue).
         const QVector3D color{
                 std::min(1.f, static_cast<float>(low) / 255.f * kColourGain),
                 std::min(1.f, static_cast<float>(mid) / 255.f * kColourGain),
                 std::min(1.f, static_cast<float>(high) / 255.f * kColourGain)};
-        const float apex = top ? bandHeight : breadth - bandHeight;
+
+        // Height follows the bucket's loudness (peak across the bands): loud
+        // beats stand tall, quiet ones stay short, so the strip echoes the
+        // waveform's shape. The base width and gap never change, so it stays a
+        // row of separate Zapfen rather than a filled miniature waveform.
+        const float level = std::max({static_cast<float>(low),
+                                             static_cast<float>(mid),
+                                             static_cast<float>(high)}) /
+                255.f;
+        const float heightFraction = kMinHeightFraction +
+                (1.f - kMinHeightFraction) * std::pow(level, kHeightGamma);
+        const float coneHeight = bandHeight * heightFraction;
+        const float apex = top ? coneHeight : breadth - coneHeight;
 
         // One triangular Zapfen: base on the lane floor, apex pointing inward.
         updater.addTriangle({x - halfWidth, baseY},
