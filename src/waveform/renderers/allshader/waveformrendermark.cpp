@@ -289,6 +289,10 @@ void allshader::WaveformRenderMark::update() {
     if (isSubtreeBlocked()) {
         return;
     }
+    // In a beat-match cone lane only the play-position line is drawn so it joins
+    // the line in the waveform above/below (the lane defines no cue marks, and
+    // the play marker's triangle/contrast outlines are suppressed in
+    // updatePlayPosMarkTexture).
 
     // For each WaveformMark we create a GeometryNode with Texture
     // (in updateMarkImage). Of these GeometryNodes, we append the
@@ -454,17 +458,19 @@ void allshader::WaveformRenderMark::update() {
 
     const float playMarkerPos = static_cast<float>(m_waveformRenderer->getPlayMarkerPosition() *
             m_waveformRenderer->getLength());
-    if (m_lastPlayMarkerPos != playMarkerPos) {
+    const float playMarkerBreadth = static_cast<float>(m_waveformRenderer->getBreadth());
+    if (m_lastPlayMarkerPos != playMarkerPos || m_lastPlayMarkerBreadth != playMarkerBreadth) {
         const float drawOffset = roundToPixel(playMarkerPos + kPlayPosOffset);
         TexturedVertexUpdater vertexUpdater{
                 m_pPlayPosNode->geometry()
                         .vertexDataAs<Geometry::TexturedPoint2D>()};
         vertexUpdater.addRectangle({drawOffset, 0.f},
-                {drawOffset + kPlayPosWidth, static_cast<float>(m_waveformRenderer->getBreadth())},
+                {drawOffset + kPlayPosWidth, playMarkerBreadth},
                 {0.f, 0.f},
                 {1.f, 1.f});
         m_pPlayPosNode->markDirtyGeometry();
         m_lastPlayMarkerPos = playMarkerPos;
+        m_lastPlayMarkerBreadth = playMarkerBreadth;
     }
 
     if (m_untilMarkShowBeats || m_untilMarkShowTime) {
@@ -563,19 +569,22 @@ void allshader::WaveformRenderMark::updatePlayPosMarkTexture(rendergraph::Contex
 
     painter.setWorldMatrixEnabled(false);
 
-    // draw dim outlines to increase playpos/waveform contrast
-    painter.setPen(m_playMarkerBackgroundColor);
-    painter.setOpacity(0.5);
-    // lines next to playpos
-    // Note: don't draw lines where they would overlap the triangles,
-    // otherwise both translucent strokes add up to a darker tone.
-    painter.drawLine(QLineF(lineX + 1.f, 4.f, lineX + 1.f, imgHeight));
-    painter.drawLine(QLineF(lineX - 1.f, 4.f, lineX - 1.f, imgHeight));
+    // A cone lane only joins the play line through; no arrow/contrast outlines.
+    const bool laneLine = m_waveformRenderer->isBeatMatchLane();
 
-    // triangle at top edge
-    // Increase line/waveform contrast
-    painter.setOpacity(0.8);
-    {
+    if (!laneLine) {
+        // draw dim outlines to increase playpos/waveform contrast
+        painter.setPen(m_playMarkerBackgroundColor);
+        painter.setOpacity(0.5);
+        // lines next to playpos
+        // Note: don't draw lines where they would overlap the triangles,
+        // otherwise both translucent strokes add up to a darker tone.
+        painter.drawLine(QLineF(lineX + 1.f, 4.f, lineX + 1.f, imgHeight));
+        painter.drawLine(QLineF(lineX - 1.f, 4.f, lineX - 1.f, imgHeight));
+
+        // triangle at top edge
+        // Increase line/waveform contrast
+        painter.setOpacity(0.8);
         QPointF baseL = QPointF(lineX - 5.f, 0.f);
         QPointF baseR = QPointF(lineX + 5.f, 0.f);
         QPointF tip = QPointF(lineX, 5.f);
@@ -586,8 +595,8 @@ void allshader::WaveformRenderMark::updatePlayPosMarkTexture(rendergraph::Contex
     painter.setOpacity(1.0);
     // play position line
     painter.drawLine(QLineF(lineX, 0.f, lineX, imgHeight));
-    // triangle at top edge
-    {
+    if (!laneLine) {
+        // triangle at top edge
         QPointF baseL = QPointF(lineX - 4.f, 0.f);
         QPointF baseR = QPointF(lineX + 4.f, 0.f);
         QPointF tip = QPointF(lineX, 4.f);

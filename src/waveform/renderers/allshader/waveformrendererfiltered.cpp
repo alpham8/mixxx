@@ -34,6 +34,9 @@ void WaveformRendererFiltered::preprocess() {
 }
 
 bool WaveformRendererFiltered::preprocessInner() {
+    if (m_waveformRenderer->isBeatMatchLane()) {
+        return false;
+    }
     TrackPointer pTrack = m_waveformRenderer->getTrackInfo();
 
     if (!pTrack) {
@@ -85,10 +88,9 @@ bool WaveformRendererFiltered::preprocessInner() {
     getGains(&allGain, &bandGain[0], &bandGain[1], &bandGain[2]);
 
     const float breadth = static_cast<float>(m_waveformRenderer->getBreadth());
-    const float center = waveformBandCenter(breadth);
-    const float halfHeight = waveformBandHalfHeight(breadth);
+    const float halfBreadth = breadth / 2.0f;
 
-    const float heightFactor = allGain * halfHeight / m_maxValue;
+    const float heightFactor = allGain * halfBreadth / m_maxValue;
 
     // Effective visual frame for x
     double xVisualFrame = qRound(firstVisualFrame / visualIncrementPerPixel) *
@@ -128,9 +130,9 @@ bool WaveformRendererFiltered::preprocessInner() {
 
     RGBVertexUpdater axisVertexUpdater{geometry().vertexDataAs<Geometry::RGBColoredPoint2D>()};
     axisVertexUpdater.addRectangle({0.f,
-                                           center - 0.5f},
+                                           halfBreadth - 0.5f},
             {static_cast<float>(length),
-                    center + 0.5f},
+                    halfBreadth + 0.5f},
             {static_cast<float>(m_axesColor_r),
                     static_cast<float>(m_axesColor_g),
                     static_cast<float>(m_axesColor_b)});
@@ -181,9 +183,9 @@ bool WaveformRendererFiltered::preprocessInner() {
 
             vertexUpdater[bandIndex].addRectangle(
                     {fpos - halfPixelSize,
-                            center - heightFactor * max[bandIndex][0]},
+                            halfBreadth - heightFactor * max[bandIndex][0]},
                     {fpos + halfPixelSize,
-                            center + heightFactor * max[bandIndex][1]},
+                            halfBreadth + heightFactor * max[bandIndex][1]},
                     {rgb[bandIndex]});
         }
 

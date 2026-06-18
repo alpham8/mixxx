@@ -94,6 +94,11 @@ class allshader::WaveformRenderMark : public ::WaveformRenderMarkBase,
     rendergraph::GeometryNode* m_pPlayPosNode;
     float m_playPosHeight;
     float m_playPosDevicePixelRatio;
+    // Breadth baked into the play-pos rectangle geometry. The geometry must be
+    // rebuilt when the widget height changes (e.g. after a layout resize while
+    // the deck is paused), not only when the play position moves - otherwise the
+    // line keeps a stale, too-short height.
+    float m_lastPlayMarkerBreadth{-1.f};
 
     DigitsRenderNode* m_pDigitsRenderNode{};
 

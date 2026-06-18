@@ -4114,3 +4114,25 @@ QLabel#SeratoDeckNumber {
     color: #8a8a8a;
     background-color: transparent;
 }
+
+/* Readability: thin framed chip behind the deck readouts (BPM, key, rate,
+   times) so they stay legible over the spinny / busy cover art. Appended last
+   so it overrides the transparent-background rules above. Horizontal-only
+   padding keeps the short cells (e.g. the 16 px rate) from clipping. */
+#DeckSerato1 WNumber#SeratoBpm, #DeckSerato2 WNumber#SeratoBpm,
+#DeckSerato3 WNumber#SeratoBpm, #DeckSerato4 WNumber#SeratoBpm,
+#DeckSerato1 #SeratoKey, #DeckSerato2 #SeratoKey,
+#DeckSerato3 #SeratoKey, #DeckSerato4 #SeratoKey,
+#DeckSerato1 #SeratoRateText, #DeckSerato2 #SeratoRateText,
+#DeckSerato3 #SeratoRateText, #DeckSerato4 #SeratoRateText,
+#DeckSerato1 #SeratoDuration, #DeckSerato2 #SeratoDuration,
+#DeckSerato3 #SeratoDuration, #DeckSerato4 #SeratoDuration,
+#DeckSerato1 #SeratoPosition, #DeckSerato2 #SeratoPosition,
+#DeckSerato3 #SeratoPosition, #DeckSerato4 #SeratoPosition,
+#DeckSerato1 #SeratoRemaining, #DeckSerato2 #SeratoRemaining,
+#DeckSerato3 #SeratoRemaining, #DeckSerato4 #SeratoRemaining {
+    border: 1px solid rgba(255, 255, 255, 55);
+    border-radius: 3px;
+    padding: 0px 4px;
+    background-color: rgba(0, 0, 0, 130);
+}

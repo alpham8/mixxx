@@ -35,6 +35,9 @@ void WaveformRendererRGB::preprocess() {
 }
 
 bool WaveformRendererRGB::preprocessInner() {
+    if (m_waveformRenderer->isBeatMatchLane()) {
+        return false;
+    }
     TrackPointer pTrack = m_waveformRenderer->getTrackInfo();
 
     if (!pTrack || (m_isSlipRenderer && !m_waveformRenderer->isSlipActive())) {
@@ -96,10 +99,9 @@ bool WaveformRendererRGB::preprocessInner() {
     getGains(&allGain, &lowGain, &midGain, &highGain);
 
     const float breadth = static_cast<float>(m_waveformRenderer->getBreadth());
-    const float center = waveformBandCenter(breadth);
-    const float halfHeight = waveformBandHalfHeight(breadth);
+    const float halfBreadth = breadth / 2.0f;
 
-    const float heightFactorAbs = allGain * halfHeight / m_maxValue;
+    const float heightFactorAbs = allGain * halfBreadth / m_maxValue;
     const float heightFactor[2] = {-heightFactorAbs, heightFactorAbs};
     const bool splitLeftRight = m_options & ::WaveformRendererSignalBase::Option::SplitStereoSignal;
 
@@ -129,9 +131,9 @@ bool WaveformRendererRGB::preprocessInner() {
 
     RGBVertexUpdater vertexUpdater{geometry().vertexDataAs<Geometry::RGBColoredPoint2D>()};
     vertexUpdater.addRectangle({0.f,
-                                       center - 0.5f},
+                                       halfBreadth - 0.5f},
             {static_cast<float>(length),
-                    m_isSlipRenderer ? center : center + 0.5f},
+                    m_isSlipRenderer ? halfBreadth : halfBreadth + 0.5f},
             {static_cast<float>(m_axesColor_r),
                     static_cast<float>(m_axesColor_g),
                     static_cast<float>(m_axesColor_b)});
@@ -218,12 +220,12 @@ bool WaveformRendererRGB::preprocessInner() {
             if (!splitLeftRight) {
                 vertexUpdater.addRectangle(
                         {fpos - halfPixelSize,
-                                center -
+                                halfBreadth -
                                         heightFactorAbs * eqGain *
                                                 maxAllChn[chn]},
                         {fpos + halfPixelSize,
-                                m_isSlipRenderer ? center
-                                                 : center +
+                                m_isSlipRenderer ? halfBreadth
+                                                 : halfBreadth +
                                                 heightFactorAbs * eqGain *
                                                         maxAllChn[chn]},
                         {red, green, blue});
@@ -231,9 +233,9 @@ bool WaveformRendererRGB::preprocessInner() {
                 // note: heightFactor is the same for left and right,
                 // but negative for left (chn 0) and positive for right (chn 1)
                 vertexUpdater.addRectangle({fpos - halfPixelSize,
-                                                   center},
+                                                   halfBreadth},
                         {fpos + halfPixelSize,
-                                center + heightFactor[chn] * eqGain * maxAllChn[chn]},
+                                halfBreadth + heightFactor[chn] * eqGain * maxAllChn[chn]},
                         {red,
                                 green,
                                 blue});

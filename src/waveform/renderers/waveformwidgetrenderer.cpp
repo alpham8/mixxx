@@ -28,6 +28,7 @@ WaveformWidgetRenderer::WaveformWidgetRenderer(const QString& group)
           m_selectedStems(mixxx::StemChannelSelection()),
 #endif
           m_orientation(Qt::Horizontal),
+          m_isBeatMatchLane(false),
           m_dimBrightThreshold(kDefaultDimBrightThreshold),
           m_height(-1),
           m_width(-1),
@@ -426,6 +427,8 @@ void WaveformWidgetRenderer::setup(
     } else {
         m_orientation = Qt::Horizontal;
     }
+
+    m_isBeatMatchLane = context.selectBool(node, QStringLiteral("BeatMatchLane"), false);
 
     bool okay;
     m_dimBrightThreshold = context.selectInt(node, QStringLiteral("DimBrightThreshold"), &okay);

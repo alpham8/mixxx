@@ -29,28 +29,9 @@
         </Children>
       </WidgetGroup>
 
-      <!-- Reserve the BeatgridControls width: 107f = 1f gap + 4*26f button
-           columns + 2px border; the extra 26f hotcue-shift column only when
-           timing_shift_buttons is on. Whole block hidden (overview full width)
-           unless show_beatgrid_controls is on - matching the panel. -->
-      <WidgetGroup>
-        <Layout>horizontal</Layout>
-        <SizePolicy>max,f</SizePolicy>
-        <Children>
-          <WidgetGroup><Size>107f,1min</Size></WidgetGroup>
-          <WidgetGroup>
-            <Size>26f,1min</Size>
-            <Connection>
-              <ConfigKey persist="true">[Skin],timing_shift_buttons</ConfigKey>
-              <BindProperty>visible</BindProperty>
-            </Connection>
-          </WidgetGroup>
-        </Children>
-        <Connection>
-          <ConfigKey persist="true">[Skin],show_beatgrid_controls</ConfigKey>
-          <BindProperty>visible</BindProperty>
-        </Connection>
-      </WidgetGroup>
+      <!-- Reserve the BeatgridControls width so the overview ends flush with
+           the waveform Visual instead of running over the panel. -->
+      <Template src="skins:Serato/beatgrid_reserve.xml"/>
     </Children>
   </WidgetGroup>
 </Template>

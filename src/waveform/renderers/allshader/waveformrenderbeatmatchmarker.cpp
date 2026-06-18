@@ -20,18 +20,10 @@
 using namespace rendergraph;
 
 namespace {
-// Maximum cone height (logical pixels). Must match mixxx::kBeatMatchLaneHeight
-// so the cones fit exactly in the band the signal renderer reserves for them.
+// Cone height (logical pixels). Must match mixxx::kBeatMatchLaneHeight so the
+// cones fit exactly in the band the signal renderer reserves for them. Every
+// cone is drawn at this full height - only the colour varies with the audio.
 constexpr float kBandHeight = mixxx::kBeatMatchLaneHeight;
-// Height shaping. The cones are already separated by the gaps between them (see
-// kConeFillFraction), so gamma only controls how uniform they are: < 1 lifts the
-// quiet cones so none look stunted; the boost fills the lane (clamped on top).
-constexpr float kHeightGamma = 0.8f;
-constexpr float kHeightBoost = 1.0f;
-// Per-band weight on the cone HEIGHT (colour always keeps the full bands). With
-// the lane separating cones from the waveform there is no need to damp the bass,
-// so keep all bands equal; drop below 1.0 only to shrink sustained bass.
-constexpr float kBassHeightWeight = 1.0f;
 // Mild brightness boost for the cone colour; kept low so deep bass stays a rich
 // red instead of washing to a saturated orange/yellow wall - clamped to 1.0.
 constexpr float kColourGain = 1.3f;
@@ -88,7 +80,10 @@ void WaveformRenderBeatMatchMarker::preprocess() {
 }
 
 bool WaveformRenderBeatMatchMarker::preprocessInner() {
-    if (m_edge == Edge::None) {
+    // The cones live in their own thin lane widget (skin sets "BeatMatchLane").
+    // Never draw them inside the normal waveform - there they would overlap the
+    // full-height, centred signal.
+    if (!m_waveformRenderer->isBeatMatchLane() || m_edge == Edge::None) {
         return false;
     }
 
@@ -196,21 +191,15 @@ bool WaveformRenderBeatMatchMarker::preprocessInner() {
         const double centreFrac = (b + 0.5) * indexStep / dataSize;
         const float x = static_cast<float>(qRound(worldX(centreFrac)));
 
-        // Per-band height weighting (kBassHeightWeight, off by default); bass can
-        // be damped here so sustained low end does not dominate the cone heights.
-        const float ampForHeight =
-                std::max({static_cast<float>(low) * kBassHeightWeight,
-                        static_cast<float>(mid),
-                        static_cast<float>(high)}) /
-                255.f;
-        const float heightScale =
-                std::min(1.f, std::pow(ampForHeight, kHeightGamma) * kHeightBoost);
+        // Every cone is the same full-band-height triangle - only the colour
+        // (bass = red, mid = green, high = blue) varies with the audio. The row
+        // reads as an even Serato-style strip instead of a second waveform that
+        // follows the amplitude with uneven peaks.
         const QVector3D color{
                 std::min(1.f, static_cast<float>(low) / 255.f * kColourGain),
                 std::min(1.f, static_cast<float>(mid) / 255.f * kColourGain),
                 std::min(1.f, static_cast<float>(high) / 255.f * kColourGain)};
-        const float apex = top ? bandHeight * heightScale
-                               : breadth - bandHeight * heightScale;
+        const float apex = top ? bandHeight : breadth - bandHeight;
 
         // One triangular Zapfen: base on the lane floor, apex pointing inward.
         updater.addTriangle({x - halfWidth, baseY},

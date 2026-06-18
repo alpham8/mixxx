@@ -171,6 +171,12 @@ class WaveformWidgetRenderer {
     Qt::Orientation getOrientation() const {
         return m_orientation;
     }
+    /// True when this renderer is a thin beat-match cone lane (skin sets
+    /// "BeatMatchLane"). Only the cone marker draws; the waveform signal, beat
+    /// grid, bar counter, cue and play-position renderers skip rendering.
+    bool isBeatMatchLane() const {
+        return m_isBeatMatchLane;
+    }
     const WaveformSignalColors* getWaveformSignalColors() const {
         return &m_colors;
     }
@@ -231,6 +237,7 @@ class WaveformWidgetRenderer {
 #endif
     QList<WaveformRendererAbstract*> m_rendererStack;
     Qt::Orientation m_orientation;
+    bool m_isBeatMatchLane;
     int m_dimBrightThreshold;
     int m_height;
     int m_width;

@@ -57,6 +57,9 @@ void WaveformRenderBeat::preprocess() {
 }
 
 bool WaveformRenderBeat::preprocessInner() {
+    if (m_waveformRenderer->isBeatMatchLane()) {
+        return false;
+    }
     const TrackPointer trackInfo = m_waveformRenderer->getTrackInfo();
 
     if (!trackInfo || (m_isSlipRenderer && !m_waveformRenderer->isSlipActive())) {
