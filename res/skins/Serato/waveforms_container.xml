@@ -41,17 +41,10 @@
                 <Layout>vertical</Layout>
                 <SizePolicy>me,me</SizePolicy>
                 <Children>
-                  <WidgetGroup>
-                    <ObjectName>SeratoOverview1</ObjectName>
-                    <Layout>horizontal</Layout>
-                    <SizePolicy>me,f</SizePolicy>
-                    <Size>0me,24f</Size>
-                    <Children>
-                      <SingletonContainer>
-                        <ObjectName>DeckOverview1</ObjectName>
-                      </SingletonContainer>
-                    </Children>
-                  </WidgetGroup>
+                  <Template src="skins:Serato/overview_row.xml">
+                    <SetVariable name="StyleName">SeratoOverview1</SetVariable>
+                    <SetVariable name="OverviewName">DeckOverview1</SetVariable>
+                  </Template>
                   <WidgetGroup>
                     <Layout>horizontal</Layout>
                     <SizePolicy>me,me</SizePolicy>
@@ -86,17 +79,10 @@
                       </Template>
                     </Children>
                   </WidgetGroup>
-                  <WidgetGroup>
-                    <ObjectName>SeratoOverview2</ObjectName>
-                    <Layout>horizontal</Layout>
-                    <SizePolicy>me,f</SizePolicy>
-                    <Size>0me,24f</Size>
-                    <Children>
-                      <SingletonContainer>
-                        <ObjectName>DeckOverview2</ObjectName>
-                      </SingletonContainer>
-                    </Children>
-                  </WidgetGroup>
+                  <Template src="skins:Serato/overview_row.xml">
+                    <SetVariable name="StyleName">SeratoOverview2</SetVariable>
+                    <SetVariable name="OverviewName">DeckOverview2</SetVariable>
+                  </Template>
                 </Children>
               </WidgetGroup>
 
@@ -105,17 +91,10 @@
                 <Layout>vertical</Layout>
                 <SizePolicy>me,me</SizePolicy>
                 <Children>
-                  <WidgetGroup>
-                    <ObjectName>SeratoOverview1</ObjectName>
-                    <Layout>horizontal</Layout>
-                    <SizePolicy>me,f</SizePolicy>
-                    <Size>0me,24f</Size>
-                    <Children>
-                      <SingletonContainer>
-                        <ObjectName>DeckOverview3</ObjectName>
-                      </SingletonContainer>
-                    </Children>
-                  </WidgetGroup>
+                  <Template src="skins:Serato/overview_row.xml">
+                    <SetVariable name="StyleName">SeratoOverview1</SetVariable>
+                    <SetVariable name="OverviewName">DeckOverview3</SetVariable>
+                  </Template>
                   <WidgetGroup>
                     <Layout>horizontal</Layout>
                     <SizePolicy>me,me</SizePolicy>
@@ -154,17 +133,10 @@
                       </Template>
                     </Children>
                   </WidgetGroup>
-                  <WidgetGroup>
-                    <ObjectName>SeratoOverview2</ObjectName>
-                    <Layout>horizontal</Layout>
-                    <SizePolicy>me,f</SizePolicy>
-                    <Size>0me,24f</Size>
-                    <Children>
-                      <SingletonContainer>
-                        <ObjectName>DeckOverview4</ObjectName>
-                      </SingletonContainer>
-                    </Children>
-                  </WidgetGroup>
+                  <Template src="skins:Serato/overview_row.xml">
+                    <SetVariable name="StyleName">SeratoOverview2</SetVariable>
+                    <SetVariable name="OverviewName">DeckOverview4</SetVariable>
+                  </Template>
                 </Children>
                 <Connection>
                   <ConfigKey persist="true">[Skin],show_4decks</ConfigKey>

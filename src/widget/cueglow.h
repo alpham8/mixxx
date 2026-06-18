@@ -10,7 +10,9 @@
 namespace mixxx {
 namespace cueglow {
 
-constexpr float kMaxAlpha = 0.25f;
+// Peak opacity of the full-platter cue glow. Kept low so the album cover behind
+// the spinny stays clearly visible; the needle tint carries the colour cue.
+constexpr float kMaxAlpha = 0.10f;
 constexpr int kGlowCircleSize = 64;
 
 struct CueGlowResult {

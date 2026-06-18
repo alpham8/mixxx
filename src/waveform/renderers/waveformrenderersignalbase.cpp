@@ -6,6 +6,7 @@
 #include "moc_waveformrenderersignalbase.cpp"
 #include "track/track.h"
 #include "util/colorcomponents.h"
+#include "waveform/renderers/waveformbeatmatchlane.h"
 #include "waveform/waveform.h"
 #include "waveform/waveformwidgetfactory.h"
 #include "waveformwidgetrenderer.h"
@@ -108,6 +109,30 @@ void WaveformRendererSignalBase::setup(const QDomNode& node,
             m_alignment = Qt::AlignRight;
         } else {
             m_alignment = Qt::AlignCenter;
+        }
+    }
+
+    // When a beat-match cone lane is configured, push the waveform off that edge
+    // by the cone band plus a gap. This is the Serato layout: the two stacked
+    // decks' waveforms move toward their outer edges and the cone lanes meet in
+    // the middle with clear space between waveform and cones. Horizontal only.
+    // Reserve the beat-match cone lane (logical pixels) on the configured edge,
+    // matching the band the marker draws there. The helper scales this by the
+    // device pixel ratio. The waveform is pushed off that edge so the cones get
+    // their own space with a gap to the audio. Horizontal waveforms only.
+    m_laneInsetTop = 0.f;
+    m_laneInsetBottom = 0.f;
+    if (m_orientation == Qt::Horizontal) {
+        const QString beatMatchEdge =
+                context.selectString(node, QStringLiteral("BeatMatchEdge"))
+                        .trimmed()
+                        .toLower();
+        const float inset =
+                mixxx::kBeatMatchLaneHeight + mixxx::kBeatMatchLaneGap;
+        if (beatMatchEdge == QStringLiteral("top")) {
+            m_laneInsetTop = inset;
+        } else if (beatMatchEdge == QStringLiteral("bottom")) {
+            m_laneInsetBottom = inset;
         }
     }
 

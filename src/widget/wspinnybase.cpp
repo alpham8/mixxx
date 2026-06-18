@@ -43,6 +43,7 @@ WSpinnyBase::WSpinnyBase(
           m_pScratchToggle(PollingControlProxy(m_group, QStringLiteral("scratch_position_enable"))),
           m_pScratchPos(PollingControlProxy(m_group, QStringLiteral("scratch_position"))),
           m_pRateRatio(PollingControlProxy(m_group, QStringLiteral("rate_ratio"))),
+          m_pRateRange(PollingControlProxy(m_group, QStringLiteral("rateRange"))),
           m_pVinylControlSpeedType(nullptr),
           m_pVinylControlEnabled(nullptr),
           m_pSignalEnabled(nullptr),

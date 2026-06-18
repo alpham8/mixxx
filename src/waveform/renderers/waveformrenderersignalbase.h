@@ -60,6 +60,19 @@ class WaveformRendererSignalBase : public QObject, public WaveformRendererAbstra
             float* highGain);
     float getTrackPeak();
 
+    // Vertical centre and half-height of the band the waveform is drawn in,
+    // after reserving the beat-match cone lane on its inner edge. Insets and
+    // breadth (getBreadth) are both logical pixels - the renderer geometry works
+    // in logical coordinates and the device pixel ratio is applied by the
+    // projection - so no scaling is needed. Without a lane these reduce to
+    // breadth/2, i.e. the full centred waveform.
+    float waveformBandCenter(float breadth) const {
+        return (m_laneInsetTop + breadth - m_laneInsetBottom) * 0.5f;
+    }
+    float waveformBandHalfHeight(float breadth) const {
+        return (breadth - (m_laneInsetTop + m_laneInsetBottom)) * 0.5f;
+    }
+
   protected:
     std::unique_ptr<ControlProxy> m_pEQEnabled;
     std::unique_ptr<ControlProxy> m_pLowFilterControlObject;
@@ -71,6 +84,12 @@ class WaveformRendererSignalBase : public QObject, public WaveformRendererAbstra
 
     Qt::Alignment m_alignment;
     Qt::Orientation m_orientation;
+
+    // Reserved beat-match cone lane (logical px) squeezed out of the waveform on
+    // the inner edge so the cones get their own space. Both 0 unless the skin
+    // sets "BeatMatchEdge" (top/bottom). See waveformbeatmatchlane.h.
+    float m_laneInsetTop{0.f};
+    float m_laneInsetBottom{0.f};
 
     CSAMPLE_GAIN m_allChannelVisualGain;
     CSAMPLE_GAIN m_lowVisualGain;

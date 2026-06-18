@@ -519,19 +519,30 @@ void WaveformRendererTextured::paintGL() {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+        // Reserve the beat-match cone lane on the configured edge by shrinking
+        // the textured waveform quad toward the opposite edge, so the cones get
+        // their own space with a gap (matches the allshader RGB/Filtered path).
+        // NDC: +1 = top edge, -1 = bottom edge. The insets are logical pixels;
+        // breadth (getBreadth) is logical too, so the fraction needs no dpr.
+        const float breadthPx = static_cast<float>(m_waveformRenderer->getBreadth());
+        const float fTop = breadthPx > 0.f ? m_laneInsetTop / breadthPx : 0.f;
+        const float fBottom = breadthPx > 0.f ? m_laneInsetBottom / breadthPx : 0.f;
+        const float yTop = 1.0f - 2.0f * fTop;
+        const float yBottom = -1.0f + 2.0f * fBottom;
+
         glBegin(GL_QUADS);
         {
             glTexCoord2f(0.0, 0.0);
-            glVertex3f(-1.0f, -1.0f, 0.0f);
+            glVertex3f(-1.0f, yBottom, 0.0f);
 
             glTexCoord2f(1.0, 0.0);
-            glVertex3f(1.0f, -1.0f, 0.0f);
+            glVertex3f(1.0f, yBottom, 0.0f);
 
             glTexCoord2f(1.0, 1.0);
-            glVertex3f(1.0f, 1.0f, 0.0f);
+            glVertex3f(1.0f, yTop, 0.0f);
 
             glTexCoord2f(0.0, 1.0);
-            glVertex3f(-1.0f, 1.0f, 0.0f);
+            glVertex3f(-1.0f, yTop, 0.0f);
         }
         glEnd();
     }

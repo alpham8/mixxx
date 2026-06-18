@@ -72,6 +72,7 @@ TEST(CueGlowTest, DegenerateZeroSpan) {
 }
 
 TEST(CueGlowTest, MaxAlphaScaling) {
-    EXPECT_FLOAT_EQ(calcCrossfadeIntensity(0.2, 0.2, 0.6).intensity * kMaxAlpha, 0.25f);
-    EXPECT_FLOAT_EQ(calcCrossfadeIntensity(0.0, 0.1, 0.4).intensity * kMaxAlpha, 0.125f);
+    // Full intensity scales to kMaxAlpha, half intensity to half of it.
+    EXPECT_FLOAT_EQ(calcCrossfadeIntensity(0.2, 0.2, 0.6).intensity * kMaxAlpha, kMaxAlpha);
+    EXPECT_FLOAT_EQ(calcCrossfadeIntensity(0.0, 0.1, 0.4).intensity * kMaxAlpha, kMaxAlpha * 0.5f);
 }

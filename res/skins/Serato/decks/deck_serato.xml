@@ -139,7 +139,7 @@
           <WidgetGroup>
             <ObjectName>SeratoSpinnyColumn</ObjectName>
             <Layout>vertical</Layout>
-            <Size>170f,0min</Size>
+            <Size>178f,0min</Size>
             <Children>
               <!-- Transport: |◄ SYNC ▶ CUE ►| -->
               <WidgetGroup>
@@ -187,19 +187,19 @@
                 <Children>
                   <WidgetGroup>
                     <Layout>horizontal</Layout>
-                    <Size>134f,134f</Size>
+                    <Size>150f,150f</Size>
                     <Children>
                       <SingletonContainer>
                         <ObjectName>SpinnyCoverart<Variable name="ChanNum"/></ObjectName>
                       </SingletonContainer>
                     </Children>
                   </WidgetGroup>
-                  <WidgetGroup><Size>18f,1min</Size></WidgetGroup>
+                  <WidgetGroup><Size>10f,1min</Size></WidgetGroup>
                   <WidgetGroup>
                     <ObjectName>SeratoVuMeter</ObjectName>
                     <Layout>vertical</Layout>
                     <SizePolicy>f,f</SizePolicy>
-                    <Size>14f,134f</Size>
+                    <Size>14f,150f</Size>
                     <Children>
                       <StatusLight>
                         <TooltipId>channel_peak_indicator</TooltipId>
@@ -214,25 +214,25 @@
                       <WidgetGroup>
                         <Layout>horizontal</Layout>
                         <SizePolicy>f,f</SizePolicy>
-                        <Size>14f,124f</Size>
+                        <Size>14f,140f</Size>
                         <Children>
                           <VuMeter>
                             <TooltipId>channel_VuMeter</TooltipId>
                             <PathBack>skins:Serato/misc_res/vu_v_bg.png</PathBack>
                             <PathVu>skins:Serato/misc_res/vu_v_active.png</PathVu>
                             <Horizontal>false</Horizontal>
-                            <Size>6f,124f</Size>
+                            <Size>6f,140f</Size>
                             <PeakHoldSize>0</PeakHoldSize><PeakHoldTime>200</PeakHoldTime><PeakFallTime>20</PeakFallTime><PeakFallStep>1</PeakFallStep>
                             <SizePolicy>f,f</SizePolicy>
                             <Connection><ConfigKey><Variable name="Group"/>,vu_meter_left</ConfigKey></Connection>
                           </VuMeter>
-                          <WidgetGroup><Size>2f,124f</Size></WidgetGroup>
+                          <WidgetGroup><Size>2f,140f</Size></WidgetGroup>
                           <VuMeter>
                             <TooltipId>channel_VuMeter</TooltipId>
                             <PathBack>skins:Serato/misc_res/vu_v_bg.png</PathBack>
                             <PathVu>skins:Serato/misc_res/vu_v_active.png</PathVu>
                             <Horizontal>false</Horizontal>
-                            <Size>6f,124f</Size>
+                            <Size>6f,140f</Size>
                             <PeakHoldSize>0</PeakHoldSize><PeakHoldTime>200</PeakHoldTime><PeakFallTime>20</PeakFallTime><PeakFallStep>1</PeakFallStep>
                             <SizePolicy>f,f</SizePolicy>
                             <Connection><ConfigKey><Variable name="Group"/>,vu_meter_right</ConfigKey></Connection>

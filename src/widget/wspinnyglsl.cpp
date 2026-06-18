@@ -205,29 +205,46 @@ void WSpinnyGLSL::paintGL() {
         const int cy = height() / 2;
         const int overlayRadius = qMin(width(), height()) / 4;
 
+        // Draw the centred labels with a soft dark shadow so they stay readable
+        // on top of the (white) needle and the cover art.
+        const auto drawSpinnyText = [&p](const QRect& rect, const QString& text) {
+            const QColor color = p.pen().color();
+            const int off = qMax(1, p.font().pixelSize() / 14);
+            p.setPen(QColor(0, 0, 0, 180));
+            p.drawText(rect.translated(off, off), Qt::AlignCenter, text);
+            p.setPen(color);
+            p.drawText(rect, Qt::AlignCenter, text);
+        };
+
         QFont bpmFont;
         bpmFont.setPixelSize(overlayRadius * 3 / 4);
-        bpmFont.setBold(true);
-        bpmFont.setWeight(QFont::Black);
+        bpmFont.setWeight(QFont::Bold);
         p.setFont(bpmFont);
         p.setPen(QColor(255, 255, 255));
         QString bpmText = QString::number(bpm, 'f', 1);
-        QRect bpmRect(cx - overlayRadius, cy - overlayRadius * 3 / 4,
+        QRect bpmRect(cx - overlayRadius, cy - overlayRadius * 5 / 4,
                 overlayRadius * 2, overlayRadius / 2);
-        p.drawText(bpmRect, Qt::AlignCenter, bpmText);
+        drawSpinnyText(bpmRect, bpmText);
 
         const double rateRatio = m_pRateRatio.get();
         const double pitchPct = (rateRatio - 1.0) * 100.0;
-        QFont pitchFont;
-        pitchFont.setPixelSize(overlayRadius / 5);
-        p.setFont(pitchFont);
+        QFont labelFont;
+        labelFont.setPixelSize(overlayRadius * 2 / 5);
+        labelFont.setBold(true);
+        p.setFont(labelFont);
         p.setPen(QColor(255, 255, 255));
         QString pitchText = QStringLiteral("%1%2%")
                 .arg(pitchPct >= 0 ? "+" : "")
                 .arg(pitchPct, 0, 'f', 1);
-        QRect pitchRect(cx - overlayRadius, cy - overlayRadius / 3,
-                overlayRadius * 2, overlayRadius / 4);
-        p.drawText(pitchRect, Qt::AlignCenter, pitchText);
+        QRect pitchRect(cx - overlayRadius * 7 / 4, cy - overlayRadius / 5,
+                overlayRadius * 3 / 2, overlayRadius * 2 / 5);
+        drawSpinnyText(pitchRect, pitchText);
+
+        const int rangePct = qRound(m_pRateRange.get() * 100.0);
+        QString rangeText = QChar(0x00B1) + QString::number(rangePct);
+        QRect rangeRect(cx + overlayRadius / 4, cy - overlayRadius / 5,
+                overlayRadius * 3 / 2, overlayRadius * 2 / 5);
+        drawSpinnyText(rangeRect, rangeText);
 
         const double trackSamples = m_pTrackSamples.get();
         const double sampleRate = m_pTrackSampleRate.get();
@@ -240,16 +257,18 @@ void WSpinnyGLSL::paintGL() {
             const int tenths = static_cast<int>(elapsedSeconds * 10) % 10;
 
             QFont timeFont;
-            timeFont.setPixelSize(overlayRadius / 3);
+            timeFont.setPixelSize(overlayRadius * 7 / 16);
+            timeFont.setBold(true);
+            timeFont.setWeight(QFont::Bold);
             p.setFont(timeFont);
             p.setPen(QColor(255, 255, 255));
             QString timeText = QStringLiteral("%1:%2.%3")
                     .arg(mins, 2, 10, QChar('0'))
                     .arg(secs, 2, 10, QChar('0'))
                     .arg(tenths);
-            QRect timeRect(cx - overlayRadius, cy - overlayRadius / 6,
-                    overlayRadius * 2, overlayRadius / 2);
-            p.drawText(timeRect, Qt::AlignCenter, timeText);
+            QRect timeRect(cx - overlayRadius * 5 / 4, cy + overlayRadius * 3 / 8 + 3,
+                    overlayRadius * 5 / 2, overlayRadius / 2);
+            drawSpinnyText(timeRect, timeText);
 
             const double remainingSeconds = totalSeconds - elapsedSeconds;
             const int remMins = static_cast<int>(remainingSeconds) / 60;
@@ -259,10 +278,9 @@ void WSpinnyGLSL::paintGL() {
                     .arg(remMins, 2, 10, QChar('0'))
                     .arg(remSecs, 2, 10, QChar('0'))
                     .arg(remTenths);
-            QRect remRect(cx - overlayRadius, cy + overlayRadius / 4,
-                    overlayRadius * 2, overlayRadius / 2);
-            p.setPen(QColor(200, 200, 200));
-            p.drawText(remRect, Qt::AlignCenter, remText);
+            QRect remRect(cx - overlayRadius * 5 / 4, cy + overlayRadius * 7 / 8 + 3,
+                    overlayRadius * 5 / 2, overlayRadius / 2);
+            drawSpinnyText(remRect, remText);
         }
         p.end();
     }

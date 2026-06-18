@@ -2,8 +2,6 @@
 
 #include <QDomNode>
 #include <QImage>
-#include <QPainter>
-#include <QPainterPath>
 
 #include "rendergraph/context.h"
 #include "rendergraph/geometry.h"
@@ -20,7 +18,9 @@
 using namespace rendergraph;
 
 namespace {
-constexpr float kTriangleSize = 8.0f;
+// Width of the vertical cue line (logical pixels). Serato marks cues with a thin
+// full-height line in the cue colour rather than triangles at the edges.
+constexpr float kLineWidth = 2.0f;
 } // namespace
 
 namespace allshader {
@@ -90,9 +90,6 @@ bool WaveformRenderCueTriangle::preprocessInner() {
 
     rendergraph::Context* pContext = m_waveformRenderer->getContext();
 
-    const float triSize = kTriangleSize * devicePixelRatio;
-    const int imgSize = static_cast<int>(triSize + 2.0f);
-
     for (const auto& pCue : cuePoints) {
         if (pCue->getType() != mixxx::CueType::HotCue) {
             continue;
@@ -115,83 +112,25 @@ bool WaveformRenderCueTriangle::preprocessInner() {
 
         const QColor cueColor = mixxx::RgbColor::toQColor(pCue->getColor());
 
-        // Top triangle (pointing down ▼)
-        {
-            QImage image(imgSize, imgSize, QImage::Format_ARGB32_Premultiplied);
-            image.fill(Qt::transparent);
-            image.setDevicePixelRatio(devicePixelRatio);
+        // A thin vertical line in the cue colour spanning the full height
+        // (Serato style), instead of triangles at the top and bottom edges.
+        QImage image(2, 2, QImage::Format_ARGB32_Premultiplied);
+        image.fill(cueColor);
+        image.setDevicePixelRatio(devicePixelRatio);
 
-            QPainter painter(&image);
-            painter.setRenderHint(QPainter::Antialiasing);
-            painter.setPen(Qt::NoPen);
-            painter.setBrush(cueColor);
+        auto pNode = std::make_unique<GeometryNode>();
+        pNode->initForRectangles<TextureMaterial>(1);
+        dynamic_cast<TextureMaterial&>(pNode->material())
+                .setTexture(std::make_unique<Texture>(pContext, image));
+        pNode->markDirtyMaterial();
 
-            QPainterPath triangle;
-            const float cx = imgSize / 2.0f;
-            triangle.moveTo(cx - triSize / 2.0f, 0.0f);
-            triangle.lineTo(cx + triSize / 2.0f, 0.0f);
-            triangle.lineTo(cx, triSize);
-            triangle.closeSubpath();
-            painter.fillPath(triangle, cueColor);
-            painter.end();
-
-            auto pNode = std::make_unique<GeometryNode>();
-            pNode->initForRectangles<TextureMaterial>(1);
-            dynamic_cast<TextureMaterial&>(pNode->material())
-                    .setTexture(std::make_unique<Texture>(pContext, image));
-            pNode->markDirtyMaterial();
-
-            const float labelW = static_cast<float>(imgSize) / devicePixelRatio;
-            const float labelH = static_cast<float>(imgSize) / devicePixelRatio;
-            const float x1 = static_cast<float>(xPoint) - labelW / 2.0f;
-            const float y1 = 0.0f;
-
-            TexturedVertexUpdater updater{
-                    pNode->geometry().vertexDataAs<Geometry::TexturedPoint2D>()};
-            updater.addRectangle(
-                    {x1, y1}, {x1 + labelW, y1 + labelH}, {0.f, 0.f}, {1.f, 1.f});
-            pNode->markDirtyGeometry();
-            appendChildNode(std::move(pNode));
-        }
-
-        // Bottom triangle (pointing up ▲)
-        {
-            QImage image(imgSize, imgSize, QImage::Format_ARGB32_Premultiplied);
-            image.fill(Qt::transparent);
-            image.setDevicePixelRatio(devicePixelRatio);
-
-            QPainter painter(&image);
-            painter.setRenderHint(QPainter::Antialiasing);
-            painter.setPen(Qt::NoPen);
-            painter.setBrush(cueColor);
-
-            QPainterPath triangle;
-            const float cx = imgSize / 2.0f;
-            triangle.moveTo(cx - triSize / 2.0f, triSize);
-            triangle.lineTo(cx + triSize / 2.0f, triSize);
-            triangle.lineTo(cx, 0.0f);
-            triangle.closeSubpath();
-            painter.fillPath(triangle, cueColor);
-            painter.end();
-
-            auto pNode = std::make_unique<GeometryNode>();
-            pNode->initForRectangles<TextureMaterial>(1);
-            dynamic_cast<TextureMaterial&>(pNode->material())
-                    .setTexture(std::make_unique<Texture>(pContext, image));
-            pNode->markDirtyMaterial();
-
-            const float labelW = static_cast<float>(imgSize) / devicePixelRatio;
-            const float labelH = static_cast<float>(imgSize) / devicePixelRatio;
-            const float x1 = static_cast<float>(xPoint) - labelW / 2.0f;
-            const float y1 = waveformHeight - labelH;
-
-            TexturedVertexUpdater updater{
-                    pNode->geometry().vertexDataAs<Geometry::TexturedPoint2D>()};
-            updater.addRectangle(
-                    {x1, y1}, {x1 + labelW, y1 + labelH}, {0.f, 0.f}, {1.f, 1.f});
-            pNode->markDirtyGeometry();
-            appendChildNode(std::move(pNode));
-        }
+        const float x1 = static_cast<float>(xPoint) - kLineWidth / 2.0f;
+        TexturedVertexUpdater updater{
+                pNode->geometry().vertexDataAs<Geometry::TexturedPoint2D>()};
+        updater.addRectangle(
+                {x1, 0.f}, {x1 + kLineWidth, waveformHeight}, {0.f, 0.f}, {1.f, 1.f});
+        pNode->markDirtyGeometry();
+        appendChildNode(std::move(pNode));
     }
 
     return true;

@@ -62,8 +62,11 @@ WaveformWidget::WaveformWidget(QWidget* parent,
         DEBUG_ASSERT(pNode);
         pOpacityNode->appendChildNode(std::unique_ptr<rendergraph::BaseNode>(pNode));
     }
-    pOpacityNode->appendChildNode(addRendererNode<WaveformRenderBeat>());
+    // Beat-match cones first (right above the waveform), so the beat grid, bar
+    // counter, cue lines and play-position line all draw on top of them and stay
+    // fully visible through the cone strip.
     pOpacityNode->appendChildNode(addRendererNode<WaveformRenderBeatMatchMarker>());
+    pOpacityNode->appendChildNode(addRendererNode<WaveformRenderBeat>());
     pOpacityNode->appendChildNode(addRendererNode<WaveformRenderBarCounter>());
     pOpacityNode->appendChildNode(addRendererNode<WaveformRenderCueTriangle>());
     m_pWaveformRenderMark = pOpacityNode->appendChildNode(addRendererNode<WaveformRenderMark>());
