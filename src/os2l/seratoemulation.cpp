@@ -8,12 +8,12 @@
 #include <QTimer>
 #include <QUuid>
 #include <QtEndian>
+#include <bit>
 
 #include "control/controlobject.h"
 #include "control/controlproxy.h"
-#include "track/track.h"
-
 #include "moc_seratoemulation.cpp"
+#include "track/track.h"
 
 namespace mixxx {
 
@@ -245,7 +245,7 @@ QByteArray SeratoEmulation::oscInt(int value) {
 
 QByteArray SeratoEmulation::oscFloat(float value) {
     QByteArray bytes(4, '\0');
-    qToBigEndian<quint32>(*reinterpret_cast<quint32*>(&value), bytes.data());
+    qToBigEndian<quint32>(std::bit_cast<quint32>(value), bytes.data());
     return bytes;
 }
 

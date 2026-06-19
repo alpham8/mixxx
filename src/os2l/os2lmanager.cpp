@@ -169,7 +169,7 @@ void Os2lManager::broadcastBeat() {
     double bpm = ControlObject::get(
             ConfigKey(QStringLiteral("[Channel1]"), QStringLiteral("bpm")));
     double strength = ControlObject::get(
-            ConfigKey(QStringLiteral("[Channel1]"), QStringLiteral("VuMeter")));
+            ConfigKey(QStringLiteral("[Channel1]"), QStringLiteral("vu_meter")));
 
     bool change = (bpm != m_lastBpm);
     m_lastBpm = bpm;
