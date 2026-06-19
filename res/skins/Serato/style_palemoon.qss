@@ -102,6 +102,12 @@ QAbstractScrollArea::corner {
   #BeatTicks {
     background-color: #0a0a0a;
   }
+  /* Opaque fill for the cone lane's right reserve (mirrors the BeatgridControls
+     panel width). Matches the BeatgridControls panel grey above/below so the
+     right column reads as one continuous strip instead of a black gap. */
+  #SeratoConeReserve {
+    background-color: #151517;
+  }
   /* ===== Serato Deck Styles ===== */
   #SeratoDeckPanel {
     border: 1px solid #1a5dab;

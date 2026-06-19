@@ -33,7 +33,30 @@
         <EndOfTrackColor>#ff0000</EndOfTrackColor>
         <PlayPosColor>#ff00ff</PlayPosColor>
       </Visual>
-      <Template src="skins:Serato/beatgrid_reserve.xml"/>
+      <!-- Same width reserve as the waveform's BeatgridControls panel (keeps the
+           cones flush with the waveform), but full lane height with an opaque
+           dark background. The shared beatgrid_reserve is transparent and short,
+           so when the mixer reflows the layout the empty area showed grey behind
+           it; an opaque widget here paints over that. -->
+      <WidgetGroup>
+        <ObjectName>SeratoConeReserve</ObjectName>
+        <Layout>horizontal</Layout>
+        <SizePolicy>max,me</SizePolicy>
+        <Children>
+          <WidgetGroup><Size>107f,1me</Size></WidgetGroup>
+          <WidgetGroup>
+            <Size>26f,1me</Size>
+            <Connection>
+              <ConfigKey persist="true">[Skin],timing_shift_buttons</ConfigKey>
+              <BindProperty>visible</BindProperty>
+            </Connection>
+          </WidgetGroup>
+        </Children>
+        <Connection>
+          <ConfigKey persist="true">[Skin],show_beatgrid_controls</ConfigKey>
+          <BindProperty>visible</BindProperty>
+        </Connection>
+      </WidgetGroup>
     </Children>
   </WidgetGroup>
 </Template>
