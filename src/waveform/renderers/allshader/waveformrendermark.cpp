@@ -569,58 +569,28 @@ void allshader::WaveformRenderMark::updatePlayPosMarkTexture(rendergraph::Contex
 
     painter.setWorldMatrixEnabled(false);
 
-    // A cone lane only joins the play line through; no arrow/contrast outlines.
+    // The play marker is a plain vertical line (Serato style): no arrow heads.
+    // In a beat-match cone lane only the bare line is drawn so it joins the line
+    // in the waveform above/below; otherwise it gets dim contrast outlines.
     const bool laneLine = m_waveformRenderer->isBeatMatchLane();
 
     if (!laneLine) {
-        // draw dim outlines to increase playpos/waveform contrast
+        // draw dim outlines next to the play line to increase contrast
+        // against the waveform
         painter.setPen(m_playMarkerBackgroundColor);
         painter.setOpacity(0.5);
-        // lines next to playpos
-        // Note: don't draw lines where they would overlap the triangles,
-        // otherwise both translucent strokes add up to a darker tone.
-        painter.drawLine(QLineF(lineX + 1.f, 4.f, lineX + 1.f, imgHeight));
-        painter.drawLine(QLineF(lineX - 1.f, 4.f, lineX - 1.f, imgHeight));
-
-        // triangle at top edge
-        // Increase line/waveform contrast
-        painter.setOpacity(0.8);
-        QPointF baseL = QPointF(lineX - 5.f, 0.f);
-        QPointF baseR = QPointF(lineX + 5.f, 0.f);
-        QPointF tip = QPointF(lineX, 5.f);
-        drawTriangle(&painter, m_playMarkerBackgroundColor, baseL, baseR, tip);
+        painter.drawLine(QLineF(lineX + 1.f, 0.f, lineX + 1.f, imgHeight));
+        painter.drawLine(QLineF(lineX - 1.f, 0.f, lineX - 1.f, imgHeight));
     }
-    // draw colored play position indicators
+    // draw the colored play position line
     painter.setPen(m_playMarkerForegroundColor);
     painter.setOpacity(1.0);
-    // play position line
     painter.drawLine(QLineF(lineX, 0.f, lineX, imgHeight));
-    if (!laneLine) {
-        // triangle at top edge
-        QPointF baseL = QPointF(lineX - 4.f, 0.f);
-        QPointF baseR = QPointF(lineX + 4.f, 0.f);
-        QPointF tip = QPointF(lineX, 4.f);
-        drawTriangle(&painter, m_playMarkerForegroundColor, baseL, baseR, tip);
-    }
     painter.end();
 
     dynamic_cast<TextureMaterial&>(m_pPlayPosNode->material())
             .setTexture(std::make_unique<Texture>(pContext, image));
     m_pPlayPosNode->markDirtyMaterial();
-}
-
-void allshader::WaveformRenderMark::drawTriangle(QPainter* painter,
-        const QBrush& fillColor,
-        QPointF baseL,
-        QPointF baseR,
-        QPointF tip) {
-    QPainterPath triangle;
-    painter->setPen(Qt::NoPen);
-    triangle.moveTo(baseL);
-    triangle.lineTo(tip);
-    triangle.lineTo(baseR);
-    triangle.closeSubpath();
-    painter->fillPath(triangle, fillColor);
 }
 
 void allshader::WaveformRenderMark::updateMarkImage(WaveformMarkPointer pMark) {

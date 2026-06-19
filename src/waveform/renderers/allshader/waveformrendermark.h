@@ -67,12 +67,6 @@ class allshader::WaveformRenderMark : public ::WaveformRenderMarkBase,
 
     void updatePlayPosMarkTexture(rendergraph::Context* pContext);
 
-    void drawTriangle(QPainter* painter,
-            const QBrush& fillColor,
-            QPointF p1,
-            QPointF p2,
-            QPointF p3);
-
     void updateUntilMark(double playPosition, double markerPosition);
     void updateDigitsNodeForUntilMark(float x);
     float getMaxHeightForText(float proportion) const;
