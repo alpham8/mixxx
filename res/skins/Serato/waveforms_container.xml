@@ -54,6 +54,7 @@
                         <SetVariable name="SignalColor"><Variable name="SignalColor_12"/></SetVariable>
                         <SetVariable name="BgColorWaveform"><Variable name="BgColorWaveform_12"/></SetVariable>
                         <SetVariable name="BeatMatchEdge">bottom</SetVariable>
+                        <SetVariable name="PlayMarkerFollowMixer">true</SetVariable>
                         <SetVariable name="Highlight">[Skin],show_4decks</SetVariable>
                       </Template>
                     </Children>
@@ -92,6 +93,7 @@
                         <SetVariable name="SignalColor"><Variable name="SignalColor_12"/></SetVariable>
                         <SetVariable name="BgColorWaveform"><Variable name="BgColorWaveform_12"/></SetVariable>
                         <SetVariable name="BeatMatchEdge">top</SetVariable>
+                        <SetVariable name="PlayMarkerFollowMixer">true</SetVariable>
                         <SetVariable name="Highlight">[Skin],show_4decks</SetVariable>
                       </Template>
                     </Children>
@@ -121,6 +123,7 @@
                         <SetVariable name="SignalColor"><Variable name="SignalColor_34"/></SetVariable>
                         <SetVariable name="BgColorWaveform"><Variable name="BgColorWaveform_34"/></SetVariable>
                         <SetVariable name="BeatMatchEdge">bottom</SetVariable>
+                        <SetVariable name="PlayMarkerFollowMixer">true</SetVariable>
                         <SetVariable name="Highlight">[Skin],show_4decks</SetVariable>
                       </Template>
                     </Children>
@@ -170,6 +173,7 @@
                         <SetVariable name="SignalColor"><Variable name="SignalColor_34"/></SetVariable>
                         <SetVariable name="BgColorWaveform"><Variable name="BgColorWaveform_34"/></SetVariable>
                         <SetVariable name="BeatMatchEdge">top</SetVariable>
+                        <SetVariable name="PlayMarkerFollowMixer">true</SetVariable>
                         <SetVariable name="Highlight">[Skin],show_4decks</SetVariable>
                       </Template>
                     </Children>

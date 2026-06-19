@@ -27,6 +27,7 @@
         <Channel><Variable name="ChanNum"/></Channel>
         <BeatMatchLane>true</BeatMatchLane>
         <BeatMatchEdge><Variable name="BeatMatchEdge"/></BeatMatchEdge>
+        <PlayMarkerFollowMixer>true</PlayMarkerFollowMixer>
         <BgColor><Variable name="BgColorWaveform"/></BgColor>
         <SignalColor><Variable name="SignalColor"/></SignalColor>
         <EndOfTrackColor>#ff0000</EndOfTrackColor>

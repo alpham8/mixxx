@@ -212,6 +212,10 @@ class WaveformWidgetRenderer {
         VERIFY_OR_DEBUG_ASSERT(newPos >= 0.0 && newPos <= 1.0) {
             newPos = std::clamp(newPos, 0.0, 1.0);
         }
+        m_basePlayMarkerPosition = newPos;
+        // The effective position is refreshed every frame in onPreRender() (it
+        // may be shifted left while the mixer is shown). Set it here too so the
+        // first frame and the non-following case are correct immediately.
         m_playMarkerPosition = newPos;
     }
 
@@ -267,6 +271,9 @@ class WaveformWidgetRenderer {
     double m_trackSamples;
     double m_scaleFactor;
     double m_playMarkerPosition;   // 0.0 - left, 0.5 - center, 1.0 - right
+                                   // effective value, refreshed every frame
+    double m_basePlayMarkerPosition; // value set from the factory / preference
+    bool m_playMarkerFollowsMixer;   // skin opt-in: shift left when mixer shown
 
     // used by allshader waveformrenderers when used with rendergraph nodes
     rendergraph::Context* m_pContext;
