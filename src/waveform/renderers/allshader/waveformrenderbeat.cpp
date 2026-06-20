@@ -42,6 +42,10 @@ void WaveformRenderBeat::preprocess() {
 }
 
 bool WaveformRenderBeat::preprocessInner() {
+    // In a beat-match cone lane only the cone marker draws.
+    if (m_waveformRenderer->isBeatMatchLane()) {
+        return false;
+    }
     const TrackPointer trackInfo = m_waveformRenderer->getTrackInfo();
 
     if (!trackInfo || (m_isSlipRenderer && !m_waveformRenderer->isSlipActive())) {

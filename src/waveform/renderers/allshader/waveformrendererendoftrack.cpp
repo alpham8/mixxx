@@ -76,6 +76,9 @@ void WaveformRendererEndOfTrack::preprocess() {
 }
 
 bool WaveformRendererEndOfTrack::preprocessInner() {
+    if (m_waveformRenderer->isBeatMatchLane()) {
+        return false;
+    }
     if (!m_pEndOfTrackControl || !m_pEndOfTrackControl->toBool()) {
         return false;
     }

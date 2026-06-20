@@ -289,6 +289,10 @@ void allshader::WaveformRenderMark::update() {
     if (isSubtreeBlocked()) {
         return;
     }
+    // In a beat-match cone lane only the play-position line is drawn so it joins
+    // the line in the waveform above/below (the lane defines no cue marks, and
+    // the play marker's triangle/contrast outlines are suppressed in
+    // updatePlayPosMarkTexture).
 
     // For each WaveformMark we create a GeometryNode with Texture
     // (in updateMarkImage). Of these GeometryNodes, we append the
@@ -454,17 +458,19 @@ void allshader::WaveformRenderMark::update() {
 
     const float playMarkerPos = static_cast<float>(m_waveformRenderer->getPlayMarkerPosition() *
             m_waveformRenderer->getLength());
-    if (m_lastPlayMarkerPos != playMarkerPos) {
+    const float playMarkerBreadth = static_cast<float>(m_waveformRenderer->getBreadth());
+    if (m_lastPlayMarkerPos != playMarkerPos || m_lastPlayMarkerBreadth != playMarkerBreadth) {
         const float drawOffset = roundToPixel(playMarkerPos + kPlayPosOffset);
         TexturedVertexUpdater vertexUpdater{
                 m_pPlayPosNode->geometry()
                         .vertexDataAs<Geometry::TexturedPoint2D>()};
         vertexUpdater.addRectangle({drawOffset, 0.f},
-                {drawOffset + kPlayPosWidth, static_cast<float>(m_waveformRenderer->getBreadth())},
+                {drawOffset + kPlayPosWidth, playMarkerBreadth},
                 {0.f, 0.f},
                 {1.f, 1.f});
         m_pPlayPosNode->markDirtyGeometry();
         m_lastPlayMarkerPos = playMarkerPos;
+        m_lastPlayMarkerBreadth = playMarkerBreadth;
     }
 
     if (m_untilMarkShowBeats || m_untilMarkShowTime) {
@@ -563,35 +569,43 @@ void allshader::WaveformRenderMark::updatePlayPosMarkTexture(rendergraph::Contex
 
     painter.setWorldMatrixEnabled(false);
 
-    // draw dim outlines to increase playpos/waveform contrast
-    painter.setPen(m_playMarkerBackgroundColor);
-    painter.setOpacity(0.5);
-    // lines next to playpos
-    // Note: don't draw lines where they would overlap the triangles,
-    // otherwise both translucent strokes add up to a darker tone.
-    painter.drawLine(QLineF(lineX + 1.f, 4.f, lineX + 1.f, imgHeight));
-    painter.drawLine(QLineF(lineX - 1.f, 4.f, lineX - 1.f, imgHeight));
+    // The play marker line. In a beat-match cone lane only the bare line is drawn
+    // so it joins the line in the waveform above/below. Otherwise it gets dim
+    // contrast outlines, plus arrow heads at the top edge - unless the skin opted
+    // out (Serato-style) via the Visual PlayMarkerArrowHeads flag.
+    const bool laneLine = m_waveformRenderer->isBeatMatchLane();
+    const bool arrowHeads = !laneLine && m_waveformRenderer->hasPlayMarkerArrowHeads();
 
-    // triangle at top edge
-    // Increase line/waveform contrast
-    painter.setOpacity(0.8);
-    {
-        QPointF baseL = QPointF(lineX - 5.f, 0.f);
-        QPointF baseR = QPointF(lineX + 5.f, 0.f);
-        QPointF tip = QPointF(lineX, 5.f);
-        drawTriangle(&painter, m_playMarkerBackgroundColor, baseL, baseR, tip);
+    if (!laneLine) {
+        // dim outlines next to the play line to increase contrast against the
+        // waveform. Where an arrow head is drawn, start the outlines below it so
+        // the two translucent strokes don't add up to a darker tone.
+        painter.setPen(m_playMarkerBackgroundColor);
+        painter.setOpacity(0.5);
+        const float outlineTop = arrowHeads ? 4.f : 0.f;
+        painter.drawLine(QLineF(lineX + 1.f, outlineTop, lineX + 1.f, imgHeight));
+        painter.drawLine(QLineF(lineX - 1.f, outlineTop, lineX - 1.f, imgHeight));
+
+        if (arrowHeads) {
+            // dim background triangle to increase line/waveform contrast
+            painter.setOpacity(0.8);
+            drawTriangle(&painter,
+                    m_playMarkerBackgroundColor,
+                    QPointF(lineX - 5.f, 0.f),
+                    QPointF(lineX + 5.f, 0.f),
+                    QPointF(lineX, 5.f));
+        }
     }
-    // draw colored play position indicators
+    // draw the colored play position line
     painter.setPen(m_playMarkerForegroundColor);
     painter.setOpacity(1.0);
-    // play position line
     painter.drawLine(QLineF(lineX, 0.f, lineX, imgHeight));
-    // triangle at top edge
-    {
-        QPointF baseL = QPointF(lineX - 4.f, 0.f);
-        QPointF baseR = QPointF(lineX + 4.f, 0.f);
-        QPointF tip = QPointF(lineX, 4.f);
-        drawTriangle(&painter, m_playMarkerForegroundColor, baseL, baseR, tip);
+    if (arrowHeads) {
+        drawTriangle(&painter,
+                m_playMarkerForegroundColor,
+                QPointF(lineX - 4.f, 0.f),
+                QPointF(lineX + 4.f, 0.f),
+                QPointF(lineX, 4.f));
     }
     painter.end();
 

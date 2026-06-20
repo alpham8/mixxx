@@ -35,6 +35,9 @@ void WaveformRendererRGB::preprocess() {
 }
 
 bool WaveformRendererRGB::preprocessInner() {
+    if (m_waveformRenderer->isBeatMatchLane()) {
+        return false;
+    }
     TrackPointer pTrack = m_waveformRenderer->getTrackInfo();
 
     if (!pTrack || (m_isSlipRenderer && !m_waveformRenderer->isSlipActive())) {

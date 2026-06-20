@@ -34,6 +34,9 @@ void WaveformRendererFiltered::preprocess() {
 }
 
 bool WaveformRendererFiltered::preprocessInner() {
+    if (m_waveformRenderer->isBeatMatchLane()) {
+        return false;
+    }
     TrackPointer pTrack = m_waveformRenderer->getTrackInfo();
 
     if (!pTrack) {

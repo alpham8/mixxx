@@ -38,6 +38,9 @@ void WaveformRenderMarkRange::draw(QPainter* painter, QPaintEvent* event) {
 }
 
 void WaveformRenderMarkRange::update() {
+    if (m_waveformRenderer->isBeatMatchLane()) {
+        return;
+    }
     GeometryNode* pChild = static_cast<GeometryNode*>(firstChild());
 
     // Add or reuse child node for the active and visible mark ranges.
