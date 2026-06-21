@@ -1,0 +1,37 @@
+<!--
+  Serato-style compact control row: key shift, keylock, slip, vinyl,
+  FX1/FX2 assign and beatjump. Variables: Group
+-->
+<Template>
+  <WidgetGroup>
+    <ObjectName>SeratoCtlRow</ObjectName>
+    <Layout>horizontal</Layout>
+    <SizePolicy>me,min</SizePolicy>
+    <Size>0me,0min</Size>
+    <Children>
+
+      <!-- Key shift down / up (semitones) -->
+      <PushButton><ObjectName>SeratoCtlBtn</ObjectName><TooltipId>pitch_down</TooltipId><Size>26f,24f</Size><NumberStates>1</NumberStates><State><Number>0</Number><Text>&#x266D;</Text></State><Connection><ConfigKey><Variable name="Group"/>,pitch_down</ConfigKey><ButtonState>LeftButton</ButtonState></Connection></PushButton>
+      <PushButton><ObjectName>SeratoCtlBtn</ObjectName><TooltipId>pitch_up</TooltipId><Size>26f,24f</Size><NumberStates>1</NumberStates><State><Number>0</Number><Text>&#x266F;</Text></State><Connection><ConfigKey><Variable name="Group"/>,pitch_up</ConfigKey><ButtonState>LeftButton</ButtonState></Connection></PushButton>
+
+      <!-- Keylock -->
+      <PushButton><ObjectName>SeratoToggleBtn</ObjectName><TooltipId>keylock</TooltipId><Size>0me,24f</Size><NumberStates>2</NumberStates><State><Number>0</Number><Text>LOCK</Text></State><State><Number>1</Number><Text>LOCK</Text></State><Connection><ConfigKey><Variable name="Group"/>,keylock</ConfigKey><ButtonState>LeftButton</ButtonState></Connection></PushButton>
+
+      <!-- Slip mode -->
+      <PushButton><ObjectName>SeratoToggleBtn</ObjectName><TooltipId>slip_enabled</TooltipId><Size>0me,24f</Size><NumberStates>2</NumberStates><State><Number>0</Number><Text>SLIP</Text></State><State><Number>1</Number><Text>SLIP</Text></State><Connection><ConfigKey><Variable name="Group"/>,slip_enabled</ConfigKey><ButtonState>LeftButton</ButtonState></Connection></PushButton>
+
+      <!-- Vinyl control -->
+      <PushButton><ObjectName>SeratoToggleBtn</ObjectName><TooltipId>vinylcontrol_enabled</TooltipId><Size>0me,24f</Size><NumberStates>2</NumberStates><State><Number>0</Number><Text>VINYL</Text></State><State><Number>1</Number><Text>VINYL</Text></State><Connection><ConfigKey><Variable name="Group"/>,vinylcontrol_enabled</ConfigKey><ButtonState>LeftButton</ButtonState></Connection></PushButton>
+
+      <!-- FX unit assign -->
+      <PushButton><ObjectName>SeratoToggleBtn</ObjectName><TooltipId>group_enable</TooltipId><Size>0me,24f</Size><NumberStates>2</NumberStates><State><Number>0</Number><Text>FX1</Text></State><State><Number>1</Number><Text>FX1</Text></State><Connection><ConfigKey>[EffectRack1_EffectUnit1],group_<Variable name="Group"/>_enable</ConfigKey><ButtonState>LeftButton</ButtonState></Connection></PushButton>
+      <PushButton><ObjectName>SeratoToggleBtn</ObjectName><TooltipId>group_enable</TooltipId><Size>0me,24f</Size><NumberStates>2</NumberStates><State><Number>0</Number><Text>FX2</Text></State><State><Number>1</Number><Text>FX2</Text></State><Connection><ConfigKey>[EffectRack1_EffectUnit2],group_<Variable name="Group"/>_enable</ConfigKey><ButtonState>LeftButton</ButtonState></Connection></PushButton>
+
+      <!-- Beatjump backward / size / forward -->
+      <PushButton><ObjectName>SeratoCtlBtn</ObjectName><TooltipId>beatjump_backward</TooltipId><Size>26f,24f</Size><NumberStates>1</NumberStates><State><Number>0</Number><Text>&#x00AB;</Text></State><Connection><ConfigKey><Variable name="Group"/>,beatjump_backward</ConfigKey><ButtonState>LeftButton</ButtonState></Connection></PushButton>
+      <Number><ObjectName>SeratoJumpSize</ObjectName><TooltipId>beatjump_size</TooltipId><Size>28f,24f</Size><Alignment>center</Alignment><NumberOfDigits>1</NumberOfDigits><Connection><ConfigKey><Variable name="Group"/>,beatjump_size</ConfigKey></Connection></Number>
+      <PushButton><ObjectName>SeratoCtlBtn</ObjectName><TooltipId>beatjump_forward</TooltipId><Size>26f,24f</Size><NumberStates>1</NumberStates><State><Number>0</Number><Text>&#x00BB;</Text></State><Connection><ConfigKey><Variable name="Group"/>,beatjump_forward</ConfigKey><ButtonState>LeftButton</ButtonState></Connection></PushButton>
+
+    </Children>
+  </WidgetGroup>
+</Template>

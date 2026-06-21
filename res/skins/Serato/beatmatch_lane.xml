@@ -1,0 +1,62 @@
+<Template>
+  <!--
+    Thin beat-match cone lane for one channel, placed between the two stacked
+    decks. The waveform itself stays full-height and centred; this lane renders
+    only the frequency-coloured cones (the C++ side gates every other waveform
+    layer when "BeatMatchLane" is set). It is a normal Visual for the channel,
+    so it scrolls and zooms in lock-step with the main waveform.
+
+    The cones must align horizontally with the waveform, so the lane reserves the
+    same BeatgridControls width on the right as the waveform row does - otherwise
+    the lane would be wider and the cones would drift off the beats.
+
+    Variables:
+      ChanNum        - channel number
+      BeatMatchEdge  - "bottom" (cones point up) or "top" (cones point down)
+      BgColorWaveform, SignalColor
+  -->
+  <!-- 32 px = 24 px cone + 8 px gap toward the waveform (cones are anchored to
+       the edge away from the waveform, i.e. toward the centre line). -->
+  <WidgetGroup>
+    <Layout>horizontal</Layout>
+    <SizePolicy>me,f</SizePolicy>
+    <Size>0me,32f</Size>
+    <Children>
+      <Visual>
+        <SizePolicy>me,me</SizePolicy>
+        <Channel><Variable name="ChanNum"/></Channel>
+        <BeatMatchLane>true</BeatMatchLane>
+        <BeatMatchEdge><Variable name="BeatMatchEdge"/></BeatMatchEdge>
+        <PlayMarkerFollowMixer>true</PlayMarkerFollowMixer>
+        <BgColor><Variable name="BgColorWaveform"/></BgColor>
+        <SignalColor><Variable name="SignalColor"/></SignalColor>
+        <EndOfTrackColor>#ff0000</EndOfTrackColor>
+        <PlayPosColor>#ff00ff</PlayPosColor>
+      </Visual>
+      <!-- Same width reserve as the waveform's BeatgridControls panel (keeps the
+           cones flush with the waveform), but full lane height with an opaque
+           dark background. The shared beatgrid_reserve is transparent and short,
+           so when the mixer reflows the layout the empty area showed grey behind
+           it; an opaque widget here paints over that. -->
+      <WidgetGroup>
+        <ObjectName>SeratoConeReserve</ObjectName>
+        <Layout>horizontal</Layout>
+        <SizePolicy>max,me</SizePolicy>
+        <Children>
+          <WidgetGroup><Size>107f,1me</Size></WidgetGroup>
+          <WidgetGroup>
+            <Size>26f,1me</Size>
+            <Connection>
+              <ConfigKey persist="true">[Skin],timing_shift_buttons</ConfigKey>
+              <BindProperty>visible</BindProperty>
+            </Connection>
+          </WidgetGroup>
+        </Children>
+        <Connection>
+          <ConfigKey persist="true">[Skin],show_beatgrid_controls</ConfigKey>
+          <BindProperty>visible</BindProperty>
+        </Connection>
+      </WidgetGroup>
+    </Children>
+  </WidgetGroup>
+</Template>
