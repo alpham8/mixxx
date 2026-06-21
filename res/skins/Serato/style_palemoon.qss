@@ -3957,6 +3957,25 @@ WSearchLineEdit::indicator:unchecked:selected {
     background-color: #14467a;
 }
 
+/* Selected loop size (beatloop_size == this pad): blue outline like the deck
+   panel border, so the armed size stays visible without an active loop.
+   The transparent base border reserves the space so the grid never jitters
+   when the selection moves between pads. */
+#DeckSerato1 #BeatLoopSel,
+#DeckSerato2 #BeatLoopSel,
+#DeckSerato3 #BeatLoopSel,
+#DeckSerato4 #BeatLoopSel {
+    border: 2px solid transparent;
+    border-radius: 4px;
+}
+
+#DeckSerato1 #BeatLoopSel[highlight="1"],
+#DeckSerato2 #BeatLoopSel[highlight="1"],
+#DeckSerato3 #BeatLoopSel[highlight="1"],
+#DeckSerato4 #BeatLoopSel[highlight="1"] {
+    border: 2px solid #00ccff;
+}
+
 #DeckSerato1 #SeratoVuMeter,
 #DeckSerato2 #SeratoVuMeter,
 #DeckSerato3 #SeratoVuMeter,
