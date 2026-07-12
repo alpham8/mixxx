@@ -920,6 +920,10 @@ void Tooltips::addStandardTooltips() {
             << tr("When active, the playback continues muted in the background during a loop, reverse, scratch etc.")
             << tr("Once disabled, the audible playback will resume where the track would have been.");
 
+    add("os2l_enabled")
+            << tr("OS2L")
+            << tr("Enables the OS2L connection to lighting software (e.g. SoundSwitch).");
+
     add("track_time")
             << tr("Track Time")
             << tr("Displays the elapsed and/or remaining time of the track loaded.")
