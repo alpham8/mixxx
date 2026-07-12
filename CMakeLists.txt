@@ -2867,6 +2867,7 @@ if(BUILD_TESTING)
     src/test/bpmcontrol_test.cpp
     src/test/broadcastprofile_test.cpp
     src/test/broadcastsettings_test.cpp
+    src/test/os2l_test.cpp
     src/test/cache_test.cpp
     src/test/channelhandle_test.cpp
     src/test/chrono_clock_resolution_test.cpp
@@ -5015,6 +5016,23 @@ if(BROADCAST)
   target_compile_definitions(mixxx-lib PUBLIC __BROADCAST__)
   if(QML)
     target_compile_definitions(mixxx-qml-lib PUBLIC __BROADCAST__)
+  endif()
+endif()
+
+# OS2L lighting support
+if(UNIX AND NOT APPLE)
+  pkg_check_modules(Avahi IMPORTED_TARGET avahi-client)
+  if(Avahi_FOUND)
+    target_compile_definitions(mixxx-lib PUBLIC __OS2L__)
+    target_link_libraries(mixxx-lib PUBLIC PkgConfig::Avahi)
+    target_sources(mixxx-lib PRIVATE
+      src/os2l/os2lconnection.cpp
+      src/os2l/os2ldiscovery.cpp
+      src/os2l/os2lmanager.cpp
+      src/os2l/seratoemulation.cpp
+    )
+  else()
+    message(STATUS "avahi-client not found, OS2L lighting support disabled")
   endif()
 endif()
 

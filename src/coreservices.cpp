@@ -11,6 +11,9 @@
 #ifdef __BROADCAST__
 #include "broadcast/broadcastmanager.h"
 #endif
+#ifdef __OS2L__
+#include "os2l/os2lmanager.h"
+#endif
 #include "control/controlindicatortimer.h"
 #include "controllers/controllermanager.h"
 #include "controllers/keyboard/keyboardeventfilter.h"
@@ -557,6 +560,12 @@ void CoreServices::initialize(QApplication* pApp) {
             m_pSoundManager.get());
 #endif
 
+#ifdef __OS2L__
+    m_pOs2lManager = std::make_shared<mixxx::Os2lManager>(
+            m_pSettingsManager->settings());
+    qDebug() << "Os2lManager created";
+#endif
+
 #ifdef __VINYLCONTROL__
     m_pVCManager = std::make_shared<VinylControlManager>(this, pConfig, m_pSoundManager.get());
 #else
@@ -965,6 +974,11 @@ void CoreServices::finalize() {
     // BroadcastManager depends on config, engine
     qDebug() << t.elapsed(false).debugMillisWithUnit() << "deleting BroadcastManager";
     CLEAR_AND_CHECK_DELETED(m_pBroadcastManager);
+#endif
+
+#ifdef __OS2L__
+    qDebug() << "deleting Os2lManager";
+    CLEAR_AND_CHECK_DELETED(m_pOs2lManager);
 #endif
 
     // EngineMixer depends on Config and m_pEffectsManager.
