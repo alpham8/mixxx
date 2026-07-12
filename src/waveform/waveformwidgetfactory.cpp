@@ -52,6 +52,13 @@ namespace {
 constexpr double kVisualGainDefault[] = {2, 1, 1, 1};
 constexpr bool kOverviewNormalizedDefault = false;
 
+// Global fallback time signature, used when a track has no per-track
+// beats-per-bar value. User-configurable in the range [kMinBeatsPerBar,
+// kMaxBeatsPerBar] and overridden per track by beat analysis.
+constexpr int kDefaultBeatsPerBar = 4;
+constexpr int kMinBeatsPerBar = 2;
+constexpr int kMaxBeatsPerBar = 32;
+
 // Returns true if the given waveform should be rendered.
 bool shouldRenderWaveform(WaveformWidgetAbstract* pWaveformWidget) {
     if (pWaveformWidget == nullptr ||
@@ -136,6 +143,8 @@ WaveformWidgetFactory::WaveformWidgetFactory()
           m_untilMarkShowBeats(false),
           m_untilMarkShowTime(false),
           m_showBarCounter(true),
+          m_beatsPerBar(kDefaultBeatsPerBar),
+          m_downbeatsEnabled(true),
           m_untilMarkAlign(Qt::AlignVCenter),
           m_untilMarkTextPointSize(24),
           m_untilMarkTextHeightLimit(toUntilMarkTextHeightLimit(0)),
@@ -479,6 +488,28 @@ bool WaveformWidgetFactory::setConfig(UserSettingsPointer config) {
     } else {
         m_config->setValue(ConfigKey(kWaveformGroup, QStringLiteral("ShowBarCounter")),
                 m_showBarCounter);
+    }
+
+    int beatsPerBar =
+            m_config->getValueString(
+                            ConfigKey(kWaveformGroup, QStringLiteral("BeatsPerBar")))
+                    .toInt(&ok);
+    if (ok) {
+        setBeatsPerBar(beatsPerBar);
+    } else {
+        m_config->setValue(ConfigKey(kWaveformGroup, QStringLiteral("BeatsPerBar")),
+                m_beatsPerBar);
+    }
+
+    int downbeatsEnabled =
+            m_config->getValueString(
+                            ConfigKey(kWaveformGroup, QStringLiteral("DownbeatsEnabled")))
+                    .toInt(&ok);
+    if (ok) {
+        setDownbeatsEnabled(static_cast<bool>(downbeatsEnabled));
+    } else {
+        m_config->setValue(ConfigKey(kWaveformGroup, QStringLiteral("DownbeatsEnabled")),
+                m_downbeatsEnabled);
     }
 
     setUntilMarkAlign(toUntilMarkAlign(
@@ -1487,6 +1518,24 @@ void WaveformWidgetFactory::setShowBarCounter(bool value) {
                 m_showBarCounter);
     }
     emit showBarCounterChanged(value);
+}
+
+void WaveformWidgetFactory::setBeatsPerBar(int value) {
+    m_beatsPerBar = qBound(kMinBeatsPerBar, value, kMaxBeatsPerBar);
+    if (m_config) {
+        m_config->setValue(ConfigKey(kWaveformGroup, QStringLiteral("BeatsPerBar")),
+                m_beatsPerBar);
+    }
+    emit beatsPerBarChanged(m_beatsPerBar);
+}
+
+void WaveformWidgetFactory::setDownbeatsEnabled(bool value) {
+    m_downbeatsEnabled = value;
+    if (m_config) {
+        m_config->setValue(ConfigKey(kWaveformGroup, QStringLiteral("DownbeatsEnabled")),
+                m_downbeatsEnabled);
+    }
+    emit downbeatsEnabledChanged(value);
 }
 
 void WaveformWidgetFactory::setNormalizeWaveform(bool value) {

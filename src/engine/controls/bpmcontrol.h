@@ -114,9 +114,9 @@ class BpmControl : public EngineControl {
     void slotUpdateEngineBpm(double v = 0.0);
     void slotBeatsTranslate(double);
     void slotBeatsTranslateMatchAlignment(double);
+    void slotSetDownbeat(double);
     void slotToggleBpmLock(double);
     void slotBeatsUndoAdjustment(double value);
-    void slotSetDownbeat(double);
     void slotDownbeatOffsetChanged(double);
     void slotPhraseAdd(double);
     void slotPhraseType(double);
@@ -157,6 +157,7 @@ class BpmControl : public EngineControl {
     std::unique_ptr<ControlPushButton> m_pTranslateBeatsLater;
     std::unique_ptr<ControlPushButton> m_pTranslateBeatsHalf;
     std::unique_ptr<ControlEncoder> m_pTranslateBeatsMove;
+    std::unique_ptr<ControlPushButton> m_pSetDownbeat;
     std::unique_ptr<ControlPushButton> m_pBeatsUndo;
     std::unique_ptr<ControlObject> m_pBeatsUndoPossible;
 
@@ -185,7 +186,6 @@ class BpmControl : public EngineControl {
     std::unique_ptr<ControlPushButton> m_pBeatsTranslateMatchAlignment;
 
     std::unique_ptr<ControlObject> m_pDownbeatOffset;
-    std::unique_ptr<ControlPushButton> m_pSetDownbeat;
     std::unique_ptr<ControlPushButton> m_pPhraseAdd;
     std::unique_ptr<ControlObject> m_pPhraseType;
     std::unique_ptr<ControlPushButton> m_pPhraseRemove;
