@@ -148,7 +148,10 @@ void WaveformRenderBarCounter::preprocess() {
 }
 
 bool WaveformRenderBarCounter::preprocessInner() {
+    // The bar/beat counter is shown only on the main waveform; the beat-match
+    // lane has its own cones, so a second counter there would be redundant.
     if (!m_downbeatsEnabled || !m_pTrackBeats ||
+            m_waveformRenderer->isBeatMatchLane() ||
             (m_isSlipRenderer && !m_waveformRenderer->isSlipActive())) {
         return false;
     }

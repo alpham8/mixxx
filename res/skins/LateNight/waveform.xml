@@ -180,6 +180,7 @@
             <BeatColor><Variable name="BeatColor"/></BeatColor>
             <DownbeatColor><Variable name="DownbeatColor"/></DownbeatColor>
             <BeatMatchEdge><Variable name="BeatMatchEdge"/></BeatMatchEdge>
+            <PlayMarkerFollowMixer><Variable name="PlayMarkerFollowMixer"/></PlayMarkerFollowMixer>
             <BeatMatchColor><Variable name="BeatMatchColor"/></BeatMatchColor>
             <BeatMatchDownbeatColor><Variable name="BeatMatchDownbeatColor"/></BeatMatchDownbeatColor>
             <BarCounterColor><Variable name="BarCounterColor"/></BarCounterColor>
