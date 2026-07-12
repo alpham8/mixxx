@@ -167,6 +167,7 @@
       <Style src="skins:Serato/style_palemoon.qss"/>
 
       <SetVariable name="BtnScheme">palemoon</SetVariable>
+      <SetVariable name="BtnType">embedded</SetVariable>
       <SetVariable name="KnobScheme">palemoon</SetVariable>
       <SetVariable name="SliderScheme">palemoon</SetVariable>
       <SetVariable name="StyleScheme">palemoon</SetVariable>
