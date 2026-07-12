@@ -1,0 +1,55 @@
+<!DOCTYPE template>
+<!--
+  Serato-style beatloop size pad.
+
+  Left-click toggles a beatloop of <LoopSize> beats, so an active loop keeps the
+  existing [displayValue="1"] filled look on the inner button. The surrounding
+  group shows a blue selection outline (highlight property, like the deck panel
+  border) whenever <LoopSize> equals the deck's current beatloop_size. That
+  keeps the *armed* size visible while it is only halved/doubled from a
+  controller (e.g. DJM-S7 / PLX-CRSS12), before the loop is actually started
+  with the Auto-Loop button.
+
+  The highlight lives on the WWidgetGroup because WPushButton has no `highlight`
+  Q_PROPERTY (only WLabel / WWidgetGroup do).
+
+  Variables:
+    Group     : deck group, e.g. [Channel1]
+    Size      : inner pad size
+    LoopLabel : visible label, e.g. 1/8
+    LoopSize  : numeric loop size, e.g. 0.125 (used for both the beatloop
+                toggle control name and the beatloop_size comparison)
+-->
+<Template>
+  <WidgetGroup>
+    <ObjectName>BeatLoopSel</ObjectName>
+    <Layout>horizontal</Layout>
+    <SizePolicy>me,min</SizePolicy>
+    <Children>
+      <PushButton>
+        <TooltipId>beatloop_size</TooltipId>
+        <ObjectName>BeatLoopBtn</ObjectName>
+        <Size><Variable name="Size"/></Size>
+        <NumberStates>2</NumberStates>
+        <RightClickIsPushButton>false</RightClickIsPushButton>
+        <State>
+          <Number>0</Number>
+          <Text><Variable name="LoopLabel"/></Text>
+        </State>
+        <State>
+          <Number>1</Number>
+          <Text><Variable name="LoopLabel"/></Text>
+        </State>
+        <Connection>
+          <ConfigKey><Variable name="Group"/>,beatloop_<Variable name="LoopSize"/>_toggle</ConfigKey>
+          <ButtonState>LeftButton</ButtonState>
+        </Connection>
+      </PushButton>
+    </Children>
+    <Connection>
+      <ConfigKey><Variable name="Group"/>,beatloop_size</ConfigKey>
+      <Transform><IsEqual><Variable name="LoopSize"/></IsEqual></Transform>
+      <BindProperty>highlight</BindProperty>
+    </Connection>
+  </WidgetGroup>
+</Template>

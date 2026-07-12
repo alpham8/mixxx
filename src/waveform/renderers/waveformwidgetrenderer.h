@@ -171,6 +171,17 @@ class WaveformWidgetRenderer {
     Qt::Orientation getOrientation() const {
         return m_orientation;
     }
+    /// True when this renderer is a thin beat-match cone lane (skin sets
+    /// "BeatMatchLane"). Only the cone marker draws; the waveform signal, beat
+    /// grid, bar counter, cue and play-position renderers skip rendering.
+    bool isBeatMatchLane() const {
+        return m_isBeatMatchLane;
+    }
+    /// Whether the play-position marker is drawn with arrow heads (Serato-style
+    /// skins can switch them off via the Visual "PlayMarkerArrowHeads" flag).
+    bool hasPlayMarkerArrowHeads() const {
+        return m_playMarkerArrowHeads;
+    }
     const WaveformSignalColors* getWaveformSignalColors() const {
         return &m_colors;
     }
@@ -206,6 +217,10 @@ class WaveformWidgetRenderer {
         VERIFY_OR_DEBUG_ASSERT(newPos >= 0.0 && newPos <= 1.0) {
             newPos = std::clamp(newPos, 0.0, 1.0);
         }
+        m_basePlayMarkerPosition = newPos;
+        // The effective position is refreshed every frame in onPreRender() (it
+        // may be shifted left while the mixer is shown). Set it here too so the
+        // first frame and the non-following case are correct immediately.
         m_playMarkerPosition = newPos;
     }
 
@@ -231,6 +246,7 @@ class WaveformWidgetRenderer {
 #endif
     QList<WaveformRendererAbstract*> m_rendererStack;
     Qt::Orientation m_orientation;
+    bool m_isBeatMatchLane;
     int m_dimBrightThreshold;
     int m_height;
     int m_width;
@@ -260,6 +276,10 @@ class WaveformWidgetRenderer {
     double m_trackSamples;
     double m_scaleFactor;
     double m_playMarkerPosition;   // 0.0 - left, 0.5 - center, 1.0 - right
+                                   // effective value, refreshed every frame
+    double m_basePlayMarkerPosition; // value set from the factory / preference
+    bool m_playMarkerFollowsMixer;   // skin opt-in: shift left when mixer shown
+    bool m_playMarkerArrowHeads;     // skin opt-out: arrow heads on the play marker
 
     // used by allshader waveformrenderers when used with rendergraph nodes
     rendergraph::Context* m_pContext;

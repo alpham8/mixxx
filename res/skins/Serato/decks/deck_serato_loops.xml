@@ -4,6 +4,9 @@
   range (4..512). Page state persists. Variables: Group
   (Legacy skins cannot put variables in WidgetStack attributes, so the page
   control name is fixed per deck side; the right side uses page_r* controls.)
+
+  Each pad shows a blue selection outline while its size equals beatloop_size,
+  see button_beatloop_size.xml.
 -->
 <Template>
   <WidgetGroup>
@@ -35,19 +38,19 @@
               <WidgetGroup>
                 <Layout>horizontal</Layout><SizePolicy>me,min</SizePolicy>
                 <Children>
-                  <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">1/8</SetVariable><SetVariable name="state_1_text">1/8</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_0.125_toggle</SetVariable></Template>
-                  <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">1/4</SetVariable><SetVariable name="state_1_text">1/4</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_0.25_toggle</SetVariable></Template>
-                  <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">1/2</SetVariable><SetVariable name="state_1_text">1/2</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_0.5_toggle</SetVariable></Template>
-                  <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">1</SetVariable><SetVariable name="state_1_text">1</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_1_toggle</SetVariable></Template>
+                  <Template src="skins:Serato/decks/button_beatloop_size.xml"><SetVariable name="Group"><Variable name="Group"/></SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="LoopLabel">1/8</SetVariable><SetVariable name="LoopSize">0.125</SetVariable></Template>
+                  <Template src="skins:Serato/decks/button_beatloop_size.xml"><SetVariable name="Group"><Variable name="Group"/></SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="LoopLabel">1/4</SetVariable><SetVariable name="LoopSize">0.25</SetVariable></Template>
+                  <Template src="skins:Serato/decks/button_beatloop_size.xml"><SetVariable name="Group"><Variable name="Group"/></SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="LoopLabel">1/2</SetVariable><SetVariable name="LoopSize">0.5</SetVariable></Template>
+                  <Template src="skins:Serato/decks/button_beatloop_size.xml"><SetVariable name="Group"><Variable name="Group"/></SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="LoopLabel">1</SetVariable><SetVariable name="LoopSize">1</SetVariable></Template>
                 </Children>
               </WidgetGroup>
               <WidgetGroup>
                 <Layout>horizontal</Layout><SizePolicy>me,min</SizePolicy>
                 <Children>
-                  <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">2</SetVariable><SetVariable name="state_1_text">2</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_2_toggle</SetVariable></Template>
-                  <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">4</SetVariable><SetVariable name="state_1_text">4</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_4_toggle</SetVariable></Template>
-                  <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">8</SetVariable><SetVariable name="state_1_text">8</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_8_toggle</SetVariable></Template>
-                  <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">16</SetVariable><SetVariable name="state_1_text">16</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_16_toggle</SetVariable></Template>
+                  <Template src="skins:Serato/decks/button_beatloop_size.xml"><SetVariable name="Group"><Variable name="Group"/></SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="LoopLabel">2</SetVariable><SetVariable name="LoopSize">2</SetVariable></Template>
+                  <Template src="skins:Serato/decks/button_beatloop_size.xml"><SetVariable name="Group"><Variable name="Group"/></SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="LoopLabel">4</SetVariable><SetVariable name="LoopSize">4</SetVariable></Template>
+                  <Template src="skins:Serato/decks/button_beatloop_size.xml"><SetVariable name="Group"><Variable name="Group"/></SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="LoopLabel">8</SetVariable><SetVariable name="LoopSize">8</SetVariable></Template>
+                  <Template src="skins:Serato/decks/button_beatloop_size.xml"><SetVariable name="Group"><Variable name="Group"/></SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="LoopLabel">16</SetVariable><SetVariable name="LoopSize">16</SetVariable></Template>
                 </Children>
               </WidgetGroup>
             </Children>
@@ -61,19 +64,19 @@
               <WidgetGroup>
                 <Layout>horizontal</Layout><SizePolicy>me,min</SizePolicy>
                 <Children>
-                  <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">4</SetVariable><SetVariable name="state_1_text">4</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_4_toggle</SetVariable></Template>
-                  <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">8</SetVariable><SetVariable name="state_1_text">8</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_8_toggle</SetVariable></Template>
-                  <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">16</SetVariable><SetVariable name="state_1_text">16</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_16_toggle</SetVariable></Template>
-                  <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">32</SetVariable><SetVariable name="state_1_text">32</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_32_toggle</SetVariable></Template>
+                  <Template src="skins:Serato/decks/button_beatloop_size.xml"><SetVariable name="Group"><Variable name="Group"/></SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="LoopLabel">4</SetVariable><SetVariable name="LoopSize">4</SetVariable></Template>
+                  <Template src="skins:Serato/decks/button_beatloop_size.xml"><SetVariable name="Group"><Variable name="Group"/></SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="LoopLabel">8</SetVariable><SetVariable name="LoopSize">8</SetVariable></Template>
+                  <Template src="skins:Serato/decks/button_beatloop_size.xml"><SetVariable name="Group"><Variable name="Group"/></SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="LoopLabel">16</SetVariable><SetVariable name="LoopSize">16</SetVariable></Template>
+                  <Template src="skins:Serato/decks/button_beatloop_size.xml"><SetVariable name="Group"><Variable name="Group"/></SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="LoopLabel">32</SetVariable><SetVariable name="LoopSize">32</SetVariable></Template>
                 </Children>
               </WidgetGroup>
               <WidgetGroup>
                 <Layout>horizontal</Layout><SizePolicy>me,min</SizePolicy>
                 <Children>
-                  <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">64</SetVariable><SetVariable name="state_1_text">64</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_64_toggle</SetVariable></Template>
-                  <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">128</SetVariable><SetVariable name="state_1_text">128</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_128_toggle</SetVariable></Template>
-                  <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">256</SetVariable><SetVariable name="state_1_text">256</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_256_toggle</SetVariable></Template>
-                  <Template src="skins:LateNight/controls/button_2state.xml"><SetVariable name="TooltipId">beatloop_size</SetVariable><SetVariable name="ObjectName">BeatLoopBtn</SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="state_0_text">512</SetVariable><SetVariable name="state_1_text">512</SetVariable><SetVariable name="ConfigKey"><Variable name="Group"/>,beatloop_512_toggle</SetVariable></Template>
+                  <Template src="skins:Serato/decks/button_beatloop_size.xml"><SetVariable name="Group"><Variable name="Group"/></SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="LoopLabel">64</SetVariable><SetVariable name="LoopSize">64</SetVariable></Template>
+                  <Template src="skins:Serato/decks/button_beatloop_size.xml"><SetVariable name="Group"><Variable name="Group"/></SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="LoopLabel">128</SetVariable><SetVariable name="LoopSize">128</SetVariable></Template>
+                  <Template src="skins:Serato/decks/button_beatloop_size.xml"><SetVariable name="Group"><Variable name="Group"/></SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="LoopLabel">256</SetVariable><SetVariable name="LoopSize">256</SetVariable></Template>
+                  <Template src="skins:Serato/decks/button_beatloop_size.xml"><SetVariable name="Group"><Variable name="Group"/></SetVariable><SetVariable name="Size">0me,26f</SetVariable><SetVariable name="LoopLabel">512</SetVariable><SetVariable name="LoopSize">512</SetVariable></Template>
                 </Children>
               </WidgetGroup>
             </Children>

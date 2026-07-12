@@ -1,0 +1,37 @@
+<Template>
+  <!--
+    One Serato overview strip, kept flush with the waveform below it.
+
+    The waveform row is [Visual | BeatgridControls], so when the beatgrid panel
+    is shown the Visual is narrower than a full-width overview and the overview
+    would run over the panel. We reserve the panel's exact width on the right of
+    the overview, gated by the same config keys as the panel itself, so the
+    overview ends exactly at the Visual's edge - and goes full width again when
+    the panel is hidden.
+
+    Variables:
+      StyleName    - ObjectName for QSS (SeratoOverview1 / SeratoOverview2)
+      OverviewName - Singleton ObjectName (DeckOverview1..4)
+  -->
+  <WidgetGroup>
+    <Layout>horizontal</Layout>
+    <SizePolicy>me,f</SizePolicy>
+    <Size>0me,24f</Size>
+    <Children>
+      <WidgetGroup>
+        <ObjectName><Variable name="StyleName"/></ObjectName>
+        <Layout>horizontal</Layout>
+        <SizePolicy>me,me</SizePolicy>
+        <Children>
+          <SingletonContainer>
+            <ObjectName><Variable name="OverviewName"/></ObjectName>
+          </SingletonContainer>
+        </Children>
+      </WidgetGroup>
+
+      <!-- Reserve the BeatgridControls width so the overview ends flush with
+           the waveform Visual instead of running over the panel. -->
+      <Template src="skins:Serato/beatgrid_reserve.xml"/>
+    </Children>
+  </WidgetGroup>
+</Template>

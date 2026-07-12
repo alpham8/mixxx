@@ -194,7 +194,7 @@
       <SetVariable name="BeatColor">#666666</SetVariable>
       <SetVariable name="DownbeatColor">#ffffff</SetVariable>
       <SetVariable name="BarCounterColor">#cccccc</SetVariable>
-      <SetVariable name="PlayPosColor">#ff0000</SetVariable>
+      <SetVariable name="PlayPosColor">#ff00ff</SetVariable>
       <SetVariable name="CueColor">#00aaff</SetVariable>
       <SetVariable name="LoopColor">#00cc00</SetVariable>
       <SetVariable name="IntroOutroColor">#336699</SetVariable>
@@ -475,6 +475,35 @@
                       <Layout>vertical</Layout>
                       <SizePolicy>me,me</SizePolicy>
                       <Children>
+
+                        <!-- Crossfader strip below the decks (its own row, over
+                             the FX). The decks are symmetric (450f each), so the
+                             waveform column is centred in this full-width row;
+                             the beatgrid-reserve on the right shifts the fader
+                             onto the visible waveform's centre (not the panel). -->
+                        <WidgetGroup>
+                          <ObjectName>SeratoCrossfaderStrip</ObjectName>
+                          <Layout>horizontal</Layout>
+                          <SizePolicy>me,min</SizePolicy>
+                          <Children>
+                            <WidgetGroup>
+                              <Layout>horizontal</Layout>
+                              <SizePolicy>me,min</SizePolicy>
+                              <Children>
+                                <WidgetGroup><Size>me,1min</Size></WidgetGroup>
+                                <SingletonContainer>
+                                  <ObjectName>CrossfaderSingleton</ObjectName>
+                                </SingletonContainer>
+                                <WidgetGroup><Size>me,1min</Size></WidgetGroup>
+                              </Children>
+                            </WidgetGroup>
+                            <Template src="skins:Serato/beatgrid_reserve.xml"/>
+                          </Children>
+                          <Connection>
+                            <ConfigKey persist="true">[Skin],show_mixer</ConfigKey>
+                            <BindProperty>visible</BindProperty>
+                          </Connection>
+                        </WidgetGroup>
 
                         <Template src="skins:LateNight/fx_rack.xml"/>
                         <Template src="skins:LateNight/samplers_rack.xml"/>

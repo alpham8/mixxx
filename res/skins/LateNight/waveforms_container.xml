@@ -60,6 +60,86 @@
                 </Children>
               </WidgetGroup>
 
+              <!-- Beat-match cone lane between deck 1 (bottom edge) and deck 2
+                   (top edge); the frequency-coloured cones meet in the middle
+                   (Serato style). Opt-in via [Skin],show_beatmatch_lane. -->
+              <WidgetGroup>
+                <Layout>vertical</Layout>
+                <SizePolicy>me,min</SizePolicy>
+                <Children>
+                  <WidgetGroup>
+                    <Layout>horizontal</Layout>
+                    <SizePolicy>me,f</SizePolicy>
+                    <Size>0me,28f</Size>
+                    <Children>
+                      <Visual>
+                        <SizePolicy>me,me</SizePolicy>
+                        <Channel>1</Channel>
+                        <BeatMatchLane>true</BeatMatchLane>
+                        <BeatMatchEdge>bottom</BeatMatchEdge>
+                        <BgColor><Variable name="BgColorWaveform_12"/></BgColor>
+                        <PlayPosColor><Variable name="PlayPosColor"/></PlayPosColor>
+                      </Visual>
+                      <!-- Reserve matching the deck's BeatgridControls width so
+                           the lane play marker aligns with the deck markers. -->
+                      <WidgetGroup>
+                        <Layout>horizontal</Layout>
+                        <SizePolicy>max,me</SizePolicy>
+                        <Children>
+                          <WidgetGroup><Size>107f,1me</Size></WidgetGroup>
+                          <WidgetGroup>
+                            <Size>26f,1me</Size>
+                            <Connection>
+                              <ConfigKey persist="true">[Skin],timing_shift_buttons</ConfigKey>
+                              <BindProperty>visible</BindProperty>
+                            </Connection>
+                          </WidgetGroup>
+                        </Children>
+                        <Connection>
+                          <ConfigKey persist="true">[Skin],show_beatgrid_controls</ConfigKey>
+                          <BindProperty>visible</BindProperty>
+                        </Connection>
+                      </WidgetGroup>
+                    </Children>
+                  </WidgetGroup>
+                  <WidgetGroup>
+                    <Layout>horizontal</Layout>
+                    <SizePolicy>me,f</SizePolicy>
+                    <Size>0me,28f</Size>
+                    <Children>
+                      <Visual>
+                        <SizePolicy>me,me</SizePolicy>
+                        <Channel>2</Channel>
+                        <BeatMatchLane>true</BeatMatchLane>
+                        <BeatMatchEdge>top</BeatMatchEdge>
+                        <BgColor><Variable name="BgColorWaveform_12"/></BgColor>
+                        <PlayPosColor><Variable name="PlayPosColor"/></PlayPosColor>
+                      </Visual>
+                      <!-- Reserve matching the deck's BeatgridControls width so
+                           the lane play marker aligns with the deck markers. -->
+                      <WidgetGroup>
+                        <Layout>horizontal</Layout>
+                        <SizePolicy>max,me</SizePolicy>
+                        <Children>
+                          <WidgetGroup><Size>107f,1me</Size></WidgetGroup>
+                          <WidgetGroup>
+                            <Size>26f,1me</Size>
+                            <Connection>
+                              <ConfigKey persist="true">[Skin],timing_shift_buttons</ConfigKey>
+                              <BindProperty>visible</BindProperty>
+                            </Connection>
+                          </WidgetGroup>
+                        </Children>
+                        <Connection>
+                          <ConfigKey persist="true">[Skin],show_beatgrid_controls</ConfigKey>
+                          <BindProperty>visible</BindProperty>
+                        </Connection>
+                      </WidgetGroup>
+                    </Children>
+                  </WidgetGroup>
+                </Children>
+              </WidgetGroup>
+
               <WidgetGroup>
                 <Layout>horizontal</Layout>
                 <SizePolicy>me,me</SizePolicy>

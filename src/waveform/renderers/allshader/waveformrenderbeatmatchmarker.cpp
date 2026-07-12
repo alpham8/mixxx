@@ -4,7 +4,7 @@
 #include <QVector2D>
 #include <QVector3D>
 #include <algorithm>
-#include <vector>
+#include <cmath>
 
 #include "moc_waveformrenderbeatmatchmarker.cpp"
 #include "rendergraph/geometry.h"
@@ -13,33 +13,39 @@
 #include "skin/legacy/skincontext.h"
 #include "track/track.h"
 #include "util/math.h"
+#include "waveform/renderers/waveformbeatmatchlane.h"
 #include "waveform/renderers/waveformwidgetrenderer.h"
 #include "waveform/waveform.h"
 
 using namespace rendergraph;
 
 namespace {
-// Length of a tooth, measured from the waveform's inner edge into the lane
-// (logical pixels). Two decks back-to-back make a central lane twice this.
-constexpr float kBandHeight = 16.0f;
-// A tooth is also drawn on each half-beat for a denser grid. It has the same
-// length as the beat teeth so the whole row reads as one uniform, easily
-// readable grid (Serato style) instead of an alternating long/short pattern.
-constexpr float kHalfBeatLengthScale = 1.0f;
-// Marker half-width = base + bass-energy * scale (logical pixels). A modest
-// bass term keeps kick-heavy beats a little fatter without making the row look
-// irregular.
-constexpr float kMinHalfWidth = 1.5f;
-constexpr float kBassHalfWidthScale = 4.0f;
-// Dark backing of the marker bar so the teeth sit in their own lane instead of
-// overlapping the coloured audio.
-constexpr float kBarBackingGrey = 0.10f;
-// Scan this fraction of the visible span past each edge so teeth are already
-// built before a beat scrolls into view, instead of popping in at the edge.
+// Full cone height (logical pixels) = the tallest a cone reaches at peak level.
+// Must match mixxx::kBeatMatchLaneHeight so the cones fit exactly in the band
+// the signal renderer reserves for them.
+constexpr float kBandHeight = mixxx::kBeatMatchLaneHeight;
+// Mild brightness boost for the cone colour; kept low so deep bass stays a rich
+// red instead of washing to a saturated orange/yellow wall - clamped to 1.0.
+constexpr float kColourGain = 1.3f;
+// Horizontal spacing between cone centres (logical pixels). At default zoom a
+// Serato-style strip has one prominent cone per ~10 px - wide enough to read as
+// a proper triangle, not a line.
+constexpr float kConeStepPx = 10.0f;
+// Fraction of each step the cone base fills (the rest is gap). 0.70 gives a
+// ~7 px base with ~3 px gap, which is clearly triangular at this step size.
+constexpr float kConeFillFraction = 0.70f;
+// Cone height tracks the audio envelope so the row echoes the waveform's
+// dynamics. The shortest cone still reaches this fraction of the band, so even
+// near-silent beats stay readable instead of collapsing to a flat line.
+constexpr float kMinHeightFraction = 0.22f;
+// Gamma applied to the 0..1 envelope before it scales the height. Below 1.0 it
+// lifts mid-level beats a touch while keeping quiet and loud clearly apart.
+constexpr float kHeightGamma = 0.80f;
+// Scan this fraction of the visible span past each edge so the row is already
+// built before it scrolls into view.
 constexpr double kRangeMarginFraction = 0.15;
 
-constexpr int kVerticesPerTooth = 3;     // one triangle per tooth
-constexpr int kVerticesPerRectangle = 6; // the dark bar backing (2 triangles)
+constexpr int kVerticesPerCone = 3; // one triangular Zapfen
 } // namespace
 
 namespace allshader {
@@ -81,7 +87,10 @@ void WaveformRenderBeatMatchMarker::preprocess() {
 }
 
 bool WaveformRenderBeatMatchMarker::preprocessInner() {
-    if (m_edge == Edge::None) {
+    // The cones live in their own thin lane widget (skin sets "BeatMatchLane").
+    // Never draw them inside the normal waveform - there they would overlap the
+    // full-height, centred signal.
+    if (!m_waveformRenderer->isBeatMatchLane() || m_edge == Edge::None) {
         return false;
     }
 
@@ -93,8 +102,8 @@ bool WaveformRenderBeatMatchMarker::preprocessInner() {
     const auto positionType = m_isSlipRenderer ? ::WaveformRendererAbstract::Slip
                                                : ::WaveformRendererAbstract::Play;
 
-    const mixxx::BeatsPointer trackBeats = trackInfo->getBeats();
-    if (!trackBeats) {
+    // The strip only shows for analysed tracks (beat-match context).
+    if (!trackInfo->getBeats()) {
         return false;
     }
 
@@ -124,118 +133,98 @@ bool WaveformRenderBeatMatchMarker::preprocessInner() {
     const double startFraction = std::max(firstDisplayedPosition - margin, 0.0);
     const double endFraction = std::min(lastDisplayedPosition + margin, 1.0);
 
-    const auto startPosition = mixxx::audio::FramePos::fromEngineSamplePos(
-            startFraction * trackSamples);
-    const auto endPosition = mixxx::audio::FramePos::fromEngineSamplePos(
-            endFraction * trackSamples);
-    if (!startPosition.isValid() || !endPosition.isValid()) {
-        return false;
-    }
-
-    const float devicePixelRatio = m_waveformRenderer->getDevicePixelRatio();
+    // All geometry is in logical pixels (getBreadth/getLength and the sample->x
+    // transform are logical); the device pixel ratio is applied by the
+    // projection, so it must not be folded into the coordinates here.
     const float breadth = m_waveformRenderer->getBreadth();
-    const float length = m_waveformRenderer->getLength() * devicePixelRatio;
-    const float bandHeight = kBandHeight * devicePixelRatio;
+    const float bandHeight = kBandHeight;
 
-    std::vector<double> beatPositions;
-    for (auto it = trackBeats->iteratorFrom(startPosition);
-            it != trackBeats->cend() && *it <= endPosition;
-            ++it) {
-        beatPositions.push_back(it->toEngineSamplePos());
-    }
-    const int numBeats = static_cast<int>(beatPositions.size());
-    if (numBeats == 0) {
-        geometry().allocate(0);
-        markDirtyGeometry();
-        return true;
-    }
-
-    // A full tooth on every beat plus a shorter one on every half-beat between
-    // consecutive beats, for a denser Serato-like grid.
-    const int numTeeth = numBeats + std::max(numBeats - 1, 0);
-
-    // One dark backing rectangle (the lane) plus the teeth.
-    geometry().allocate(kVerticesPerRectangle + numTeeth * kVerticesPerTooth);
-    RGBVertexUpdater updater{geometry().vertexDataAs<Geometry::RGBColoredPoint2D>()};
-
-    // The marker bar sits in a band at the waveform's inner edge. Each tooth is a
-    // triangle (Serato-style Zapfen): the wide base sits against the waveform
-    // body and the apex points into the lane between the two waveforms.
     const bool top = (m_edge == Edge::Top);
-    const float bandTop = top ? 0.f : breadth - bandHeight;
-    const float bandBottom = top ? bandHeight : breadth;
-    // Serato orientation: the wide base sits at the centre-lane edge (where the
-    // two decks meet) and the tip points outward toward this deck's waveform.
+    // Cones grow from the inner edge toward the waveform centre. The signal
+    // renderer reserves a matching band, so the cones sit in their own space
+    // with a gap to the waveform - no mask needed here.
     const float baseY = top ? 0.f : breadth;
 
-    // Dark lane behind the teeth so they sit in their own bar instead of
-    // overlapping the coloured audio.
-    updater.addRectangle({0.f, bandTop},
-            {length, bandBottom},
-            {kBarBackingGrey, kBarBackingGrey, kBarBackingGrey});
+    // Map a track fraction to its x in renderer-world (logical) pixels.
+    const auto worldX = [&](double frac) {
+        return static_cast<float>(
+                m_waveformRenderer->transformSamplePositionInRendererWorld(
+                        frac * trackSamples, positionType));
+    };
 
-    // Draw one tooth at an engine-sample position. lengthScale 1.0 is a full
-    // beat, a smaller value a half-beat. Colour comes from the frequency bands
-    // (bass = red, mid = green, high = blue, normalised) and the width from the
-    // bass energy, both sampled from the analysed waveform at that position.
-    const auto emitTooth = [&](double position, float lengthScale) {
-        double xPoint = m_waveformRenderer->transformSamplePositionInRendererWorld(
-                position, positionType);
-        xPoint = qRound(xPoint * devicePixelRatio) / devicePixelRatio;
-        const float x = static_cast<float>(xPoint);
+    // Anchor each cone to an absolute waveform-data bucket (multiples of
+    // indexStep counted from index 0), not to a viewport-relative subdivision.
+    // Each bucket always covers the same audio, so the cones stay glued to the
+    // waveform as it scrolls instead of crawling across it and flickering. The
+    // bucket width is chosen so the cones sit roughly kConeStepPx apart on screen.
+    const double visibleFraction = lastDisplayedPosition - firstDisplayedPosition;
+    const int lengthPx = std::max(1, m_waveformRenderer->getLength());
+    const double indexStep = std::max(
+            1.0, visibleFraction * dataSize * kConeStepPx / lengthPx);
 
-        const double frac = position / trackSamples;
-        const int centre = std::clamp(
-                static_cast<int>(frac * dataSize), 0, dataSize - 1);
-        constexpr int kWindow = 8;
-        uchar maxLow = 0;
-        uchar maxMid = 0;
-        uchar maxHigh = 0;
-        const int from = std::max(centre - kWindow, 0);
-        const int to = std::min(centre + kWindow, dataSize - 1);
-        for (int i = from; i <= to; ++i) {
-            maxLow = math_max(maxLow, waveform->getLow(i));
-            maxMid = math_max(maxMid, waveform->getMid(i));
-            maxHigh = math_max(maxHigh, waveform->getHigh(i));
+    const int idxStart = std::clamp(
+            static_cast<int>(startFraction * dataSize), 0, dataSize - 1);
+    const int idxEnd = std::clamp(
+            static_cast<int>(endFraction * dataSize), 0, dataSize - 1);
+    const int firstBucket = static_cast<int>(std::floor(idxStart / indexStep));
+    const int lastBucket = static_cast<int>(std::floor(idxEnd / indexStep));
+    const int numCones = lastBucket - firstBucket + 1;
+
+    // One triangular Zapfen per cone.
+    geometry().allocate(kVerticesPerCone * numCones);
+    RGBVertexUpdater updater{geometry().vertexDataAs<Geometry::RGBColoredPoint2D>()};
+
+    const float halfWidth = kConeStepPx * kConeFillFraction * 0.5f;
+    for (int b = firstBucket; b <= lastBucket; ++b) {
+        const int idxFrom = std::clamp(
+                static_cast<int>(b * indexStep), 0, dataSize - 1);
+        const int idxTo = std::clamp(
+                static_cast<int>((b + 1) * indexStep) - 1, idxFrom, dataSize - 1);
+
+        // Peak over the data points this bucket covers (bass = red, mid = green,
+        // high = blue), so the cone stays steady instead of popping on a single
+        // sample as the waveform scrolls.
+        uchar low = 0;
+        uchar mid = 0;
+        uchar high = 0;
+        for (int i = idxFrom; i <= idxTo; ++i) {
+            low = math_max(low, waveform->getLow(i));
+            mid = math_max(mid, waveform->getMid(i));
+            high = math_max(high, waveform->getHigh(i));
         }
 
-        float red = static_cast<float>(maxLow);
-        float green = static_cast<float>(maxMid);
-        float blue = static_cast<float>(maxHigh);
-        const float maxComponent = math_max3(red, green, blue);
-        if (maxComponent > 0.f) {
-            const float norm = 1.f / maxComponent;
-            red *= norm;
-            green *= norm;
-            blue *= norm;
-        } else {
-            // Silent position: still draw a visible neutral-grey tooth.
-            red = 0.5f;
-            green = 0.5f;
-            blue = 0.5f;
-        }
+        // Snap each cone vertex to a whole device pixel (like the beat renderer)
+        // so the row does not shimmer with sub-pixel coverage while scrolling.
+        const double centreFrac = (b + 0.5) * indexStep / dataSize;
+        const float x = static_cast<float>(qRound(worldX(centreFrac)));
 
-        const float halfWidth =
-                (kMinHalfWidth + (static_cast<float>(maxLow) / 255.f) * kBassHalfWidthScale) *
-                devicePixelRatio;
-        const float apex = top ? bandHeight * lengthScale
-                               : breadth - bandHeight * lengthScale;
+        // Colour from the three bands (bass = red, mid = green, high = blue).
+        const QVector3D color{
+                std::min(1.f, static_cast<float>(low) / 255.f * kColourGain),
+                std::min(1.f, static_cast<float>(mid) / 255.f * kColourGain),
+                std::min(1.f, static_cast<float>(high) / 255.f * kColourGain)};
 
+        // Height follows the bucket's loudness (peak across the bands): loud
+        // beats stand tall, quiet ones stay short, so the strip echoes the
+        // waveform's shape. The base width and gap never change, so it stays a
+        // row of separate Zapfen rather than a filled miniature waveform.
+        const float level = std::max({static_cast<float>(low),
+                                             static_cast<float>(mid),
+                                             static_cast<float>(high)}) /
+                255.f;
+        const float heightFraction = kMinHeightFraction +
+                (1.f - kMinHeightFraction) * std::pow(level, kHeightGamma);
+        const float coneHeight = bandHeight * heightFraction;
+        const float apex = top ? coneHeight : breadth - coneHeight;
+
+        // One triangular Zapfen: base on the lane floor, apex pointing inward.
         updater.addTriangle({x - halfWidth, baseY},
                 {x + halfWidth, baseY},
                 {x, apex},
-                {red, green, blue});
-    };
-
-    for (int i = 0; i < numBeats; ++i) {
-        emitTooth(beatPositions[i], 1.0f);
-        if (i + 1 < numBeats) {
-            const double midPosition = 0.5 * (beatPositions[i] + beatPositions[i + 1]);
-            emitTooth(midPosition, kHalfBeatLengthScale);
-        }
+                color);
     }
 
-    DEBUG_ASSERT(kVerticesPerRectangle + numTeeth * kVerticesPerTooth == updater.index());
+    DEBUG_ASSERT(kVerticesPerCone * numCones == updater.index());
 
     markDirtyGeometry();
     return true;

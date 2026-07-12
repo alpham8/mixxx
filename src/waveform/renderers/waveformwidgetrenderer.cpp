@@ -3,6 +3,7 @@
 #include <QPainter>
 #include <QPainterPath>
 
+#include "control/controlobject.h"
 #include "control/controlproxy.h"
 #include "track/track.h"
 #include "util/assert.h"
@@ -20,6 +21,10 @@ const double WaveformWidgetRenderer::s_defaultPlayMarkerPosition = 0.5;
 
 namespace {
 constexpr int kDefaultDimBrightThreshold = 127;
+// When the mixer is shown the play marker shifts left to a Pioneer-CDJ-style
+// position: a quarter of the waveform shows the past, three quarters the
+// upcoming audio.
+constexpr double kMixerPlayMarkerPosition = 0.25;
 } // namespace
 
 WaveformWidgetRenderer::WaveformWidgetRenderer(const QString& group)
@@ -28,6 +33,7 @@ WaveformWidgetRenderer::WaveformWidgetRenderer(const QString& group)
           m_selectedStems(mixxx::StemChannelSelection()),
 #endif
           m_orientation(Qt::Horizontal),
+          m_isBeatMatchLane(false),
           m_dimBrightThreshold(kDefaultDimBrightThreshold),
           m_height(-1),
           m_width(-1),
@@ -46,6 +52,9 @@ WaveformWidgetRenderer::WaveformWidgetRenderer(const QString& group)
           m_trackSamples(0.0),
           m_scaleFactor(1.0),
           m_playMarkerPosition(s_defaultPlayMarkerPosition),
+          m_basePlayMarkerPosition(s_defaultPlayMarkerPosition),
+          m_playMarkerFollowsMixer(false),
+          m_playMarkerArrowHeads(true),
           m_pContext(nullptr),
           m_passthroughEnabled(false) {
     //qDebug() << "WaveformWidgetRenderer";
@@ -155,6 +164,17 @@ void WaveformWidgetRenderer::onPreRender(VSyncTimeProvider* vsyncThread) {
             : m_pTrack->getSampleRate() * m_pTrack->getDuration();
     if (m_trackSamples <= 0) {
         return;
+    }
+
+    // Refresh the effective play marker position before any sub-renderer reads
+    // it. When the skin opts in (Visual PlayMarkerFollowMixer) and the mixer is
+    // shown, the marker shifts left so more of the upcoming track is visible
+    // (Pioneer-CDJ style). Read live so it tracks the toggle without a restart.
+    m_playMarkerPosition = m_basePlayMarkerPosition;
+    if (m_playMarkerFollowsMixer &&
+            ControlObject::get(ConfigKey(QStringLiteral("[Skin]"),
+                    QStringLiteral("show_mixer"))) != 0.0) {
+        m_playMarkerPosition = kMixerPlayMarkerPosition;
     }
 
     //Fetch parameters before rendering in order the display all sub-renderers with the same values
@@ -426,6 +446,12 @@ void WaveformWidgetRenderer::setup(
     } else {
         m_orientation = Qt::Horizontal;
     }
+
+    m_isBeatMatchLane = context.selectBool(node, QStringLiteral("BeatMatchLane"), false);
+    m_playMarkerFollowsMixer =
+            context.selectBool(node, QStringLiteral("PlayMarkerFollowMixer"), false);
+    m_playMarkerArrowHeads =
+            context.selectBool(node, QStringLiteral("PlayMarkerArrowHeads"), true);
 
     bool okay;
     m_dimBrightThreshold = context.selectInt(node, QStringLiteral("DimBrightThreshold"), &okay);

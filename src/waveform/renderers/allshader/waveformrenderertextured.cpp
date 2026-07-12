@@ -283,6 +283,9 @@ void WaveformRendererTextured::slotWaveformUpdated() {
 }
 
 void WaveformRendererTextured::paintGL() {
+    if (m_waveformRenderer->isBeatMatchLane()) {
+        return;
+    }
     TrackPointer pTrack = m_waveformRenderer->getTrackInfo();
     if (!pTrack || (m_isSlipRenderer && !m_waveformRenderer->isSlipActive())) {
         return;
