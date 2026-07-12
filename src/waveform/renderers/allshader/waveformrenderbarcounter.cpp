@@ -13,6 +13,7 @@
 #include "rendergraph/texture.h"
 #include "rendergraph/vertexupdaters/texturedvertexupdater.h"
 #include "skin/legacy/skincontext.h"
+#include "track/phrases.h"
 #include "track/track.h"
 #include "waveform/renderers/waveformwidgetrenderer.h"
 #include "waveform/waveformwidgetfactory.h"
@@ -111,6 +112,7 @@ bool WaveformRenderBarCounter::preprocessInner() {
     }
 
     const auto firstMarker = trackBeats->cfirstmarker();
+    const int downbeatOffset = trackBeats->downbeatOffset();
 
     // Remove previous frame's nodes
     removeAllChildNodes();
@@ -145,9 +147,10 @@ bool WaveformRenderBarCounter::preprocessInner() {
             --playIt;
         }
         const int playBeatIndex = playIt - firstMarker;
+        const int adjustedPlayIndex = playBeatIndex - downbeatOffset;
         if (m_beatsPerBar > 0) {
-            currentBarNumber = (playBeatIndex / m_beatsPerBar) + 1;
-            currentBeatInBar = ((playBeatIndex % m_beatsPerBar) + m_beatsPerBar) %
+            currentBarNumber = (adjustedPlayIndex / m_beatsPerBar) + 1;
+            currentBeatInBar = ((adjustedPlayIndex % m_beatsPerBar) + m_beatsPerBar) %
                             m_beatsPerBar +
                     1;
         }
@@ -157,15 +160,16 @@ bool WaveformRenderBarCounter::preprocessInner() {
             it != trackBeats->cend() && *it <= endPosition;
             ++it) {
         const int globalBeatIndex = it - firstMarker;
+        const int adjustedIndex = globalBeatIndex - downbeatOffset;
         const int normalizedMod = m_beatsPerBar > 0
-                ? ((globalBeatIndex % m_beatsPerBar) + m_beatsPerBar) % m_beatsPerBar
+                ? ((adjustedIndex % m_beatsPerBar) + m_beatsPerBar) % m_beatsPerBar
                 : 1;
 
         if (normalizedMod != 0) {
             continue;
         }
 
-        const int barNumber = (globalBeatIndex / m_beatsPerBar) + 1;
+        const int barNumber = (adjustedIndex / m_beatsPerBar) + 1;
 
         double beatPosition = it->toEngineSamplePos();
         double xBeatPoint =
@@ -218,7 +222,7 @@ bool WaveformRenderBarCounter::preprocessInner() {
         appendChildNode(std::move(pNode));
     }
 
-    // Beat counter at the playhead position (e.g. "12.1")
+    // Beat counter at the playhead position (e.g. "12.1 Chorus" or "12.1 Drop in 4")
     if (m_showBarCounter && currentBarNumber > 0 && currentBeatInBar > 0) {
         const double playXPoint =
                 m_waveformRenderer->transformSamplePositionInRendererWorld(
@@ -227,8 +231,41 @@ bool WaveformRenderBarCounter::preprocessInner() {
                 static_cast<float>(qRound(playXPoint * devicePixelRatio) /
                         devicePixelRatio);
 
-        const QString counterText = QString::number(currentBarNumber) +
+        QString counterText = QString::number(currentBarNumber) +
                 QStringLiteral(".") + QString::number(currentBeatInBar);
+
+        // Append phrase info if available
+        mixxx::PhrasesPointer pPhrases = trackInfo->getPhrases();
+        if (pPhrases && !pPhrases->isEmpty()) {
+            const mixxx::Phrase* pCurrentPhrase =
+                    pPhrases->findPhraseAtPosition(playFramePos);
+            if (pCurrentPhrase) {
+                counterText += QStringLiteral(" ") +
+                        mixxx::Phrase::defaultLabel(pCurrentPhrase->type());
+
+                // Calculate bars until next phrase boundary
+                const auto& phrases = pPhrases->phrases();
+                for (int i = 0; i < phrases.size(); ++i) {
+                    if (&phrases[i] == pCurrentPhrase &&
+                            i + 1 < phrases.size()) {
+                        auto nextStart = phrases[i + 1].startPosition();
+                        if (nextStart.isValid() && playFramePos < nextStart) {
+                            int beatsUntil = trackBeats->numBeatsInRange(
+                                    playFramePos, nextStart);
+                            int barsUntil = beatsUntil / m_beatsPerBar;
+                            if (barsUntil > 0 && barsUntil <= 16) {
+                                counterText += QStringLiteral(" | ") +
+                                        mixxx::Phrase::defaultLabel(
+                                                phrases[i + 1].type()) +
+                                        QStringLiteral(" in ") +
+                                        QString::number(barsUntil);
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+        }
 
         QFont counterFont;
         const int counterFontSize = static_cast<int>(11.0f * devicePixelRatio);
