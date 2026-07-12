@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QColor>
 #include <QString>
 
 #include "util/parented_ptr.h"
@@ -33,6 +34,7 @@ class WHotcueButton : public WPushButton {
     bool isActive() const;
 
   protected:
+    void paintEvent(QPaintEvent* pEvent) override;
     void mousePressEvent(QMouseEvent* pEvent) override;
     void mouseReleaseEvent(QMouseEvent* pEvent) override;
     void mouseMoveEvent(QMouseEvent* pEvent) override;
@@ -62,6 +64,7 @@ class WHotcueButton : public WPushButton {
     bool m_bCueColorDimmed;
     bool m_bCueColorIsLight;
     bool m_bCueColorIsDark;
+    QColor m_cueColor;
     QString m_type;
     QString m_direction;
     QMargins m_dndRectMargins;

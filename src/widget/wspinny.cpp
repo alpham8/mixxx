@@ -1,6 +1,9 @@
 #include "widget/wspinny.h"
 
 #include <QPainter>
+#include <QPainterPath>
+
+#include "widget/cueglow.h"
 
 #include "moc_wspinny.cpp"
 
@@ -25,7 +28,6 @@ void WSpinny::draw() {
     }
 
     if (m_bShowCover && !m_loadedCoverScaled.isNull()) {
-        // Some covers aren't square, so center them.
         double x = (width() - m_loadedCoverScaled.width() / scaleFactor) / 2;
         double y = (height() - m_loadedCoverScaled.height() / scaleFactor) / 2;
         p.drawPixmap(QPointF(x, y), m_loadedCoverScaled);
@@ -66,11 +68,108 @@ void WSpinny::draw() {
     }
 
     if (m_pFgImage && !m_pFgImage->isNull()) {
-        // Now rotate the image and draw it on the screen.
         p.rotate(m_fAngle);
         p.drawImage(QPointF(-m_fgImageScaled.width() / scaleFactor / 2.0,
                             -m_fgImageScaled.height() / scaleFactor / 2.0),
                 m_fgImageScaled);
+
+        if (m_cueGlowIntensity > 0.01f) {
+            const float rawIntensity = m_cueGlowIntensity /
+                    mixxx::cueglow::kMaxAlpha;
+            QImage tinted = mixxx::cueglow::createTintedForeground(
+                    m_fgImageScaled, m_cueGlowColor, rawIntensity);
+            p.drawImage(QPointF(-tinted.width() / scaleFactor / 2.0,
+                                -tinted.height() / scaleFactor / 2.0),
+                    tinted);
+        }
+    }
+
+    if (m_cueGlowIntensity > 0.01f) {
+        p.resetTransform();
+        QPainterPath circle;
+        circle.addEllipse(rect());
+        p.setClipPath(circle);
+        QColor glowColor = m_cueGlowColor;
+        glowColor.setAlphaF(m_cueGlowIntensity);
+        p.fillRect(rect(), glowColor);
+    }
+
+    // Serato-style BPM/Time overlay on spinny
+    // Must come after cue glow and reset clip path
+    {
+        p.resetTransform();
+        p.setClipping(false);
+        p.setCompositionMode(QPainter::CompositionMode_SourceOver);
+
+        const double bpm = m_pBpm.get();
+        const double playPos = m_pPlayPos.get();
+        const double trackSamples = m_pTrackSamples.get();
+        const double sampleRate = m_pTrackSampleRate.get();
+
+        if (bpm > 0.0 && width() >= 80) {
+            const int cx = width() / 2;
+            const int cy = height() / 2;
+
+            const int overlayRadius = qMin(width(), height()) / 4;
+
+            // BPM large text
+            QFont bpmFont;
+            bpmFont.setPixelSize(overlayRadius * 3 / 4);
+            bpmFont.setBold(true);
+            bpmFont.setWeight(QFont::Black);
+            p.setFont(bpmFont);
+            p.setPen(QColor(255, 255, 255));
+            QString bpmText = QString::number(bpm, 'f', 1);
+            QRect bpmRect(cx - overlayRadius, cy - overlayRadius * 3 / 4,
+                    overlayRadius * 2, overlayRadius / 2);
+            p.drawText(bpmRect, Qt::AlignCenter, bpmText);
+
+            // Pitch% below BPM
+            const double rateRatio = m_pRateRatio.get();
+            const double pitchPct = (rateRatio - 1.0) * 100.0;
+            QFont pitchFont;
+            pitchFont.setPixelSize(overlayRadius / 5);
+            p.setFont(pitchFont);
+            p.setPen(QColor(255, 255, 255));
+            QString pitchText = QStringLiteral("%1%2%")
+                    .arg(pitchPct >= 0 ? "+" : "")
+                    .arg(pitchPct, 0, 'f', 1);
+            QRect pitchRect(cx - overlayRadius, cy - overlayRadius / 3,
+                    overlayRadius * 2, overlayRadius / 4);
+            p.drawText(pitchRect, Qt::AlignCenter, pitchText);
+
+            // Time text below BPM
+            if (trackSamples > 0.0 && sampleRate > 0.0) {
+                const double totalSeconds = trackSamples / sampleRate / 2.0;
+                const double elapsedSeconds = playPos * totalSeconds;
+                const int mins = static_cast<int>(elapsedSeconds) / 60;
+                const int secs = static_cast<int>(elapsedSeconds) % 60;
+                const int tenths = static_cast<int>(elapsedSeconds * 10) % 10;
+
+                QFont timeFont;
+                timeFont.setPixelSize(overlayRadius / 3);
+                p.setFont(timeFont);
+                p.setPen(QColor(255, 255, 255));
+                QString timeText = QStringLiteral("%1:%2.%3")
+                        .arg(mins, 2, 10, QChar('0'))
+                        .arg(secs, 2, 10, QChar('0'))
+                        .arg(tenths);
+                QRect timeRect(cx - overlayRadius, cy - overlayRadius / 6,
+                        overlayRadius * 2, overlayRadius / 2);
+                p.drawText(timeRect, Qt::AlignCenter, timeText);
+
+                // Duration below elapsed time
+                const int durMins = static_cast<int>(totalSeconds) / 60;
+                const int durSecs = static_cast<int>(totalSeconds) % 60;
+                QString durText = QStringLiteral("%1:%2")
+                        .arg(durMins, 2, 10, QChar('0'))
+                        .arg(durSecs, 2, 10, QChar('0'));
+                QRect durRect(cx - overlayRadius, cy + overlayRadius / 4,
+                        overlayRadius * 2, overlayRadius / 2);
+                p.setPen(QColor(200, 200, 200));
+                p.drawText(durRect, Qt::AlignCenter, durText);
+            }
+        }
     }
 }
 

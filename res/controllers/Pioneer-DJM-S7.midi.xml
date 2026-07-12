@@ -1,0 +1,857 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MixxxControllerPreset schemaVersion="1" mixxxVersion="2.6">
+    <info>
+        <name>Pioneer DJ DJM-S7</name>
+        <author>Thomas Wunner</author>
+        <description>Mapping for the Pioneer DJ DJM-S7 battle mixer. Covers the internal mixer (14-bit faders/EQ/filter), browse/load, loop and the performance pads with software-tracked pad modes (Hot Cue / Roll / Saved Loop / Sampler). Transport is expected to come from timecode turntables via Mixxx vinyl control.</description>
+    </info>
+    <controller id="DJM-S7">
+        <scriptfiles>
+            <file functionprefix="PioneerDJMS7" filename="Pioneer-DJM-S7-script.js"/>
+        </scriptfiles>
+        <controls>
+            <!-- ============================ MIXER ============================ -->
+
+            <!-- CHANNEL FADER -->
+            <control>
+                <description>CH1 CHANNEL FADER (MSB)</description>
+                <group>[Channel1]</group>
+                <key>volume</key>
+                <status>0xB0</status>
+                <midino>0x13</midino>
+                <options><fourteen-bit-msb/></options>
+            </control>
+            <control>
+                <description>CH1 CHANNEL FADER (LSB)</description>
+                <group>[Channel1]</group>
+                <key>volume</key>
+                <status>0xB0</status>
+                <midino>0x33</midino>
+                <options><fourteen-bit-lsb/></options>
+            </control>
+            <control>
+                <description>CH2 CHANNEL FADER (MSB)</description>
+                <group>[Channel2]</group>
+                <key>volume</key>
+                <status>0xB1</status>
+                <midino>0x13</midino>
+                <options><fourteen-bit-msb/></options>
+            </control>
+            <control>
+                <description>CH2 CHANNEL FADER (LSB)</description>
+                <group>[Channel2]</group>
+                <key>volume</key>
+                <status>0xB1</status>
+                <midino>0x33</midino>
+                <options><fourteen-bit-lsb/></options>
+            </control>
+
+            <!-- CROSSFADER - recentred in script (hardware centre is ~0x2900, not 0x2000) -->
+            <control>
+                <description>CROSSFADER (MSB)</description>
+                <group>[Master]</group>
+                <key>PioneerDJMS7.crossfaderMsbInput</key>
+                <status>0xB6</status>
+                <midino>0x1F</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>CROSSFADER (LSB)</description>
+                <group>[Master]</group>
+                <key>PioneerDJMS7.crossfaderLsbInput</key>
+                <status>0xB6</status>
+                <midino>0x3F</midino>
+                <options><Script-Binding/></options>
+            </control>
+
+            <!-- TRIM / GAIN -->
+            <control>
+                <description>CH1 TRIM (MSB)</description>
+                <group>[Channel1]</group>
+                <key>pregain</key>
+                <status>0xB0</status>
+                <midino>0x04</midino>
+                <options><fourteen-bit-msb/></options>
+            </control>
+            <control>
+                <description>CH1 TRIM (LSB)</description>
+                <group>[Channel1]</group>
+                <key>pregain</key>
+                <status>0xB0</status>
+                <midino>0x24</midino>
+                <options><fourteen-bit-lsb/></options>
+            </control>
+            <control>
+                <description>CH2 TRIM (MSB)</description>
+                <group>[Channel2]</group>
+                <key>pregain</key>
+                <status>0xB1</status>
+                <midino>0x04</midino>
+                <options><fourteen-bit-msb/></options>
+            </control>
+            <control>
+                <description>CH2 TRIM (LSB)</description>
+                <group>[Channel2]</group>
+                <key>pregain</key>
+                <status>0xB1</status>
+                <midino>0x24</midino>
+                <options><fourteen-bit-lsb/></options>
+            </control>
+
+            <!-- EQ HIGH -->
+            <control>
+                <description>CH1 ISO HIGH (MSB)</description>
+                <group>[EqualizerRack1_[Channel1]_Effect1]</group>
+                <key>parameter3</key>
+                <status>0xB0</status>
+                <midino>0x07</midino>
+                <options><fourteen-bit-msb/></options>
+            </control>
+            <control>
+                <description>CH1 ISO HIGH (LSB)</description>
+                <group>[EqualizerRack1_[Channel1]_Effect1]</group>
+                <key>parameter3</key>
+                <status>0xB0</status>
+                <midino>0x27</midino>
+                <options><fourteen-bit-lsb/></options>
+            </control>
+            <control>
+                <description>CH2 ISO HIGH (MSB)</description>
+                <group>[EqualizerRack1_[Channel2]_Effect1]</group>
+                <key>parameter3</key>
+                <status>0xB1</status>
+                <midino>0x07</midino>
+                <options><fourteen-bit-msb/></options>
+            </control>
+            <control>
+                <description>CH2 ISO HIGH (LSB)</description>
+                <group>[EqualizerRack1_[Channel2]_Effect1]</group>
+                <key>parameter3</key>
+                <status>0xB1</status>
+                <midino>0x27</midino>
+                <options><fourteen-bit-lsb/></options>
+            </control>
+
+            <!-- EQ MID -->
+            <control>
+                <description>CH1 ISO MID (MSB)</description>
+                <group>[EqualizerRack1_[Channel1]_Effect1]</group>
+                <key>parameter2</key>
+                <status>0xB0</status>
+                <midino>0x0B</midino>
+                <options><fourteen-bit-msb/></options>
+            </control>
+            <control>
+                <description>CH1 ISO MID (LSB)</description>
+                <group>[EqualizerRack1_[Channel1]_Effect1]</group>
+                <key>parameter2</key>
+                <status>0xB0</status>
+                <midino>0x2B</midino>
+                <options><fourteen-bit-lsb/></options>
+            </control>
+            <control>
+                <description>CH2 ISO MID (MSB)</description>
+                <group>[EqualizerRack1_[Channel2]_Effect1]</group>
+                <key>parameter2</key>
+                <status>0xB1</status>
+                <midino>0x0B</midino>
+                <options><fourteen-bit-msb/></options>
+            </control>
+            <control>
+                <description>CH2 ISO MID (LSB)</description>
+                <group>[EqualizerRack1_[Channel2]_Effect1]</group>
+                <key>parameter2</key>
+                <status>0xB1</status>
+                <midino>0x2B</midino>
+                <options><fourteen-bit-lsb/></options>
+            </control>
+
+            <!-- EQ LOW -->
+            <control>
+                <description>CH1 ISO LOW (MSB)</description>
+                <group>[EqualizerRack1_[Channel1]_Effect1]</group>
+                <key>parameter1</key>
+                <status>0xB0</status>
+                <midino>0x0F</midino>
+                <options><fourteen-bit-msb/></options>
+            </control>
+            <control>
+                <description>CH1 ISO LOW (LSB)</description>
+                <group>[EqualizerRack1_[Channel1]_Effect1]</group>
+                <key>parameter1</key>
+                <status>0xB0</status>
+                <midino>0x2F</midino>
+                <options><fourteen-bit-lsb/></options>
+            </control>
+            <control>
+                <description>CH2 ISO LOW (MSB)</description>
+                <group>[EqualizerRack1_[Channel2]_Effect1]</group>
+                <key>parameter1</key>
+                <status>0xB1</status>
+                <midino>0x0F</midino>
+                <options><fourteen-bit-msb/></options>
+            </control>
+            <control>
+                <description>CH2 ISO LOW (LSB)</description>
+                <group>[EqualizerRack1_[Channel2]_Effect1]</group>
+                <key>parameter1</key>
+                <status>0xB1</status>
+                <midino>0x2F</midino>
+                <options><fourteen-bit-lsb/></options>
+            </control>
+
+            <!-- COLOR / FILTER (per deck) -->
+            <control>
+                <description>CH1 FILTER COLOR (MSB)</description>
+                <group>[QuickEffectRack1_[Channel1]]</group>
+                <key>super1</key>
+                <status>0xB0</status>
+                <midino>0x01</midino>
+                <options><fourteen-bit-msb/></options>
+            </control>
+            <control>
+                <description>CH1 FILTER COLOR (LSB)</description>
+                <group>[QuickEffectRack1_[Channel1]]</group>
+                <key>super1</key>
+                <status>0xB0</status>
+                <midino>0x21</midino>
+                <options><fourteen-bit-lsb/></options>
+            </control>
+            <control>
+                <description>CH2 FILTER COLOR (MSB)</description>
+                <group>[QuickEffectRack1_[Channel2]]</group>
+                <key>super1</key>
+                <status>0xB1</status>
+                <midino>0x01</midino>
+                <options><fourteen-bit-msb/></options>
+            </control>
+            <control>
+                <description>CH2 FILTER COLOR (LSB)</description>
+                <group>[QuickEffectRack1_[Channel2]]</group>
+                <key>super1</key>
+                <status>0xB1</status>
+                <midino>0x21</midino>
+                <options><fourteen-bit-lsb/></options>
+            </control>
+
+            <!-- MASTER / BOOTH / HEADPHONE -->
+            <control>
+                <description>MASTER LEVEL (MSB)</description>
+                <group>[Master]</group>
+                <key>gain</key>
+                <status>0xB6</status>
+                <midino>0x08</midino>
+                <options><fourteen-bit-msb/></options>
+            </control>
+            <control>
+                <description>MASTER LEVEL (LSB)</description>
+                <group>[Master]</group>
+                <key>gain</key>
+                <status>0xB6</status>
+                <midino>0x28</midino>
+                <options><fourteen-bit-lsb/></options>
+            </control>
+            <control>
+                <description>BOOTH LEVEL (MSB)</description>
+                <group>[Master]</group>
+                <key>booth_gain</key>
+                <status>0xB6</status>
+                <midino>0x09</midino>
+                <options><fourteen-bit-msb/></options>
+            </control>
+            <control>
+                <description>BOOTH LEVEL (LSB)</description>
+                <group>[Master]</group>
+                <key>booth_gain</key>
+                <status>0xB6</status>
+                <midino>0x29</midino>
+                <options><fourteen-bit-lsb/></options>
+            </control>
+            <control>
+                <description>HEADPHONE LEVEL (MSB)</description>
+                <group>[Master]</group>
+                <key>headGain</key>
+                <status>0xB6</status>
+                <midino>0x0D</midino>
+                <options><fourteen-bit-msb/></options>
+            </control>
+            <control>
+                <description>HEADPHONE LEVEL (LSB)</description>
+                <group>[Master]</group>
+                <key>headGain</key>
+                <status>0xB6</status>
+                <midino>0x2D</midino>
+                <options><fourteen-bit-lsb/></options>
+            </control>
+            <control>
+                <description>HEADPHONE MIX (MSB)</description>
+                <group>[Master]</group>
+                <key>headMix</key>
+                <status>0xB6</status>
+                <midino>0x0C</midino>
+                <options><fourteen-bit-msb/></options>
+            </control>
+            <control>
+                <description>HEADPHONE MIX (LSB)</description>
+                <group>[Master]</group>
+                <key>headMix</key>
+                <status>0xB6</status>
+                <midino>0x2C</midino>
+                <options><fourteen-bit-lsb/></options>
+            </control>
+            <control>
+                <description>HEADPHONE CUE crossfader - left cues deck 1, right cues deck 2</description>
+                <group>[Master]</group>
+                <key>PioneerDJMS7.headphoneCueMix</key>
+                <status>0xB6</status>
+                <midino>0x0E</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>SAMPLER VOLUME - sets the pregain of all samplers</description>
+                <group>[Master]</group>
+                <key>PioneerDJMS7.samplerVolume</key>
+                <status>0xB6</status>
+                <midino>0x03</midino>
+                <options><Script-Binding/></options>
+            </control>
+
+            <!-- ============================ BROWSE ============================ -->
+            <control>
+                <description>BROWSE LEFT - rotate - scroll library (signed relative on 0xB0)</description>
+                <group>[Library]</group>
+                <key>PioneerDJMS7.browseEncoder</key>
+                <status>0xB0</status>
+                <midino>0x40</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>BROWSE RIGHT - rotate - scroll library (signed relative on 0xB1)</description>
+                <group>[Library]</group>
+                <key>PioneerDJMS7.browseEncoder</key>
+                <status>0xB1</status>
+                <midino>0x40</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>BROWSE LEFT - push - move focus to tree (crates)</description>
+                <group>[Library]</group>
+                <key>MoveFocusBackward</key>
+                <status>0x90</status>
+                <midino>0x41</midino>
+                <options><Normal/></options>
+            </control>
+            <control>
+                <description>BROWSE RIGHT - push - move focus to tree (crates)</description>
+                <group>[Library]</group>
+                <key>MoveFocusBackward</key>
+                <status>0x91</status>
+                <midino>0x41</midino>
+                <options><Normal/></options>
+            </control>
+            <control>
+                <description>BACK LEFT - move focus to tree (crates)</description>
+                <group>[Library]</group>
+                <key>MoveFocusBackward</key>
+                <status>0x90</status>
+                <midino>0x68</midino>
+                <options><Normal/></options>
+            </control>
+            <control>
+                <description>BACK RIGHT - move focus to tree (crates)</description>
+                <group>[Library]</group>
+                <key>MoveFocusBackward</key>
+                <status>0x91</status>
+                <midino>0x68</midino>
+                <options><Normal/></options>
+            </control>
+            <control>
+                <description>LOAD - DECK1</description>
+                <group>[Channel1]</group>
+                <key>LoadSelectedTrack</key>
+                <status>0x90</status>
+                <midino>0x46</midino>
+                <options><Normal/></options>
+            </control>
+            <control>
+                <description>LOAD - DECK2</description>
+                <group>[Channel2]</group>
+                <key>LoadSelectedTrack</key>
+                <status>0x91</status>
+                <midino>0x46</midino>
+                <options><Normal/></options>
+            </control>
+
+            <!-- ============================ LOOP ============================ -->
+            <control>
+                <description>DECK1 AUTO LOOP</description>
+                <group>[Channel1]</group>
+                <key>beatloop_activate</key>
+                <status>0x90</status>
+                <midino>0x44</midino>
+                <options><Normal/></options>
+            </control>
+            <control>
+                <description>DECK2 AUTO LOOP</description>
+                <group>[Channel2]</group>
+                <key>beatloop_activate</key>
+                <status>0x91</status>
+                <midino>0x44</midino>
+                <options><Normal/></options>
+            </control>
+            <control>
+                <description>DECK1 LOOP HALF</description>
+                <group>[Channel1]</group>
+                <key>loop_halve</key>
+                <status>0x90</status>
+                <midino>0x12</midino>
+                <options><Normal/></options>
+            </control>
+            <control>
+                <description>DECK2 LOOP HALF</description>
+                <group>[Channel2]</group>
+                <key>loop_halve</key>
+                <status>0x91</status>
+                <midino>0x12</midino>
+                <options><Normal/></options>
+            </control>
+            <control>
+                <description>DECK1 LOOP DOUBLE</description>
+                <group>[Channel1]</group>
+                <key>loop_double</key>
+                <status>0x90</status>
+                <midino>0x13</midino>
+                <options><Normal/></options>
+            </control>
+            <control>
+                <description>DECK2 LOOP DOUBLE</description>
+                <group>[Channel2]</group>
+                <key>loop_double</key>
+                <status>0x91</status>
+                <midino>0x13</midino>
+                <options><Normal/></options>
+            </control>
+            <control>
+                <description>DECK1 PARAM LEFT - beatjump backward</description>
+                <group>[Channel1]</group>
+                <key>beatjump_backward</key>
+                <status>0x90</status>
+                <midino>0x24</midino>
+                <options><Normal/></options>
+            </control>
+            <control>
+                <description>DECK2 PARAM LEFT - beatjump backward</description>
+                <group>[Channel2]</group>
+                <key>beatjump_backward</key>
+                <status>0x91</status>
+                <midino>0x24</midino>
+                <options><Normal/></options>
+            </control>
+            <control>
+                <description>DECK1 PARAM RIGHT - beatjump forward</description>
+                <group>[Channel1]</group>
+                <key>beatjump_forward</key>
+                <status>0x90</status>
+                <midino>0x2C</midino>
+                <options><Normal/></options>
+            </control>
+            <control>
+                <description>DECK2 PARAM RIGHT - beatjump forward</description>
+                <group>[Channel2]</group>
+                <key>beatjump_forward</key>
+                <status>0x91</status>
+                <midino>0x2C</midino>
+                <options><Normal/></options>
+            </control>
+
+            <!-- ===================== PAD MODE BUTTONS ===================== -->
+            <control>
+                <description>DECK1 PAD MODE HOT CUE</description>
+                <group>[Channel1]</group>
+                <key>PioneerDJMS7.padModeButton</key>
+                <status>0x90</status>
+                <midino>0x1B</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK1 PAD MODE ROLL</description>
+                <group>[Channel1]</group>
+                <key>PioneerDJMS7.padModeButton</key>
+                <status>0x90</status>
+                <midino>0x1E</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK1 PAD MODE SAVED LOOP</description>
+                <group>[Channel1]</group>
+                <key>PioneerDJMS7.padModeButton</key>
+                <status>0x90</status>
+                <midino>0x20</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK1 PAD MODE SAMPLER</description>
+                <group>[Channel1]</group>
+                <key>PioneerDJMS7.padModeButton</key>
+                <status>0x90</status>
+                <midino>0x22</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK2 PAD MODE HOT CUE</description>
+                <group>[Channel2]</group>
+                <key>PioneerDJMS7.padModeButton</key>
+                <status>0x91</status>
+                <midino>0x1B</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK2 PAD MODE ROLL</description>
+                <group>[Channel2]</group>
+                <key>PioneerDJMS7.padModeButton</key>
+                <status>0x91</status>
+                <midino>0x1E</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK2 PAD MODE SAVED LOOP</description>
+                <group>[Channel2]</group>
+                <key>PioneerDJMS7.padModeButton</key>
+                <status>0x91</status>
+                <midino>0x20</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK2 PAD MODE SAMPLER</description>
+                <group>[Channel2]</group>
+                <key>PioneerDJMS7.padModeButton</key>
+                <status>0x91</status>
+                <midino>0x22</midino>
+                <options><Script-Binding/></options>
+            </control>
+
+            <!-- ===================== PERFORMANCE PADS ===================== -->
+            <!-- DECK1 pads: status 0x97, notes 0x00-0x07 (base) / 0x08-0x0F (shift) -->
+            <control>
+                <description>DECK1 PAD1</description>
+                <group>[Channel1]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x97</status>
+                <midino>0x00</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK1 PAD2</description>
+                <group>[Channel1]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x97</status>
+                <midino>0x01</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK1 PAD3</description>
+                <group>[Channel1]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x97</status>
+                <midino>0x02</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK1 PAD4</description>
+                <group>[Channel1]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x97</status>
+                <midino>0x03</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK1 PAD5</description>
+                <group>[Channel1]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x97</status>
+                <midino>0x04</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK1 PAD6</description>
+                <group>[Channel1]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x97</status>
+                <midino>0x05</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK1 PAD7</description>
+                <group>[Channel1]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x97</status>
+                <midino>0x06</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK1 PAD8</description>
+                <group>[Channel1]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x97</status>
+                <midino>0x07</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK1 PAD1 +SHIFT</description>
+                <group>[Channel1]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x97</status>
+                <midino>0x08</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK1 PAD2 +SHIFT</description>
+                <group>[Channel1]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x97</status>
+                <midino>0x09</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK1 PAD3 +SHIFT</description>
+                <group>[Channel1]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x97</status>
+                <midino>0x0A</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK1 PAD4 +SHIFT</description>
+                <group>[Channel1]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x97</status>
+                <midino>0x0B</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK1 PAD5 +SHIFT</description>
+                <group>[Channel1]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x97</status>
+                <midino>0x0C</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK1 PAD6 +SHIFT</description>
+                <group>[Channel1]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x97</status>
+                <midino>0x0D</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK1 PAD7 +SHIFT</description>
+                <group>[Channel1]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x97</status>
+                <midino>0x0E</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK1 PAD8 +SHIFT</description>
+                <group>[Channel1]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x97</status>
+                <midino>0x0F</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <!-- DECK2 pads: status 0x98 -->
+            <control>
+                <description>DECK2 PAD1</description>
+                <group>[Channel2]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x98</status>
+                <midino>0x00</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK2 PAD2</description>
+                <group>[Channel2]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x98</status>
+                <midino>0x01</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK2 PAD3</description>
+                <group>[Channel2]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x98</status>
+                <midino>0x02</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK2 PAD4</description>
+                <group>[Channel2]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x98</status>
+                <midino>0x03</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK2 PAD5</description>
+                <group>[Channel2]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x98</status>
+                <midino>0x04</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK2 PAD6</description>
+                <group>[Channel2]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x98</status>
+                <midino>0x05</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK2 PAD7</description>
+                <group>[Channel2]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x98</status>
+                <midino>0x06</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK2 PAD8</description>
+                <group>[Channel2]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x98</status>
+                <midino>0x07</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK2 PAD1 +SHIFT</description>
+                <group>[Channel2]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x98</status>
+                <midino>0x08</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK2 PAD2 +SHIFT</description>
+                <group>[Channel2]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x98</status>
+                <midino>0x09</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK2 PAD3 +SHIFT</description>
+                <group>[Channel2]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x98</status>
+                <midino>0x0A</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK2 PAD4 +SHIFT</description>
+                <group>[Channel2]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x98</status>
+                <midino>0x0B</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK2 PAD5 +SHIFT</description>
+                <group>[Channel2]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x98</status>
+                <midino>0x0C</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK2 PAD6 +SHIFT</description>
+                <group>[Channel2]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x98</status>
+                <midino>0x0D</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK2 PAD7 +SHIFT</description>
+                <group>[Channel2]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x98</status>
+                <midino>0x0E</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>DECK2 PAD8 +SHIFT</description>
+                <group>[Channel2]</group>
+                <key>PioneerDJMS7.padPressed</key>
+                <status>0x98</status>
+                <midino>0x0F</midino>
+                <options><Script-Binding/></options>
+            </control>
+
+            <!-- ============================ BEAT FX ============================ -->
+            <!-- FX SELECT buttons (BEAT FX mode, channel 0x96). Echo/Flanger/
+                 Reverb/Phaser toggle effect units 1-4; Back Spin/Vinyl Brake are
+                 recreated with the spinback/brake deck functions. -->
+            <control>
+                <description>FX SELECT ECHO - toggle Effect Unit 1</description>
+                <group>[Master]</group>
+                <key>PioneerDJMS7.fxToggle</key>
+                <status>0x96</status>
+                <midino>0x00</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>FX SELECT BACK SPIN - spinback both decks</description>
+                <group>[Master]</group>
+                <key>PioneerDJMS7.backSpin</key>
+                <status>0x96</status>
+                <midino>0x01</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>FX SELECT FLANGER - toggle Effect Unit 2</description>
+                <group>[Master]</group>
+                <key>PioneerDJMS7.fxToggle</key>
+                <status>0x96</status>
+                <midino>0x02</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>FX SELECT REVERB - toggle Effect Unit 3</description>
+                <group>[Master]</group>
+                <key>PioneerDJMS7.fxToggle</key>
+                <status>0x96</status>
+                <midino>0x03</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>FX SELECT VINYL BRAKE - brake both decks</description>
+                <group>[Master]</group>
+                <key>PioneerDJMS7.vinylBrake</key>
+                <status>0x96</status>
+                <midino>0x04</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>FX SELECT PHASER - toggle Effect Unit 4</description>
+                <group>[Master]</group>
+                <key>PioneerDJMS7.fxToggle</key>
+                <status>0x96</status>
+                <midino>0x05</midino>
+                <options><Script-Binding/></options>
+            </control>
+            <control>
+                <description>BEAT FX LEVEL/DEPTH - shared wet/dry of all effect units</description>
+                <group>[Master]</group>
+                <key>PioneerDJMS7.fxLevelDepth</key>
+                <status>0xB6</status>
+                <midino>0x0A</midino>
+                <options><Script-Binding/></options>
+            </control>
+        </controls>
+        <outputs>
+        </outputs>
+    </controller>
+</MixxxControllerPreset>

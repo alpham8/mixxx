@@ -1,0 +1,264 @@
+<Template>
+  <SetVariable name="Group">[Channel<Variable name="ChanNum"/>]</SetVariable>
+  <SetVariable name="BtnType"><Variable name="SubRegion_BtnType"/></SetVariable>
+
+  <!-- Serato DJ Pro deck layout — RIGHT DECK (mirrored: Spinny LEFT, Hotcues RIGHT) -->
+
+  <TrackWidgetGroup>
+    <ObjectName>DeckSerato<Variable name="ChanNum"/></ObjectName>
+    <Layout>vertical</Layout>
+    <SizePolicy>me,min</SizePolicy>
+    <Group><Variable name="Group"/></Group>
+    <Children>
+
+      <!-- Row 1: Title + Key + BPM + Deck number -->
+      <WidgetGroup>
+        <ObjectName>SeratoTrackInfo</ObjectName>
+        <Layout>horizontal</Layout>
+        <SizePolicy>me,min</SizePolicy>
+        <Children>
+          <Label>
+            <ObjectName>SeratoDeckNumber</ObjectName>
+            <Size>16f,26f</Size>
+            <Alignment>center</Alignment>
+            <Text><Variable name="ChanNum"/></Text>
+          </Label>
+          <TrackProperty>
+            <ObjectName>SeratoTitle</ObjectName>
+            <Size>0me,26f</Size>
+            <TooltipId>track_title</TooltipId>
+            <Property>title</Property>
+            <Alignment>left</Alignment>
+            <Elide>right</Elide>
+            <Channel><Variable name="ChanNum"/></Channel>
+          </TrackProperty>
+          <TrackProperty>
+            <ObjectName>SeratoKey</ObjectName>
+            <Size>46f,26f</Size>
+            <TooltipId>track_key</TooltipId>
+            <Property>keyText</Property>
+            <Alignment>center</Alignment>
+            <Elide>right</Elide>
+            <Channel><Variable name="ChanNum"/></Channel>
+          </TrackProperty>
+          <NumberBpm>
+            <ObjectName>SeratoBpm</ObjectName>
+            <Size>62f,26f</Size>
+            <TooltipId>visual_bpm</TooltipId>
+            <Alignment>right</Alignment>
+            <Channel><Variable name="ChanNum"/></Channel>
+            <NumberOfDigits>1</NumberOfDigits>
+            <Connection>
+              <ConfigKey><Variable name="Group"/>,visual_bpm</ConfigKey>
+            </Connection>
+          </NumberBpm>
+        </Children>
+      </WidgetGroup>
+
+      <!-- Row 2: Artist + time -->
+      <WidgetGroup>
+        <ObjectName>SeratoTrackInfo</ObjectName>
+        <Layout>horizontal</Layout>
+        <SizePolicy>me,min</SizePolicy>
+        <Children>
+          <TrackProperty>
+            <ObjectName>SeratoArtist</ObjectName>
+            <Size>0me,20f</Size>
+            <TooltipId>track_artist</TooltipId>
+            <Property>artist</Property>
+            <Alignment>left</Alignment>
+            <Elide>right</Elide>
+            <Channel><Variable name="ChanNum"/></Channel>
+          </TrackProperty>
+          <TrackProperty>
+            <ObjectName>SeratoDuration</ObjectName>
+            <Size>62f,20f</Size>
+            <TooltipId>track_duration</TooltipId>
+            <Property>durationTextCentiseconds</Property>
+            <Alignment>right</Alignment>
+            <Channel><Variable name="ChanNum"/></Channel>
+          </TrackProperty>
+        </Children>
+      </WidgetGroup>
+
+      <!-- Track color stripe -->
+      <TrackWidgetGroup>
+        <Size>0me,2f</Size>
+        <Group><Variable name="Group"/></Group>
+        <TrackColorAlpha>255</TrackColorAlpha>
+      </TrackWidgetGroup>
+
+      <!-- Row 3: [Transport + Spinny | Hotcues + BeatLoops] MIRRORED -->
+      <WidgetGroup>
+        <ObjectName>SeratoMainRow</ObjectName>
+        <Layout>horizontal</Layout>
+        <SizePolicy>me,min</SizePolicy>
+        <Size>0me,0min</Size>
+        <Children>
+
+          <!-- Transport + Spinny -->
+          <WidgetGroup>
+            <ObjectName>SeratoSpinnyColumn</ObjectName>
+            <Layout>vertical</Layout>
+            <Size>170f,0min</Size>
+            <Children>
+              <!-- Transport: |◄ SYNC ▶ CUE ►| -->
+              <WidgetGroup>
+                <ObjectName>SeratoTransportRow</ObjectName>
+                <Layout>horizontal</Layout>
+                <SizePolicy>me,f</SizePolicy>
+                <Size>0me,26f</Size>
+                <Children>
+                  <PushButton>
+                    <TooltipId>sync_enabled</TooltipId><ObjectName>SyncOffButton</ObjectName>
+                    <Size>34f,26f</Size><NumberStates>2</NumberStates>
+                    <State><Number>0</Number><Text>OFF</Text></State>
+                    <State><Number>1</Number><Text>OFF</Text></State>
+                    <Connection><ConfigKey><Variable name="Group"/>,sync_enabled</ConfigKey><Transform><Not/></Transform><ButtonState>LeftButton</ButtonState></Connection>
+                  </PushButton>
+                  <PushButton>
+                    <TooltipId>sync_enabled</TooltipId><ObjectName>SyncButton</ObjectName>
+                    <Size>0me,26f</Size><NumberStates>2</NumberStates>
+                    <State><Number>0</Number><Text></Text><Unpressed scalemode="STRETCH">skins:Serato/buttons/btn_sync.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/btn_sync_active.svg</Pressed></State>
+                    <State><Number>1</Number><Text></Text><Unpressed scalemode="STRETCH">skins:Serato/buttons/btn_sync_active.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/btn_sync_active.svg</Pressed></State>
+                    <Connection><ConfigKey><Variable name="Group"/>,sync_enabled</ConfigKey><ButtonState>LeftButton</ButtonState></Connection>
+                  </PushButton>
+                  <PushButton>
+                    <TooltipId>play_cue_set</TooltipId><ObjectName>PlayDeck</ObjectName>
+                    <Size>0me,26f</Size><NumberStates>2</NumberStates>
+                    <State><Number>0</Number><Text></Text><Unpressed scalemode="STRETCH">skins:Serato/buttons/btn_play.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/btn_play_active.svg</Pressed></State>
+                    <State><Number>1</Number><Text></Text><Unpressed scalemode="STRETCH">skins:Serato/buttons/btn_play_active.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/btn_play_active.svg</Pressed></State>
+                    <Connection><ConfigKey><Variable name="Group"/>,play</ConfigKey><ButtonState>LeftButton</ButtonState></Connection>
+                  </PushButton>
+                  <PushButton>
+                    <TooltipId>cue_default_cue_gotoandstop</TooltipId><ObjectName>CueDeck</ObjectName>
+                    <Size>0me,26f</Size><NumberStates>2</NumberStates>
+                    <State><Number>0</Number><Text></Text><Unpressed scalemode="STRETCH">skins:Serato/buttons/btn_cue.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/btn_cue_active.svg</Pressed></State>
+                    <State><Number>1</Number><Text></Text><Unpressed scalemode="STRETCH">skins:Serato/buttons/btn_cue_active.svg</Unpressed><Pressed scalemode="STRETCH">skins:Serato/buttons/btn_cue_active.svg</Pressed></State>
+                    <Connection><ConfigKey><Variable name="Group"/>,cue_default</ConfigKey><ButtonState>LeftButton</ButtonState></Connection>
+                  </PushButton>
+                </Children>
+              </WidgetGroup>
+              <WidgetGroup><Size>0me,6f</Size></WidgetGroup>
+              <!-- Vertical VU meter + Spinny (large platter), mirrored -->
+              <WidgetGroup>
+                <ObjectName>SeratoSpinnyContainer</ObjectName>
+                <Layout>horizontal</Layout>
+                <SizePolicy>min,min</SizePolicy>
+                <Children>
+                  <WidgetGroup>
+                    <ObjectName>SeratoVuMeter</ObjectName>
+                    <Layout>vertical</Layout>
+                    <SizePolicy>f,f</SizePolicy>
+                    <Size>14f,134f</Size>
+                    <Children>
+                      <StatusLight>
+                        <TooltipId>channel_peak_indicator</TooltipId>
+                        <PathBack>skins:Serato/misc_res/vu_v_clip_bg.png</PathBack>
+                        <PathStatusLight>skins:Serato/misc_res/vu_v_clip_active.png</PathStatusLight>
+                        <Size>14f,8f</Size>
+                        <Connection>
+                          <ConfigKey><Variable name="Group"/>,peak_indicator</ConfigKey>
+                        </Connection>
+                      </StatusLight>
+                      <WidgetGroup><Size>14f,2f</Size></WidgetGroup>
+                      <WidgetGroup>
+                        <Layout>horizontal</Layout>
+                        <SizePolicy>f,f</SizePolicy>
+                        <Size>14f,124f</Size>
+                        <Children>
+                          <VuMeter>
+                            <TooltipId>channel_VuMeter</TooltipId>
+                            <PathBack>skins:Serato/misc_res/vu_v_bg.png</PathBack>
+                            <PathVu>skins:Serato/misc_res/vu_v_active.png</PathVu>
+                            <Horizontal>false</Horizontal>
+                            <Size>6f,124f</Size>
+                            <PeakHoldSize>0</PeakHoldSize><PeakHoldTime>200</PeakHoldTime><PeakFallTime>20</PeakFallTime><PeakFallStep>1</PeakFallStep>
+                            <SizePolicy>f,f</SizePolicy>
+                            <Connection><ConfigKey><Variable name="Group"/>,vu_meter_left</ConfigKey></Connection>
+                          </VuMeter>
+                          <WidgetGroup><Size>2f,124f</Size></WidgetGroup>
+                          <VuMeter>
+                            <TooltipId>channel_VuMeter</TooltipId>
+                            <PathBack>skins:Serato/misc_res/vu_v_bg.png</PathBack>
+                            <PathVu>skins:Serato/misc_res/vu_v_active.png</PathVu>
+                            <Horizontal>false</Horizontal>
+                            <Size>6f,124f</Size>
+                            <PeakHoldSize>0</PeakHoldSize><PeakHoldTime>200</PeakHoldTime><PeakFallTime>20</PeakFallTime><PeakFallStep>1</PeakFallStep>
+                            <SizePolicy>f,f</SizePolicy>
+                            <Connection><ConfigKey><Variable name="Group"/>,vu_meter_right</ConfigKey></Connection>
+                          </VuMeter>
+                        </Children>
+                      </WidgetGroup>
+                    </Children>
+                  </WidgetGroup>
+                  <WidgetGroup><Size>18f,1min</Size></WidgetGroup>
+                  <WidgetGroup>
+                    <Layout>horizontal</Layout>
+                    <Size>134f,134f</Size>
+                    <Children>
+                      <SingletonContainer>
+                        <ObjectName>SpinnyCoverart<Variable name="ChanNum"/></ObjectName>
+                      </SingletonContainer>
+                    </Children>
+                  </WidgetGroup>
+                </Children>
+              </WidgetGroup>
+            </Children>
+          </WidgetGroup>
+
+          <!-- RIGHT: Hotcue pads (expand) + BeatLoops -->
+          <WidgetGroup>
+            <ObjectName>SeratoHotcueGrid</ObjectName>
+            <Layout>vertical</Layout>
+            <SizePolicy>me,min</SizePolicy>
+            <Children>
+              <!-- Hotcues 1-4 -->
+              <WidgetGroup>
+                <Layout>horizontal</Layout>
+                <SizePolicy>me,min</SizePolicy>
+                <Children>
+                  <HotcueButton><ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId><SizePolicy>me,f</SizePolicy><MinimumSize>24,26</MinimumSize><Group><Variable name="Group"/></Group><Hotcue>1</Hotcue><NumberStates>3</NumberStates><DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold><State><Number>0</Number></State><State><Number>1</Number></State><State><Number>2</Number></State></HotcueButton>
+                  <HotcueButton><ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId><SizePolicy>me,f</SizePolicy><MinimumSize>24,26</MinimumSize><Group><Variable name="Group"/></Group><Hotcue>2</Hotcue><NumberStates>3</NumberStates><DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold><State><Number>0</Number></State><State><Number>1</Number></State><State><Number>2</Number></State></HotcueButton>
+                  <HotcueButton><ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId><SizePolicy>me,f</SizePolicy><MinimumSize>24,26</MinimumSize><Group><Variable name="Group"/></Group><Hotcue>3</Hotcue><NumberStates>3</NumberStates><DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold><State><Number>0</Number></State><State><Number>1</Number></State><State><Number>2</Number></State></HotcueButton>
+                  <HotcueButton><ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId><SizePolicy>me,f</SizePolicy><MinimumSize>24,26</MinimumSize><Group><Variable name="Group"/></Group><Hotcue>4</Hotcue><NumberStates>3</NumberStates><DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold><State><Number>0</Number></State><State><Number>1</Number></State><State><Number>2</Number></State></HotcueButton>
+                </Children>
+              </WidgetGroup>
+              <!-- Hotcues 5-8 -->
+              <WidgetGroup>
+                <Layout>horizontal</Layout>
+                <SizePolicy>me,min</SizePolicy>
+                <Children>
+                  <HotcueButton><ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId><SizePolicy>me,f</SizePolicy><MinimumSize>24,26</MinimumSize><Group><Variable name="Group"/></Group><Hotcue>5</Hotcue><NumberStates>3</NumberStates><DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold><State><Number>0</Number></State><State><Number>1</Number></State><State><Number>2</Number></State></HotcueButton>
+                  <HotcueButton><ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId><SizePolicy>me,f</SizePolicy><MinimumSize>24,26</MinimumSize><Group><Variable name="Group"/></Group><Hotcue>6</Hotcue><NumberStates>3</NumberStates><DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold><State><Number>0</Number></State><State><Number>1</Number></State><State><Number>2</Number></State></HotcueButton>
+                  <HotcueButton><ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId><SizePolicy>me,f</SizePolicy><MinimumSize>24,26</MinimumSize><Group><Variable name="Group"/></Group><Hotcue>7</Hotcue><NumberStates>3</NumberStates><DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold><State><Number>0</Number></State><State><Number>1</Number></State><State><Number>2</Number></State></HotcueButton>
+                  <HotcueButton><ObjectName>HotcueButton</ObjectName><TooltipId>hotcue</TooltipId><SizePolicy>me,f</SizePolicy><MinimumSize>24,26</MinimumSize><Group><Variable name="Group"/></Group><Hotcue>8</Hotcue><NumberStates>3</NumberStates><DimBrightThreshold><Variable name="DimBrightThresholdHotcueBtn"/></DimBrightThreshold><State><Number>0</Number></State><State><Number>1</Number></State><State><Number>2</Number></State></HotcueButton>
+                </Children>
+              </WidgetGroup>
+              <!-- Beat Loops (pageable grid) -->
+              <Template src="skins:Serato/decks/deck_serato_loops_right.xml">
+                <SetVariable name="Group"><Variable name="Group"/></SetVariable>
+              </Template>
+            </Children>
+          </WidgetGroup>
+
+          <!-- OUTER: tempo/pitch fader -->
+          <Template src="skins:Serato/decks/deck_serato_pitch.xml">
+            <SetVariable name="ChanNum"><Variable name="ChanNum"/></SetVariable>
+            <SetVariable name="Group"><Variable name="Group"/></SetVariable>
+          </Template>
+
+        </Children>
+      </WidgetGroup>
+
+      <!-- Row 4: key shift, keylock, slip, vinyl, FX assign, beatjump -->
+      <Template src="skins:Serato/decks/deck_serato_controls.xml">
+        <SetVariable name="Group"><Variable name="Group"/></SetVariable>
+      </Template>
+
+      <!-- Bottom inner spacing so the control row doesn't touch the outline -->
+      <WidgetGroup><Size>0me,2f</Size></WidgetGroup>
+
+    </Children>
+  </TrackWidgetGroup>
+</Template>

@@ -119,17 +119,22 @@ void WKey::paintEvent(QPaintEvent* event) {
             contRect.height() - splitHeight,
             colorBottom);
 
-    painter.setPen(option.palette.text().color());
-
+    // Color the key text itself using the key's Camelot-wheel color
+    // (Serato-style), with a subtle dark outline for legibility on any
+    // background.
+    const QColor keyColor = colorBottom;
     QString elidedText = option.fontMetrics.elidedText(
             text(),
             Qt::ElideRight,
             width() - rectWidth);
 
-    painter.drawText(rectWidth,
+    const QRect textRect(rectWidth,
             contRect.top(),
             contRect.width() - rectWidth,
-            contRect.height(),
-            Qt::AlignCenter,
-            elidedText);
+            contRect.height());
+
+    painter.setPen(QColor(0, 0, 0, 160));
+    painter.drawText(textRect.translated(1, 1), Qt::AlignCenter, elidedText);
+    painter.setPen(keyColor);
+    painter.drawText(textRect, Qt::AlignCenter, elidedText);
 }

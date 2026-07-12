@@ -1,5 +1,9 @@
 #pragma once
 
+#include <QColor>
+#include <QVector>
+
+#include "audio/frame.h"
 #include "control/pollingcontrolproxy.h"
 #include "preferences/usersettings.h"
 #include "track/track_decl.h"
@@ -113,8 +117,10 @@ class WSpinnyBase : public WGLWidget,
     PollingControlProxy m_pPlayPos;
     PollingControlProxy m_pTrackSamples;
     PollingControlProxy m_pTrackSampleRate;
+    PollingControlProxy m_pBpm;
     PollingControlProxy m_pScratchToggle;
     PollingControlProxy m_pScratchPos;
+    PollingControlProxy m_pRateRatio;
     parented_ptr<ControlProxy> m_pVinylControlSpeedType;
     parented_ptr<ControlProxy> m_pVinylControlEnabled;
     parented_ptr<ControlProxy> m_pSignalEnabled;
@@ -154,4 +160,15 @@ class WSpinnyBase : public WGLWidget,
     BaseTrackPlayer* m_pPlayer;
     parented_ptr<WCoverArtMenu> m_pCoverMenu;
     parented_ptr<DlgCoverArtFullSize> m_pDlgCoverArt;
+
+    struct CueGlowPoint {
+        double normalizedPosition; // 0.0 - 1.0
+        QColor color;
+    };
+    QVector<CueGlowPoint> m_cueGlowPoints;
+    QColor m_cueGlowColor;
+    float m_cueGlowIntensity{0.0f};
+
+    void updateCueGlow();
+    void cacheCuePoints();
 };

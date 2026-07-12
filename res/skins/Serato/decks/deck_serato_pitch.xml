@@ -1,0 +1,48 @@
+<!--
+  Serato-style vertical tempo/pitch fader (inner side, toward the waveform)
+  with a small rate % readout on top. Variables: ChanNum, Group
+-->
+<Template>
+  <WidgetGroup>
+    <ObjectName>SeratoPitchColumn</ObjectName>
+    <Layout>vertical</Layout>
+    <SizePolicy>f,f</SizePolicy>
+    <Size>44f,0min</Size>
+    <Children>
+
+      <NumberRate>
+        <ObjectName>SeratoRateText</ObjectName>
+        <TooltipId>rate_display</TooltipId>
+        <Size>44f,16f</Size>
+        <Alignment>center</Alignment>
+        <Channel><Variable name="ChanNum"/></Channel>
+        <NumberOfDigits>2</NumberOfDigits>
+      </NumberRate>
+
+      <WidgetGroup>
+        <Layout>horizontal</Layout>
+        <SizePolicy>f,me</SizePolicy>
+        <Children>
+          <SliderComposed>
+            <ObjectName>SeratoRateSlider</ObjectName>
+            <Size>44f,146f</Size>
+            <TooltipId>rate</TooltipId>
+            <Handle scalemode="STRETCH_ASPECT">skins:LateNight/<Variable name="SliderScheme"/>/sliders/knob_pitch_deck.svg</Handle>
+            <Slider scalemode="STRETCH">skins:LateNight/<Variable name="SliderScheme"/>/sliders/slider_pitch_deck.svg</Slider>
+            <Horizontal>false</Horizontal>
+            <BarWidth><Variable name="BarWidth"/></BarWidth>
+            <BarMargins><Variable name="BarMarginPitch"/></BarMargins>
+            <BarColor><Variable name="BarColorPitch"/></BarColor>
+            <BarRoundCaps>true</BarRoundCaps>
+            <BarAxisPos>20.0</BarAxisPos>
+            <BarUnipolar>false</BarUnipolar>
+            <Connection>
+              <ConfigKey><Variable name="Group"/>,rate</ConfigKey>
+            </Connection>
+          </SliderComposed>
+        </Children>
+      </WidgetGroup>
+
+    </Children>
+  </WidgetGroup>
+</Template>

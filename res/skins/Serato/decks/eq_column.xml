@@ -1,0 +1,61 @@
+<!--
+  Serato-style inner EQ column (Rekordbox layout), shown only with the mixer.
+  Holds a compact channel strip (gain, 3-band EQ, filter, volume fader) for the
+  primary deck channel and, in 4-deck mode, a second strip below it.
+  Width is capped and height kept natural so the reused mixer strip does not
+  stretch into empty space.
+  Variables:
+    ChanNum   primary channel number (1 or 2)
+    ChanNum2  secondary channel number (3 or 4), shown only in 4-deck mode
+-->
+<Template>
+  <WidgetGroup>
+    <ObjectName>SeratoEqColumn</ObjectName>
+    <Layout>vertical</Layout>
+    <SizePolicy>max,min</SizePolicy>
+    <MaximumSize>98,</MaximumSize>
+    <Children>
+
+      <!-- primary deck channel -->
+      <WidgetGroup>
+        <Layout>horizontal</Layout>
+        <SizePolicy>max,min</SizePolicy>
+        <MaximumSize>98,</MaximumSize>
+        <Children>
+          <Template src="skins:LateNight/mixer/channel_left.xml">
+            <SetVariable name="ChanNum"><Variable name="ChanNum"/></SetVariable>
+            <SetVariable name="xfaderLeft">default</SetVariable>
+            <SetVariable name="xfaderRight">warning</SetVariable>
+          </Template>
+        </Children>
+      </WidgetGroup>
+
+      <!-- secondary deck channel (4-deck mode only) -->
+      <WidgetGroup>
+        <Layout>vertical</Layout>
+        <SizePolicy>max,min</SizePolicy>
+        <MaximumSize>98,</MaximumSize>
+        <Children>
+          <WidgetGroup><Size>1min,8f</Size></WidgetGroup>
+          <WidgetGroup>
+            <Layout>horizontal</Layout>
+            <SizePolicy>max,min</SizePolicy>
+            <MaximumSize>98,</MaximumSize>
+            <Children>
+              <Template src="skins:LateNight/mixer/channel_left.xml">
+                <SetVariable name="ChanNum"><Variable name="ChanNum2"/></SetVariable>
+                <SetVariable name="xfaderLeft">default</SetVariable>
+                <SetVariable name="xfaderRight">warning</SetVariable>
+              </Template>
+            </Children>
+          </WidgetGroup>
+        </Children>
+        <Connection>
+          <ConfigKey>[Skin],show_4decks</ConfigKey>
+          <BindProperty>visible</BindProperty>
+        </Connection>
+      </WidgetGroup>
+
+    </Children>
+  </WidgetGroup>
+</Template>

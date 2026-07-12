@@ -1,7 +1,10 @@
 #include "widget/wspinnyglsl.h"
 
 #include <QOpenGLTexture>
+#include <QPainter>
 #include <array>
+
+#include "widget/cueglow.h"
 
 #include "moc_wspinnyglsl.cpp"
 
@@ -160,9 +163,106 @@ void WSpinnyGLSL::paintGL() {
         m_textureShader.setUniformValue(matrixLocation, rotate);
 
         drawTexture(&m_fgTextureScaled);
+
+        if (m_cueGlowIntensity > 0.01f && !m_fgImageScaled.isNull()) {
+            const float rawIntensity = m_cueGlowIntensity /
+                    mixxx::cueglow::kMaxAlpha;
+            QImage tinted = mixxx::cueglow::createTintedForeground(
+                    m_fgImageScaled, m_cueGlowColor, rawIntensity);
+            m_cueGlowFgTexture.setData(tinted);
+            drawTexture(&m_cueGlowFgTexture);
+        }
+    }
+
+    if (m_cueGlowIntensity > 0.01f) {
+        QImage glowImg = mixxx::cueglow::createGlowCircle(
+                m_cueGlowColor, m_cueGlowIntensity);
+        m_cueGlowTexture.setData(glowImg);
+
+        QMatrix4x4 identity;
+        m_textureShader.setUniformValue(matrixLocation, identity);
+
+        const std::array<float, 8> posarray = {-1.f, -1.f, 1.f, -1.f, -1.f, 1.f, 1.f, 1.f};
+        const std::array<float, 8> texarray = {0.f, 1.f, 1.f, 1.f, 0.f, 0.f, 1.f, 0.f};
+        m_textureShader.setAttributeArray(
+                positionLocation, GL_FLOAT, posarray.data(), 2);
+        m_textureShader.setAttributeArray(
+                texcoordLocation, GL_FLOAT, texarray.data(), 2);
+        m_cueGlowTexture.bind();
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        m_cueGlowTexture.release();
     }
 
     m_textureShader.release();
+
+    // Serato-style BPM/Time overlay using QPainter on GL surface
+    const double bpm = m_pBpm.get();
+    if (bpm > 0.0 && width() >= 80) {
+        QPainter p(paintDevice());
+        p.setRenderHint(QPainter::Antialiasing);
+
+        const int cx = width() / 2;
+        const int cy = height() / 2;
+        const int overlayRadius = qMin(width(), height()) / 4;
+
+        QFont bpmFont;
+        bpmFont.setPixelSize(overlayRadius * 3 / 4);
+        bpmFont.setBold(true);
+        bpmFont.setWeight(QFont::Black);
+        p.setFont(bpmFont);
+        p.setPen(QColor(255, 255, 255));
+        QString bpmText = QString::number(bpm, 'f', 1);
+        QRect bpmRect(cx - overlayRadius, cy - overlayRadius * 3 / 4,
+                overlayRadius * 2, overlayRadius / 2);
+        p.drawText(bpmRect, Qt::AlignCenter, bpmText);
+
+        const double rateRatio = m_pRateRatio.get();
+        const double pitchPct = (rateRatio - 1.0) * 100.0;
+        QFont pitchFont;
+        pitchFont.setPixelSize(overlayRadius / 5);
+        p.setFont(pitchFont);
+        p.setPen(QColor(255, 255, 255));
+        QString pitchText = QStringLiteral("%1%2%")
+                .arg(pitchPct >= 0 ? "+" : "")
+                .arg(pitchPct, 0, 'f', 1);
+        QRect pitchRect(cx - overlayRadius, cy - overlayRadius / 3,
+                overlayRadius * 2, overlayRadius / 4);
+        p.drawText(pitchRect, Qt::AlignCenter, pitchText);
+
+        const double trackSamples = m_pTrackSamples.get();
+        const double sampleRate = m_pTrackSampleRate.get();
+        const double playPos = m_pPlayPos.get();
+        if (trackSamples > 0.0 && sampleRate > 0.0) {
+            const double totalSeconds = trackSamples / sampleRate / 2.0;
+            const double elapsedSeconds = playPos * totalSeconds;
+            const int mins = static_cast<int>(elapsedSeconds) / 60;
+            const int secs = static_cast<int>(elapsedSeconds) % 60;
+            const int tenths = static_cast<int>(elapsedSeconds * 10) % 10;
+
+            QFont timeFont;
+            timeFont.setPixelSize(overlayRadius / 3);
+            p.setFont(timeFont);
+            p.setPen(QColor(255, 255, 255));
+            QString timeText = QStringLiteral("%1:%2.%3")
+                    .arg(mins, 2, 10, QChar('0'))
+                    .arg(secs, 2, 10, QChar('0'))
+                    .arg(tenths);
+            QRect timeRect(cx - overlayRadius, cy - overlayRadius / 6,
+                    overlayRadius * 2, overlayRadius / 2);
+            p.drawText(timeRect, Qt::AlignCenter, timeText);
+
+            const int durMins = static_cast<int>(totalSeconds) / 60;
+            const int durSecs = static_cast<int>(totalSeconds) % 60;
+            QString durText = QStringLiteral("%1:%2")
+                    .arg(durMins, 2, 10, QChar('0'))
+                    .arg(durSecs, 2, 10, QChar('0'));
+            QRect durRect(cx - overlayRadius, cy + overlayRadius / 4,
+                    overlayRadius * 2, overlayRadius / 2);
+            p.setPen(QColor(200, 200, 200));
+            p.drawText(durRect, Qt::AlignCenter, durText);
+        }
+        p.end();
+    }
 }
 
 void WSpinnyGLSL::initializeGL() {
