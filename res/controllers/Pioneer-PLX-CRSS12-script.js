@@ -120,6 +120,19 @@ PioneerPLXCRSS12.modeColor = {
     sampler: 0x37,   // magenta
 };
 
+// End-of-track blink. On a turntable there is no on-deck play/cue LED to watch,
+// so when Mixxx' Pioneer cue mode is selected (the mode that blinks in the last
+// 30 s) we flash all pads + mode buttons for that deck as an eyes-off warning.
+PioneerPLXCRSS12.cueModePioneer = 1; // CueMode::Pioneer in src/engine/controls/cuecontrol.h
+PioneerPLXCRSS12.blinkIntervalMs = 500;
+PioneerPLXCRSS12.blinkColor = 0x2A; // red pad palette index while flashing
+PioneerPLXCRSS12.blinkTimer = 0;
+PioneerPLXCRSS12.blinkPhase = false;
+PioneerPLXCRSS12.endOfTrackActive = {
+    "[Channel1]": false,
+    "[Channel2]": false,
+};
+
 // ---------------------------------------------------------------------------
 // Init / Shutdown
 // ---------------------------------------------------------------------------
@@ -148,15 +161,22 @@ PioneerPLXCRSS12.init = function() {
             engine.makeConnection(group, "hotcue_" + i + "_status", PioneerPLXCRSS12.hotcueStatusChanged);
             engine.makeConnection(group, "hotcue_" + i + "_color", PioneerPLXCRSS12.hotcueStatusChanged);
         }
+        engine.makeConnection(group, "end_of_track", PioneerPLXCRSS12.endOfTrackChanged);
+        PioneerPLXCRSS12.endOfTrackActive[group] = engine.getValue(group, "end_of_track") > 0;
         PioneerPLXCRSS12.updateModeLeds(group);
         PioneerPLXCRSS12.updatePadLeds(group);
     });
+    PioneerPLXCRSS12.updateBlinkState();
 };
 
 PioneerPLXCRSS12.shutdown = function() {
     if (PioneerPLXCRSS12.heartbeatTimer) {
         engine.stopTimer(PioneerPLXCRSS12.heartbeatTimer);
         PioneerPLXCRSS12.heartbeatTimer = 0;
+    }
+    if (PioneerPLXCRSS12.blinkTimer) {
+        engine.stopTimer(PioneerPLXCRSS12.blinkTimer);
+        PioneerPLXCRSS12.blinkTimer = 0;
     }
     Object.keys(PioneerPLXCRSS12.padStatus).forEach(function(group) {
         const padStatus = PioneerPLXCRSS12.padStatus[group];
@@ -193,6 +213,80 @@ PioneerPLXCRSS12.updateModeLeds = function(group) {
     Object.keys(PioneerPLXCRSS12.modeForNote).forEach(function(note) {
         const noteNumber = parseInt(note, 10);
         midi.sendShortMsg(deckStatus, noteNumber, noteNumber === activeNote ? 0x7F : 0x00);
+    });
+};
+
+// ---------------------------------------------------------------------------
+// End-of-track blink (eyes-off warning for the last 30 s)
+// ---------------------------------------------------------------------------
+
+PioneerPLXCRSS12.endOfTrackChanged = function(value, group, _control) {
+    PioneerPLXCRSS12.endOfTrackActive[group] = value > 0;
+    PioneerPLXCRSS12.updateBlinkState();
+};
+
+// A deck flashes only while it is in the last 30 s (end_of_track) AND the
+// on-screen Pioneer cue mode - the one that blinks - is selected for it.
+PioneerPLXCRSS12.deckShouldBlink = function(group) {
+    return PioneerPLXCRSS12.endOfTrackActive[group] &&
+        engine.getValue(group, "cue_mode") === PioneerPLXCRSS12.cueModePioneer;
+};
+
+PioneerPLXCRSS12.anyDeckShouldBlink = function() {
+    return Object.keys(PioneerPLXCRSS12.padStatus).some(function(group) {
+        return PioneerPLXCRSS12.deckShouldBlink(group);
+    });
+};
+
+// Starts the blink timer when at least one deck needs it, stops it and restores
+// the normal LEDs when none does. Idempotent, so it is safe to call on any
+// end_of_track / init change.
+PioneerPLXCRSS12.updateBlinkState = function() {
+    const wanted = PioneerPLXCRSS12.anyDeckShouldBlink();
+    if (wanted && PioneerPLXCRSS12.blinkTimer === 0) {
+        PioneerPLXCRSS12.blinkPhase = true;
+        PioneerPLXCRSS12.renderBlink();
+        PioneerPLXCRSS12.blinkTimer = engine.beginTimer(
+            PioneerPLXCRSS12.blinkIntervalMs, PioneerPLXCRSS12.blinkTick);
+    } else if (!wanted && PioneerPLXCRSS12.blinkTimer !== 0) {
+        engine.stopTimer(PioneerPLXCRSS12.blinkTimer);
+        PioneerPLXCRSS12.blinkTimer = 0;
+        Object.keys(PioneerPLXCRSS12.padStatus).forEach(function(group) {
+            PioneerPLXCRSS12.updateModeLeds(group);
+            PioneerPLXCRSS12.updatePadLeds(group);
+        });
+    }
+};
+
+PioneerPLXCRSS12.blinkTick = function() {
+    // Re-check here too so a mid-track cue-mode change stops the blink cleanly.
+    if (!PioneerPLXCRSS12.anyDeckShouldBlink()) {
+        PioneerPLXCRSS12.updateBlinkState();
+        return;
+    }
+    PioneerPLXCRSS12.blinkPhase = !PioneerPLXCRSS12.blinkPhase;
+    PioneerPLXCRSS12.renderBlink();
+};
+
+// Renders one blink frame. A deck in the warning zone flashes all 8 pads + the
+// 4 mode buttons; any other deck keeps its normal LEDs so a second, non-ending
+// track still shows its cues.
+PioneerPLXCRSS12.renderBlink = function() {
+    const on = PioneerPLXCRSS12.blinkPhase;
+    Object.keys(PioneerPLXCRSS12.padStatus).forEach(function(group) {
+        if (!PioneerPLXCRSS12.deckShouldBlink(group)) {
+            PioneerPLXCRSS12.updateModeLeds(group);
+            PioneerPLXCRSS12.updatePadLeds(group);
+            return;
+        }
+        const padStatus = PioneerPLXCRSS12.padStatus[group];
+        const deckStatus = PioneerPLXCRSS12.deckStatus[group];
+        for (let i = 0; i < 8; i++) {
+            midi.sendShortMsg(padStatus, i, on ? PioneerPLXCRSS12.blinkColor : 0x00);
+        }
+        Object.keys(PioneerPLXCRSS12.modeForNote).forEach(function(note) {
+            midi.sendShortMsg(deckStatus, parseInt(note, 10), on ? 0x7F : 0x00);
+        });
     });
 };
 
